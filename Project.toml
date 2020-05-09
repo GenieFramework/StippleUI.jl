@@ -3,6 +3,13 @@ uuid = "a3c5d34a-b254-4859-a8fa-b86abb7e84a3"
 authors = ["Adrian Salceanu <e@essenciary.com>"]
 version = "0.1.0"
 
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Genie = "c43c736e-a2d1-11e8-161f-af95117fbd1e"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+Stipple = "c3245d6e-4e41-4672-accb-64620d5e5a71"
+
 [compat]
 julia = "1"
 
