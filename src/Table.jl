@@ -198,9 +198,9 @@ end
 
 #===#
 
-function Stipple.watch(vue_app_name::String, fieldtype::R{T}, fieldname::Symbol, channel::String, model::M)::String where {M<:Stipple.ReactiveModel,T<:DataTable}
+function Stipple.watch(vue_app_name::String, fieldtype::R{T}, fieldname::Symbol, channel::String, model::M)::String where {M<:ReactiveModel,T<:DataTable}
   string(vue_app_name, raw".\$watch('", fieldname, "', function(newVal, oldVal){
-    console.log('Table updated');
+
   });\n\n")
 end
 

@@ -32,6 +32,9 @@ end
 #===#
 
 include("Table.jl")
+include("Badge.jl")
+include("Range.jl")
+include("Checkbox.jl")
 
 function __init__()
   push!(Stipple.Layout.THEMES, theme)
