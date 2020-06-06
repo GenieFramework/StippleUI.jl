@@ -7,6 +7,8 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 using Stipple
 
+export badge
+
 Genie.Renderer.Html.register_normal_element("q__badge", context = @__MODULE__)
 
 function badge(args...; kwargs...)

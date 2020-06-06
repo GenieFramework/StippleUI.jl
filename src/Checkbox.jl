@@ -7,6 +7,8 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 using Stipple
 
+export checkbox
+
 Genie.Renderer.Html.register_normal_element("q__checkbox", context = @__MODULE__)
 
 function checkbox(fieldname::Symbol; args...)

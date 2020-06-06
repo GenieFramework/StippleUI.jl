@@ -4,9 +4,11 @@ using Revise
 
 import DataFrames, JSON
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, table
 
 using Stipple
+
+export Column, DataTablePagination, DataTableOptions, DataTable
 
 Genie.Renderer.Html.register_normal_element("q__table", context = @__MODULE__)
 
@@ -39,7 +41,7 @@ Base.@kwdef mutable struct DataTablePagination
 end
 
 Base.@kwdef mutable struct DataTableOptions
-  addid::Bool = true
+  addid::Bool = false
   idcolumn::String = "ID"
   columns::Union{Vector{Column},Nothing} = nothing
 end
@@ -98,7 +100,7 @@ function data(t::T, fieldname::Symbol; datakey = "data_$fieldname", columnskey =
   )
 end
 
-function table(fieldname::Symbol;
+function Genie.Renderer.Html.table(fieldname::Symbol;
                 rowkey::String = ID,
                 title::String = "",
                 datakey::String = "data_$fieldname",
