@@ -4,7 +4,7 @@ using Revise
 
 import DataFrames, JSON
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, table
+import Genie.Renderer.Html: HTMLString, normal_element, table, template_
 
 using Stipple
 
@@ -172,17 +172,17 @@ function Genie.Renderer.Html.table(fieldname::Symbol;
     push!(v, "")
   end
 
-  Genie.Renderer.Html.div(class="q-pa-md") do
+  template_() do
     q__table(title=title; args..., NamedTuple{k}(v)...) do
       [
         filter ? """
-        <template v-slot:top-right>
+        <template_ v-slot:top-right>
           <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
-        </template>""" : ""
+        </template_>""" : ""
       ]
     end
   end

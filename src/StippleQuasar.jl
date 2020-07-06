@@ -31,10 +31,19 @@ end
 
 #===#
 
+include("API.jl")
+include("Banner.jl")
 include("Badge.jl")
+include("Button.jl")
+include("Card.jl")
 include("Checkbox.jl")
+include("Chip.jl")
+include("Icon.jl")
+include("List.jl")
 include("Range.jl")
 include("Select.jl")
+include("Separator.jl")
+include("Space.jl")
 include("Table.jl")
 
 function __init__()

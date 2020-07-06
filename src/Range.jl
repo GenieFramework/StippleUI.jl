@@ -3,7 +3,7 @@ module Range
 using Revise
 
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, template_
 
 using Stipple
 
@@ -17,7 +17,8 @@ Base.@kwdef mutable struct RangeData{T}
   range::UnitRange{T}
 end
 
-function range(fieldname::Symbol, range::StepRange;
+function range(fieldname::Symbol, range::StepRange,
+  args...;
   labelalways::Bool = false,
   labelvalueleft::Union{String,Nothing} = nothing,
   labelvalueright::Union{String,Nothing} = nothing,
@@ -27,7 +28,7 @@ function range(fieldname::Symbol, range::StepRange;
   dragonlyrange::Bool = false,
   dark::Bool = false,
   readonly::Bool = false,
-  args...)
+  kwargs...)
 
   k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
   v = Any[range.start, range.stop, range.step]
@@ -77,17 +78,20 @@ function range(fieldname::Symbol, range::StepRange;
     push!(v, true)
   end
 
-  q__range(v__model=fieldname; args..., NamedTuple{k}(v)...)
+  template_() do
+    q__range(v__model=fieldname, args...; kwargs..., NamedTuple{k}(v)...)
+  end
 end
 
-function slider(fieldname::Symbol, range::StepRange;
+function slider(fieldname::Symbol, range::StepRange,
+  args...;
   labelalways::Bool = false,
   labelvalue::Union{String,Nothing} = nothing,
   markers::Bool = false,
   snap::Bool = false,
   dark::Bool = false,
   readonly::Bool = false,
-  args...)
+  kwargs...)
 
   k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
   v = Any[range.start, range.stop, range.step]
@@ -122,7 +126,9 @@ function slider(fieldname::Symbol, range::StepRange;
     push!(v, true)
   end
 
-  q__slider(v__model=fieldname; args..., NamedTuple{k}(v)...)
+  template_() do
+    q__slider(v__model=fieldname, args...; kwargs..., NamedTuple{k}(v)...)
+  end
 end
 
 function Stipple.render(rd::RangeData{T}, fieldname::Union{Symbol,Nothing} = nothing) where {T,R}
