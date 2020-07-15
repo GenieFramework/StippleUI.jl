@@ -101,26 +101,25 @@ function data(t::T, fieldname::Symbol; datakey = "data_$fieldname", columnskey =
 end
 
 function Genie.Renderer.Html.table(fieldname::Symbol;
-                rowkey::String = ID,
-                title::String = "",
-                datakey::String = "data_$fieldname",
-                columnskey::String = "columns_$fieldname",
-                selected::Union{Symbol,Nothing} = nothing,
-                hideheader::Bool = false,
-                hidebottom::Bool = false,
-                pagination::Union{Symbol,Nothing} = nothing,
-                dark::Bool = false,
-                bordered::Bool = false,
-                separator::Union{String,Symbol} = :cell,
-                dense::Bool = false,
-                flat::Bool = false,
-                filter::Bool = false,
-                loading::Union{Symbol,Bool} = false,
-                grid::Bool = false,
-                args...) :: String
+                                    rowkey::String = ID,
+                                    title::String = "",
+                                    datakey::String = "data_$fieldname",
+                                    columnskey::String = "columns_$fieldname",
+                                    selected::Union{Symbol,Nothing} = nothing,
+                                    hideheader::Bool = false,
+                                    hidebottom::Bool = false,
+                                    pagination::Union{Symbol,Nothing} = nothing,
+                                    dark::Bool = false,
+                                    bordered::Bool = false,
+                                    separator::Union{String,Symbol} = :horizontal,
+                                    dense::Bool = false,
+                                    flat::Bool = false,
+                                    loading::Union{Symbol,Bool} = false,
+                                    grid::Bool = false,
+                                    args...) :: String
 
-  k = (Symbol(":data"), Symbol(":columns"), Symbol("row-key"))
-  v = Any["$fieldname.$datakey", "$fieldname.$columnskey", rowkey]
+  k = (Symbol(":data"), Symbol(":columns"), Symbol("row-key"), :separator)
+  v = Any["$fieldname.$datakey", "$fieldname.$columnskey", rowkey, separator]
 
   if selected !== nothing
     k = (k..., Symbol("selected!sync!"))
@@ -173,18 +172,7 @@ function Genie.Renderer.Html.table(fieldname::Symbol;
   end
 
   template_() do
-    q__table(title=title; args..., NamedTuple{k}(v)...) do
-      [
-        filter ? """
-        <template_ v-slot:top-right>
-          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template_>""" : ""
-      ]
-    end
+    q__table(title=title; args..., NamedTuple{k}(v)...)
   end
 end
 

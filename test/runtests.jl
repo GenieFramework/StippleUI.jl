@@ -1,6 +1,6 @@
-using StippleQuasar
+using StippleUI
 using Test
 
-@testset "StippleQuasar.jl" begin
+@testset "StippleUI.jl" begin
     # Write your own tests here.
 end

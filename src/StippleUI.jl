@@ -1,4 +1,4 @@
-module StippleQuasar
+module StippleUI
 
 using Revise
 
@@ -34,10 +34,13 @@ end
 include("API.jl")
 include("Banner.jl")
 include("Badge.jl")
+include("BigNumber.jl")
+include("Heading.jl")
 include("Button.jl")
 include("Card.jl")
 include("Checkbox.jl")
 include("Chip.jl")
+include("Dialog.jl")
 include("Icon.jl")
 include("List.jl")
 include("Range.jl")

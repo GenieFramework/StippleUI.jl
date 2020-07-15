@@ -5,7 +5,7 @@ using Revise
 import Genie
 import Genie.Renderer.Html: HTMLString, normal_element, template_, div
 
-using Stipple, StippleQuasar.API
+using Stipple, StippleUI.API
 
 export button, buttongroup
 
