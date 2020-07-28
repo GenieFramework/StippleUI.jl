@@ -11,9 +11,11 @@ export banner
 
 Genie.Renderer.Html.register_normal_element("q__banner", context = @__MODULE__)
 
-function banner(content::String, args...;
+function banner(content::String = "",
+                args...;
                 buttons::Vector{String} = String[],
-                icon::Union{String,Nothing} = nothing, kwargs...)
+                icon::Union{String,Nothing} = nothing,
+                kwargs...)
 
   template_() do
     q__banner(args...; kwargs...) do

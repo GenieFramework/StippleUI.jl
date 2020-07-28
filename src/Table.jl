@@ -100,7 +100,8 @@ function data(t::T, fieldname::Symbol; datakey = "data_$fieldname", columnskey =
   )
 end
 
-function Genie.Renderer.Html.table(fieldname::Symbol;
+function Genie.Renderer.Html.table( fieldname::Symbol,
+                                    args...;
                                     rowkey::String = ID,
                                     title::String = "",
                                     datakey::String = "data_$fieldname",
@@ -109,70 +110,40 @@ function Genie.Renderer.Html.table(fieldname::Symbol;
                                     hideheader::Bool = false,
                                     hidebottom::Bool = false,
                                     pagination::Union{Symbol,Nothing} = nothing,
-                                    dark::Bool = false,
-                                    bordered::Bool = false,
-                                    separator::Union{String,Symbol} = :horizontal,
-                                    dense::Bool = false,
-                                    flat::Bool = false,
+                                    separator::Union{String,Symbol} = :none,
                                     loading::Union{Symbol,Bool} = false,
-                                    grid::Bool = false,
-                                    args...) :: String
+                                    kwargs...) :: String
 
   k = (Symbol(":data"), Symbol(":columns"), Symbol("row-key"), :separator)
   v = Any["$fieldname.$datakey", "$fieldname.$columnskey", rowkey, separator]
 
   if selected !== nothing
-    k = (k..., Symbol("selected!sync!"))
+    k = (k..., Symbol(":selected.sync"))
     push!(v, selected)
   end
 
   if hideheader
-    k = (k..., Symbol("hide__header"))
+    k = (k..., Symbol("hide-header"))
     push!(v, true)
   end
 
   if hidebottom
-    k = (k..., Symbol("hide__bottom"))
+    k = (k..., Symbol("hide-bottom"))
     push!(v, true)
   end
 
   if pagination !== nothing
-    k = (k..., Symbol("pagination!sync!"))
+    k = (k..., Symbol(":pagination.sync"))
     push!(v, pagination)
   end
 
   if (isa(loading, Bool) && loading) || (isa(loading, Symbol))
-    k = (k..., (isa(loading, Symbol) ? Symbol("loading!") : Symbol("loading")))
+    k = (k..., (isa(loading, Symbol) ? Symbol(":loading") : :loading)))
     push!(v, loading)
   end
 
-  if grid
-    k = (k..., Symbol("grid"))
-    push!(v, "")
-  end
-
-  if dark
-    k = (k..., Symbol("dark"))
-    push!(v, "")
-  end
-
-  if flat
-    k = (k..., Symbol("flat"))
-    push!(v, "")
-  end
-
-  if bordered
-    k = (k..., Symbol("bordered"))
-    push!(v, "")
-  end
-
-  if dense
-    k = (k..., Symbol("dense"))
-    push!(v, "")
-  end
-
   template_() do
-    q__table(title=title; args..., NamedTuple{k}(v)...)
+    q__table(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end
 

@@ -33,16 +33,6 @@ function dialog(args...;
     push!(v, true)
   end
 
-  if nobackdrop
-    k = (k..., Symbol("no-backdrop-dismiss"))
-    push!(v, true)
-  end
-
-  if autoclose
-    k = (k..., Symbol("auto-close"))
-    push!(v, true)
-  end
-
   if autoclose
     k = (k..., Symbol("auto-close"))
     push!(v, true)

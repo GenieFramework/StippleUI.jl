@@ -17,21 +17,27 @@ Base.@kwdef mutable struct RangeData{T}
   range::UnitRange{T}
 end
 
-function range(fieldname::Symbol, range::StepRange,
-  args...;
-  labelalways::Bool = false,
-  labelvalueleft::Union{String,Nothing} = nothing,
-  labelvalueright::Union{String,Nothing} = nothing,
-  markers::Bool = false,
-  snap::Bool = false,
-  dragrange::Bool = false,
-  dragonlyrange::Bool = false,
-  dark::Bool = false,
-  readonly::Bool = false,
-  kwargs...)
+function range( range::StepRange,
+                fieldname::Union{Symbol,Nothing},
+                args...;
+                labelalways::Bool = false,
+                labelvalueleft::Union{String,Nothing} = nothing,
+                labelvalueright::Union{String,Nothing} = nothing,
+                markers::Bool = false,
+                snap::Bool = false,
+                dragrange::Bool = false,
+                dragonlyrange::Bool = false,
+                dark::Bool = false,
+                readonly::Bool = false,
+                kwargs...)
 
   k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
   v = Any[range.start, range.stop, range.step]
+
+  if fieldname !== nothing
+    k = (k..., Symbol("v-model"))
+    push!(v, fieldname)
+  end
 
   if labelalways
     k = (k..., Symbol("label-always"))
@@ -79,22 +85,28 @@ function range(fieldname::Symbol, range::StepRange,
   end
 
   template_() do
-    q__range(v__model=fieldname, args...; kwargs..., NamedTuple{k}(v)...)
+    q__range(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end
 
-function slider(fieldname::Symbol, range::StepRange,
-  args...;
-  labelalways::Bool = false,
-  labelvalue::Union{String,Nothing} = nothing,
-  markers::Bool = false,
-  snap::Bool = false,
-  dark::Bool = false,
-  readonly::Bool = false,
-  kwargs...)
+function slider(range::StepRange,
+                fieldname::Symbol,
+                args...;
+                labelalways::Bool = false,
+                labelvalue::Union{String,Nothing} = nothing,
+                markers::Bool = false,
+                snap::Bool = false,
+                dark::Bool = false,
+                readonly::Bool = false,
+                kwargs...)
 
   k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
   v = Any[range.start, range.stop, range.step]
+
+  if fieldname !== nothing
+    k = (k..., Symbol("v-model"))
+    push!(v, fieldname)
+  end
 
   if labelalways
     k = (k..., Symbol("label-always"))
@@ -127,7 +139,7 @@ function slider(fieldname::Symbol, range::StepRange,
   end
 
   template_() do
-    q__slider(v__model=fieldname, args...; kwargs..., NamedTuple{k}(v)...)
+    q__slider(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end
 
