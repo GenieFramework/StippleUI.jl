@@ -11,6 +11,11 @@ Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 Stipple = "c3245d6e-4e41-4672-accb-64620d5e5a71"
 
 [compat]
+DataFrames = "0.21"
+Genie = "1"
+JSON = "0.21"
+Revise = "2"
+Stipple = "0"
 julia = "1"
 
 [extras]
