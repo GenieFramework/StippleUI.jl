@@ -3,7 +3,7 @@ module FormInput
 using Revise
 
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, template_
+import Genie.Renderer.Html: HTMLString, normal_element, template
 
 using Stipple, StippleUI.API
 
@@ -146,7 +146,7 @@ function textfield(
     push!(v, true)
   end
 
-  template_() do
+  template() do
     q__input(; kwargs..., NamedTuple{k}(v)...)
   end
 end
@@ -161,7 +161,7 @@ function numberfield(
   fieldname !== nothing && (kwargs[Symbol("v-model.number")] = fieldname)
   kwargs[:type] = :number
 
-  textfield(nothing; Stipple.NamedTuple(kwargs))
+  textfield(nothing; Stipple.NamedTuple(kwargs)...)
 end
 
 function textarea(
@@ -172,7 +172,7 @@ function textarea(
   kwargs = Dict{Symbol,Any}(kwargs...)
   kwargs[:type] = :textarea
 
-  textfield(fieldname; Stipple.NamedTuple(kwargs))
+  textfield(fieldname; Stipple.NamedTuple(kwargs)...)
 end
 
 function filefield(
@@ -315,7 +315,7 @@ function filefield(
     push!(v, true)
   end
 
-  template_() do
+  template() do
     q__file(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end

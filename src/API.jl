@@ -1,39 +1,29 @@
 module API
 
-function attr_loading(loading::Union{Bool,Symbol}, k, v)
-  if (isa(loading, Bool) && loading) || (isa(loading, Symbol))
-    k = (k..., (isa(loading, Symbol) ? Symbol("loading!") : Symbol("loading")))
-    push!(v, loading)
+using Stipple
+import Genie
+
+export attributes, @wrapper
+
+function attributes(kwargs::Vector{T}, mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {T}
+  keynames = collect(keys(mappings))
+  attrs = Dict()
+  kwargs = Dict(kwargs)
+  mapped = false
+
+  for (k,v) in kwargs
+    v === nothing && continue
+    mapped = false
+
+    if string(k) in keynames
+      k = mappings[string(k)]
+      mapped = true
+    end
+
+    attrs[string((isa(v, Symbol) && ! mapped ? ":" : ""), "$k") |> Symbol] = v
   end
 
-  k
-end
-
-function attr_textcolor(textcolor::Union{String,Nothing}, k, v)
-  if textcolor !== nothing
-    k = (k..., Symbol("text-color"))
-    push!(v, textcolor)
-  end
-
-  k
-end
-
-function attr_iconright(iconright::Union{String,Nothing}, k, v)
-  if iconright !== nothing
-    k = (k..., Symbol("icon-right"))
-    push!(v, iconright)
-  end
-
-  k
-end
-
-function attr_nowrap(nowrap::Union{Bool,Nothing}, k, v)
-  if nowrap !== nothing
-    k = (k..., Symbol("no-wrap"))
-    push!(v, nowrap)
-  end
-
-  k
+  NamedTuple(attrs)
 end
 
 end

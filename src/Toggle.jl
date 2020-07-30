@@ -3,7 +3,7 @@ module Toggle
 using Revise
 
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, template_
+import Genie.Renderer.Html: HTMLString, normal_element, template
 
 using Stipple
 
@@ -90,7 +90,7 @@ function toggle(label::String = "",
     push!(v, true)
   end
 
-  template_() do
+  template() do
     q__toggle(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end

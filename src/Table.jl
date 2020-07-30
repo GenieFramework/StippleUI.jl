@@ -4,7 +4,7 @@ using Revise
 
 import DataFrames, JSON
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, table, template_
+import Genie.Renderer.Html: HTMLString, normal_element, table, template
 
 using Stipple
 
@@ -138,11 +138,11 @@ function Genie.Renderer.Html.table( fieldname::Symbol,
   end
 
   if (isa(loading, Bool) && loading) || (isa(loading, Symbol))
-    k = (k..., (isa(loading, Symbol) ? Symbol(":loading") : :loading)))
+    k = (k..., (isa(loading, Symbol) ? Symbol(":loading") : :loading))
     push!(v, loading)
   end
 
-  template_() do
+  template() do
     q__table(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end

@@ -3,7 +3,7 @@ module Radio
 using Revise
 
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, template_
+import Genie.Renderer.Html: HTMLString, normal_element, template
 
 using Stipple
 
@@ -36,7 +36,7 @@ function radio( label::String = "",
     push!(v, true)
   end
 
-  template_() do
+  template() do
     q__radio(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end

@@ -2,10 +2,8 @@ module Button
 
 using Revise
 
-import Genie
-import Genie.Renderer.Html: HTMLString, normal_element, template_, div
-
-using Stipple, StippleUI.API
+using Genie, Stipple, StippleUI, StippleUI.API
+import Genie.Renderer.Html: HTMLString, normal_element
 
 export button, buttongroup
 
@@ -14,47 +12,21 @@ Genie.Renderer.Html.register_normal_element("q__btn__group", context = @__MODULE
 
 function button(label::String = "",
                 args...;
-                iconright::Union{String,Nothing} = nothing,
-                textcolor::Union{String,Nothing} = nothing,
-                stacked::Bool = false,
-                nocaps::Bool = false,
-                loading::Union{Symbol,Bool} = false,
-                darkpercentage::Bool = false,
+                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
 
-  k = (:label, )
-  v = Any[label]
-
-  k = API.attr_iconright(textcolor, k, v)
-
-  k = API.attr_textcolor(textcolor, k, v)
-
-  if stacked
-    k = (k..., :stack)
-    push!(v, "")
-  end
-
-  if nocaps
-    k = (k..., Symbol("no-caps"))
-    push!(v, "")
-  end
-
-  if darkpercentage
-    k = (k..., Symbol("dark-percentage"))
-    push!(v, "")
-  end
-
-  k = API.attr_loading(loading, k, v)
-
-
-  template_() do
-    q__btn(args...; kwargs..., NamedTuple{k}(v)...)
+  wrap() do
+    q__btn(args...; attributes([:label => label, kwargs...],
+                                Dict("iconright" => "icon-right", "textcolor" => "text-color",
+                                      "stacked" => "stack", "nocaps" => "no-caps", "darkpercentage" => "dark-percentage"))...)
   end
 end
 
 
-function buttongroup(args...; kwargs...)
-  template_() do
+function buttongroup(args...;
+                    wrap::Function = StippleUI.DEFAULT_WRAPPER,
+                    kwargs...)
+  wrap() do
     q__btn__group(args...; kwargs...)
   end
 end

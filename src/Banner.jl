@@ -2,10 +2,8 @@ module Banner
 
 using Revise
 
-import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, template_, div
-
-using Stipple
+using Genie, Stipple, StippleUI, StippleUI.API
+import Genie.Renderer.Html: HTMLString, normal_element
 
 export banner
 
@@ -15,14 +13,15 @@ function banner(content::String = "",
                 args...;
                 buttons::Vector{String} = String[],
                 icon::Union{String,Nothing} = nothing,
+                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
 
-  template_() do
+  wrap() do
     q__banner(args...; kwargs...) do
       string(
-        (icon !== nothing ? template_(()->icon, Symbol("v-slot:avatar")) : ""),
+        (icon !== nothing ? wrap(()->icon, Symbol("v-slot:avatar")) : ""),
         content,
-        (! isempty(buttons) ? template_(()->join(buttons, "\n"), Symbol("v-slot:action")) : "")
+        (! isempty(buttons) ? wrap(()->join(buttons, "\n"), Symbol("v-slot:action")) : "")
       )
     end
   end

@@ -5,6 +5,8 @@ using Revise
 import Genie
 import Stipple
 
+const DEFAULT_WRAPPER = Genie.Renderer.Html.template
+
 #===#
 
 function theme() :: String
@@ -32,22 +34,27 @@ end
 #===#
 
 include("API.jl")
-include("Banner.jl")
 include("Badge.jl")
+include("Banner.jl")
 include("BigNumber.jl")
-include("Heading.jl")
 include("Button.jl")
 include("Card.jl")
 include("Checkbox.jl")
 include("Chip.jl")
+include("Dashboard.jl")
 include("Dialog.jl")
+include("Form.jl")
+include("FormInput.jl")
+include("Heading.jl")
 include("Icon.jl")
 include("List.jl")
+include("Radio.jl")
 include("Range.jl")
 include("Select.jl")
 include("Separator.jl")
 include("Space.jl")
 include("Table.jl")
+include("Toggle.jl")
 
 function __init__()
   push!(Stipple.Layout.THEMES, theme)

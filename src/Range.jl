@@ -3,7 +3,7 @@ module Range
 using Revise
 
 import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, template_
+import Genie.Renderer.Html: HTMLString, normal_element, template
 
 using Stipple
 
@@ -84,7 +84,7 @@ function range( range::StepRange,
     push!(v, true)
   end
 
-  template_() do
+  template() do
     q__range(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end
@@ -138,7 +138,7 @@ function slider(range::StepRange,
     push!(v, true)
   end
 
-  template_() do
+  template() do
     q__slider(args...; kwargs..., NamedTuple{k}(v)...)
   end
 end

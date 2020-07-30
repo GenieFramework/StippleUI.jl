@@ -2,10 +2,8 @@ module Checkbox
 
 using Revise
 
-import Genie, Stipple
-import Genie.Renderer.Html: HTMLString, normal_element, template_
-
-using Stipple
+using Genie, Stipple, StippleUI, StippleUI.API
+import Genie.Renderer.Html: HTMLString, normal_element
 
 export checkbox
 
@@ -14,60 +12,14 @@ Genie.Renderer.Html.register_normal_element("q__checkbox", context = @__MODULE__
 function checkbox(label::String = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
-                  indeterminatevalue::Union{Any,Nothing} = nothing,
-                  toggleorder::Union{String,Nothing} = nothing,
-                  truevalue::Union{Any,Nothing} = nothing,
-                  falsevalue::Union{Any,Nothing} = nothing,
-                  toggleindeterminate::Bool = false,
-                  keepcolor::Bool = false,
-                  leftlabel::Bool = false,
+                  wrap::Function = StippleUI.DEFAULT_WRAPPER,
                   kwargs...)
 
-  k = (:label, )
-  v = Any[label]
-
-  if fieldname !== nothing
-    k = (k..., Symbol("v-model"))
-    push!(v, fieldname)
-  end
-
-  if indeterminatevalue !== nothing
-    k = (k..., Symbol("indeterminate-value"))
-    push!(v, indeterminatevalue)
-  end
-
-  if toggleorder !== nothing
-    k = (k..., Symbol("toggle-order"))
-    push!(v, toggleorder)
-  end
-
-  if truevalue !== nothing
-    k = (k..., Symbol("true-value"))
-    push!(v, truevalue)
-  end
-
-  if falsevalue !== nothing
-    k = (k..., Symbol("false-value"))
-    push!(v, falsevalue)
-  end
-
-  if toggleindeterminate
-    k = (k..., Symbol("toggle-indeterminate"))
-    push!(v, true)
-  end
-
-  if keepcolor
-    k = (k..., Symbol("keep-color"))
-    push!(v, true)
-  end
-
-  if leftlabel
-    k = (k..., Symbol("left-label"))
-    push!(v, true)
-  end
-
-  template_() do
-    q__checkbox(args...; kwargs..., NamedTuple{k}(v)...)
+  wrap() do
+    q__checkbox(args...; attributes([:label => label, :fieldname => fieldname, kwargs...],
+                                    Dict("fieldname" => "v-model", "indeterminatevalue" => "indeterminate-value", "toggleorder" => "toggle-order",
+                                          "truevalue" => "true-value", "falsevalue" => "false-value", "toggleindeterminate" => "toggle-indeterminate",
+                                          "keepcolor" => "keep-color", "leftlabel" => "left-label"))...)
   end
 end
 
