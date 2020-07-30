@@ -13,7 +13,7 @@ higher level components (badges, banners, cards, dialogs, chips, icons), and lay
 ## Installation
 
 ```julia
-pkg> add https://github.com/GenieFramework/StippleUI.jl
+pkg> add StippleUI
 ```
 
 ## Demos
