@@ -18,15 +18,19 @@ pkg> add https://github.com/GenieFramework/StippleUI.jl
 
 ## Demos
 
-### Iris Flowers dataset k-Means clustering dashboard
-
-The full application is available at:
-<https://github.com/GenieFramework/Stipple-Demo-IrisClustering>
-
 ### German Credits visualisation dashboard
+
+<img src="https://www.dropbox.com/s/gsaqbuxvbqfk049/Screenshot_German_Credits.png?dl=1" width=800>
 
 The full application is available at:
 <https://github.com/GenieFramework/Stipple-Demo-GermanCredits>
+
+### Iris Flowers dataset k-Means clustering dashboard
+
+<img src="https://www.dropbox.com/s/hkyahy8gmv4lae9/Screenshot_Iris_Data_K-Means_Clustering.png?dl=1" width=800>
+
+The full application is available at:
+<https://github.com/GenieFramework/Stipple-Demo-IrisClustering>
 
 ## Acknowledgements
 
