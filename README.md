@@ -1,8 +1,10 @@
 # StippleUI
 
-StippleUI.jl is a library of reactive UI elements for [Stipple.jl](https://github.com/GenieFramework/Stipple.jl).
+StippleUI is a library of reactive UI elements for [Stipple.jl](https://github.com/GenieFramework/Stipple.jl).
 
-StippleUI.jl, together with Stipple.jl, StippleCharts.jl and Genie.jl provide a powerful and complete solution for building
+`StippleUI.jl`, together with [Stipple.jl](https://github.com/GenieFramework/Stipple.jl),
+[StippleCharts.jl](https://github.com/GenieFramework/StippleCharts.jl) and
+[Genie.jl](https://github.com/GenieFramework/Genie.jl) provide a powerful and complete solution for building
 beautiful, responsive, reactive, high performance interactive data dashboards in pure Julia.
 
 `StippleUI` provides over 30 UI elements, including forms and form inputs (button, slider, checkbox, radio, toggle, range), lists, data tables,
