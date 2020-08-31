@@ -1,7 +1,5 @@
 module Table
 
-using Revise
-
 import DataFrames, JSON
 import Genie, Stipple
 import Genie.Renderer.Html: HTMLString, normal_element, table, template
