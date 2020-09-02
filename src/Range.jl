@@ -1,7 +1,5 @@
 module Range
 
-using Revise
-
 import Genie, Stipple
 import Genie.Renderer.Html: HTMLString, normal_element, template
 
@@ -17,7 +15,7 @@ Base.@kwdef mutable struct RangeData{T}
   range::UnitRange{T}
 end
 
-function range( range::StepRange,
+function range( range::AbstractRange{T} where T <: Real,
                 fieldname::Union{Symbol,Nothing},
                 args...;
                 labelalways::Bool = false,
@@ -32,7 +30,7 @@ function range( range::StepRange,
                 kwargs...)
 
   k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
-  v = Any[range.start, range.stop, range.step]
+  v = Any[first(range), last(range), step(range)]
 
   if fieldname !== nothing
     k = (k..., Symbol("v-model"))
@@ -89,7 +87,7 @@ function range( range::StepRange,
   end
 end
 
-function slider(range::StepRange,
+function slider(range::AbstractRange{T} where T <: Real,
                 fieldname::Symbol,
                 args...;
                 labelalways::Bool = false,
@@ -101,7 +99,7 @@ function slider(range::StepRange,
                 kwargs...)
 
   k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
-  v = Any[range.start, range.stop, range.step]
+  v = Any[first(range), last(range), step(range)]
 
   if fieldname !== nothing
     k = (k..., Symbol("v-model"))

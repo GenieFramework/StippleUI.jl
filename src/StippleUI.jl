@@ -1,7 +1,5 @@
 module StippleUI
 
-using Revise
-
 import Genie
 import Stipple
 

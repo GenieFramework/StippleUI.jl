@@ -1,7 +1,5 @@
 module Heading
 
-using Revise
-
 import Genie, Stipple
 
 export heading

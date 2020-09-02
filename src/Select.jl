@@ -1,7 +1,5 @@
 module Select
 
-using Revise
-
 import Genie, Stipple
 import Genie.Renderer.Html: HTMLString, normal_element, select, template
 
