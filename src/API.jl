@@ -5,7 +5,15 @@ import Genie
 
 export attributes, @wrapper
 
-function attributes(kwargs::Vector{T}, mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {T}
+function attributes(model::T,
+                    kwargs::Vector{X},
+                    mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {T<:Stipple.ReactiveModel, X}
+  attributes(kwargs, mappings, )
+end
+
+function attributes(
+                    kwargs::Vector{X},
+                    mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {X}
   keynames = collect(keys(mappings))
   attrs = Dict()
   kwargs = Dict(kwargs)
@@ -17,10 +25,12 @@ function attributes(kwargs::Vector{T}, mappings::Dict{String,String} = Dict{Stri
 
     if string(k) in keynames
       k = mappings[string(k)]
-      mapped = true
     end
 
-    attrs[string((isa(v, Symbol) && ! mapped ? ":" : ""), "$k") |> Symbol] = v
+    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") ? ":" : ""), "$k") |> Symbol
+    attr_val = isa(v, Symbol) && ! startswith(string(k), ":") ? Stipple.julia_to_vue(v) : v
+
+    attrs[attr_key] = attr_val
   end
 
   NamedTuple(attrs)
