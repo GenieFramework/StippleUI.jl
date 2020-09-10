@@ -1,7 +1,5 @@
 module Space
 
-using Revise
-
 import Genie, Stipple
 import Genie.Renderer.Html: HTMLString, normal_element, template
 
