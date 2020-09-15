@@ -1,10 +1,8 @@
 module Table
 
 import DataFrames, JSON
-import Genie, Stipple
+using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template
-
-using Stipple
 
 export Column, DataTablePagination, DataTableOptions, DataTable
 
@@ -104,44 +102,16 @@ function Genie.Renderer.Html.table( fieldname::Symbol,
                                     title::String = "",
                                     datakey::String = "data_$fieldname",
                                     columnskey::String = "columns_$fieldname",
-                                    selected::Union{Symbol,Nothing} = nothing,
-                                    hideheader::Bool = false,
-                                    hidebottom::Bool = false,
-                                    pagination::Union{Symbol,Nothing} = nothing,
-                                    separator::Union{String,Symbol} = :none,
-                                    loading::Union{Symbol,Bool} = false,
+                                    wrap::Function = StippleUI.DEFAULT_WRAPPER,
                                     kwargs...) :: String
 
-  k = (Symbol(":data"), Symbol(":columns"), Symbol("row-key"), :separator)
-  v = Any["$fieldname.$datakey", "$fieldname.$columnskey", rowkey, separator]
-
-  if selected !== nothing
-    k = (k..., Symbol(":selected.sync"))
-    push!(v, selected)
-  end
-
-  if hideheader
-    k = (k..., Symbol("hide-header"))
-    push!(v, true)
-  end
-
-  if hidebottom
-    k = (k..., Symbol("hide-bottom"))
-    push!(v, true)
-  end
-
-  if pagination !== nothing
-    k = (k..., Symbol(":pagination.sync"))
-    push!(v, pagination)
-  end
-
-  if (isa(loading, Bool) && loading) || (isa(loading, Symbol))
-    k = (k..., (isa(loading, Symbol) ? Symbol(":loading") : :loading))
-    push!(v, loading)
-  end
-
-  template() do
-    q__table(args...; kwargs..., NamedTuple{k}(v)...)
+  wrap() do
+    q__table(args...; attributes(
+      [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
+      :fieldname => fieldname, kwargs...],
+      Dict("fieldname" => "v-model", "selected" => ":selected.sync", "hideheader" => "hide-header",
+            "hidebottom" => "hide-bottom", "pagination" => ":pagination.sync")
+    )...)
   end
 end
 

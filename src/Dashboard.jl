@@ -19,7 +19,8 @@ end
 
 const tagname = "st-dashboard"
 
-function dashboard(elemid, content::Union{String,Vector}; partial::Bool = false, title::String = "Stipple Dashboard", class::String = "", style::String = "", kwargs...)
+function dashboard(elemid, content::Union{String,Vector}; partial::Bool = false, title::String = "Stipple Dashboard",
+                    class::String = "", style::String = "", kwargs...)
   content = if isa(content, Vector)
     push!(pushfirst!(content, "<$tagname>"), "</$tagname>")
   else

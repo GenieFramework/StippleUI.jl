@@ -11,8 +11,7 @@ function attributes(model::T,
   attributes(kwargs, mappings, )
 end
 
-function attributes(
-                    kwargs::Vector{X},
+function attributes(kwargs::Vector{X},
                     mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {X}
   keynames = collect(keys(mappings))
   attrs = Dict()
@@ -27,7 +26,7 @@ function attributes(
       k = mappings[string(k)]
     end
 
-    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") ? ":" : ""), "$k") |> Symbol
+    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") && string(k) != "v-model" ? ":" : ""), "$k") |> Symbol
     attr_val = isa(v, Symbol) && ! startswith(string(k), ":") ? Stipple.julia_to_vue(v) : v
 
     attrs[attr_key] = attr_val

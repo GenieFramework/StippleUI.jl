@@ -1,6 +1,6 @@
 module Range
 
-import Genie, Stipple
+using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, template
 
 using Stipple
@@ -18,126 +18,31 @@ end
 function range( range::AbstractRange{T} where T <: Real,
                 fieldname::Union{Symbol,Nothing},
                 args...;
-                labelalways::Bool = false,
-                labelvalueleft::Union{String,Nothing} = nothing,
-                labelvalueright::Union{String,Nothing} = nothing,
-                markers::Bool = false,
-                snap::Bool = false,
-                dragrange::Bool = false,
-                dragonlyrange::Bool = false,
-                dark::Bool = false,
-                readonly::Bool = false,
+                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
 
-  k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
-  v = Any[first(range), last(range), step(range)]
-
-  if fieldname !== nothing
-    k = (k..., Symbol("v-model"))
-    push!(v, fieldname)
-  end
-
-  if labelalways
-    k = (k..., Symbol("label-always"))
-    push!(v, true)
-  end
-
-  if labelvalueleft !== nothing
-    k = (k..., Symbol(":left-label-value"))
-    push!(v, labelvalueleft)
-  end
-
-  if labelvalueright !== nothing
-    k = (k..., Symbol(":right-label-value"))
-    push!(v, labelvalueright)
-  end
-
-  if markers
-    k = (k..., :markers)
-    push!(v, true)
-  end
-
-  if snap
-    k = (k..., :snap)
-    push!(v, true)
-  end
-
-  if dragrange
-    k = (k..., Symbol("drag-range"))
-    push!(v, true)
-  end
-
-  if dragonlyrange
-    k = (k..., Symbol("drag-only-range"))
-    push!(v, true)
-  end
-
-  if dark
-    k = (k..., :dark)
-    push!(v, true)
-  end
-
-  if readonly
-    k = (k..., :readonly)
-    push!(v, true)
-  end
-
-  template() do
-    q__range(args...; kwargs..., NamedTuple{k}(v)...)
+  wrap() do
+    q__range(args...; attributes(
+      [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
+      :fieldname => fieldname, kwargs...],
+      Dict("fieldname" => "v-model", "dragonlyrange" => "drag-only-range", "dragrange" => "drag-range",
+            "labelvalueright" => "right-label-value", "labelvalueleft" => "left-label-value", "labelalways" => "label-always")
+    )...)
   end
 end
 
 function slider(range::AbstractRange{T} where T <: Real,
                 fieldname::Symbol,
                 args...;
-                labelalways::Bool = false,
-                labelvalue::Union{String,Nothing} = nothing,
-                markers::Bool = false,
-                snap::Bool = false,
-                dark::Bool = false,
-                readonly::Bool = false,
+                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
 
-  k = (Symbol(":min"), Symbol(":max"), Symbol(":step"))
-  v = Any[first(range), last(range), step(range)]
-
-  if fieldname !== nothing
-    k = (k..., Symbol("v-model"))
-    push!(v, fieldname)
-  end
-
-  if labelalways
-    k = (k..., Symbol("label-always"))
-    push!(v, true)
-  end
-
-  if labelvalue !== nothing
-    k = (k..., Symbol(":label-value"))
-    push!(v, labelvalue)
-  end
-
-  if markers
-    k = (k..., :markers)
-    push!(v, true)
-  end
-
-  if snap
-    k = (k..., :snap)
-    push!(v, true)
-  end
-
-  if dark
-    k = (k..., :dark)
-    push!(v, true)
-  end
-
-  if readonly
-    k = (k..., :readonly)
-    push!(v, true)
-  end
-
-  template() do
-    q__slider(args...; kwargs..., NamedTuple{k}(v)...)
+  wrap() do
+    q__slider(args...; attributes(
+      [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
+      :fieldname => fieldname, kwargs...],
+      Dict("fieldname" => "v-model", "labelvalue" => "label-value", "labelalways" => "label-always")
+    )...)
   end
 end
 
