@@ -24,10 +24,7 @@ function range( range::AbstractRange{T} where T <: Real,
   wrap() do
     q__range(args...; attributes(
       [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
-      :fieldname => fieldname, kwargs...],
-      Dict("fieldname" => "v-model", "dragonlyrange" => "drag-only-range", "dragrange" => "drag-range",
-            "labelvalueright" => "right-label-value", "labelvalueleft" => "left-label-value", "labelalways" => "label-always")
-    )...)
+      :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
@@ -40,9 +37,7 @@ function slider(range::AbstractRange{T} where T <: Real,
   wrap() do
     q__slider(args...; attributes(
       [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
-      :fieldname => fieldname, kwargs...],
-      Dict("fieldname" => "v-model", "labelvalue" => "label-value", "labelalways" => "label-always")
-    )...)
+      :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

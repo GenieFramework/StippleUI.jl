@@ -13,22 +13,8 @@ function textfield( label::String = "",
                     args...;
                     wrap::Function = StippleUI.DEFAULT_WRAPPER,
                     kwargs...)
-
   wrap() do
-    q__input(args...; attributes(
-                        [:label => label, :fieldname => fieldname, kwargs...],
-                        Dict("fieldname" => "v-model",
-                              "labelcolor" => "label-color", "labelslot" => "label-slot", "stacklabel" => "stack-label",
-                              "bgcolor" => "bg-color", "itemaligned" => "item-aligned",
-                              "inputclass" => "input-class", "inputstyle" => "input-style",
-                              "clearicon" => "clear-icon", "noerroricon" => "no-error-icon",
-                              "fillmask" => "fill-mask", "reversefillmask" => "reverse-fill-mask", "unmaskedvalue" => "unmasked-value",
-                              "errormessage" => "error-message", "hidehint" => "hide-hint",
-                              "shadowtext" => "shadow-text",
-                              "bottomslots" => "bottom-slots", "hidebottomspace" => "hide-bottom-space",
-                              "rules" => ":rules", "lazyrules" => "lazy-rules", "reactiverules" => "reactive-rules",
-                              )
-                      )...)
+    q__input(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

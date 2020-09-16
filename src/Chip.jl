@@ -14,9 +14,7 @@ function chip(label::String = "",
               kwargs...)
 
   wrap() do
-    q__chip(args...; attributes([:label => label, :fieldname => fieldname, kwargs...],
-                                Dict("fieldname" => "v-model", "iconremove" => "icon-remove",
-                                      "iconright" => "icon-right", "textcolor" => "text-color", ))...)
+    q__chip(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

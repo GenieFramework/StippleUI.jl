@@ -20,13 +20,12 @@ end
 
 
 function item(args...; kwargs...)
-  q__item(args...; attributes([kwargs...],
-                              Dict("vripple" => "v-ripple", "insetlevel" => "inset-level", "manualfocus" => "manual-focus"))...)
+  q__item(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 
 function item_section(args...; kwargs...)
-  q__item__section(args...; attributes([kwargs...], Dict("nowrap" => "no-wrap"))...)
+  q__item__section(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 

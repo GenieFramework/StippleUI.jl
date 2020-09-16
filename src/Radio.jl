@@ -12,12 +12,8 @@ function radio( label::String = "",
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
-
   wrap() do
-    q__radio(args...; attributes(
-      [:label => label, :fieldname => fieldname, kwargs...],
-      Dict("fieldname" => "v-model", "keepcolor" => "keep-color", "leftlabel" => "left-label")
-    )...)
+    q__radio(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

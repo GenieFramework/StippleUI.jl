@@ -15,10 +15,7 @@ function button(
                 kwargs...)
 
   wrap() do
-    q__btn(args...; attributes(
-                                [:label => label, kwargs...],
-                                Dict("iconright" => "icon-right", "textcolor" => "text-color",
-                                      "stacked" => "stack", "nocaps" => "no-caps", "darkpercentage" => "dark-percentage"))...)
+    q__btn(args...; attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

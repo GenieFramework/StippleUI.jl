@@ -14,10 +14,7 @@ function checkbox(label::String = "",
                   kwargs...)
 
   wrap() do
-    q__checkbox(args...; attributes([:label => label, :fieldname => fieldname, kwargs...],
-                                    Dict("fieldname" => "v-model", "indeterminatevalue" => "indeterminate-value", "toggleorder" => "toggle-order",
-                                          "truevalue" => "true-value", "falsevalue" => "false-value", "toggleindeterminate" => "toggle-indeterminate",
-                                          "keepcolor" => "keep-color", "leftlabel" => "left-label"))...)
+    q__checkbox(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

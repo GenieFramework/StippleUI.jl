@@ -13,9 +13,7 @@ function Genie.Renderer.Html.select(fieldname::Symbol,
 
   wrap() do
     q__select(args...; attributes(
-      [Symbol(":options") => options, :fieldname => fieldname, kwargs...],
-      Dict("fieldname" => "v-model")
-    )...)
+      [Symbol(":options") => options, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

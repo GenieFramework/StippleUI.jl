@@ -108,10 +108,7 @@ function Genie.Renderer.Html.table( fieldname::Symbol,
   wrap() do
     q__table(args...; attributes(
       [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
-      :fieldname => fieldname, kwargs...],
-      Dict("fieldname" => "v-model", "selected" => ":selected.sync", "hideheader" => "hide-header",
-            "hidebottom" => "hide-bottom", "pagination" => ":pagination.sync")
-    )...)
+      :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

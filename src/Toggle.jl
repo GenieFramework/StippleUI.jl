@@ -12,15 +12,8 @@ function toggle(label::String = "",
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
-
   wrap() do
-    q__toggle(args...; attributes(
-      [:label => label, :fieldname => fieldname, kwargs...],
-      Dict("fieldname" => "v-model", "keepcolor" => "keep-color", "leftlabel" => "left-label",
-            "toggleindeterminate" => "toggle-indeterminate", "falsevalue" => "false-value", "truevalue" => "true-value",
-            "iconcolor" => "icon-color", "uncheckedicon" => "unchecked-icon", "checkedicon" => "checked-icon",
-            "toggleorder" => "toggle-order", "indeterminateicon" => "indeterminate-icon", "indeterminatevalue" => "indeterminate-value")
-    )...)
+    q__toggle(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
