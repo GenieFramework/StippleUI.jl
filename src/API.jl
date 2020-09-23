@@ -88,6 +88,16 @@ function attributes(kwargs::Vector{X},
       k = mappings[string(k)]
     end
 
+    if startswith(String(k), "at_")
+      k = Symbol("@" * String(k)[4:end])
+    elseif startswith(String(k), "q_")
+      k = Symbol("@" * String(k)[3:end])
+    end
+
+    if contains(string(k), "_")
+      k = replace(string(k), "_" => "-")
+    end
+
     attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") && ! startswith(string(k), "v-") ? ":" : ""), "$k") |> Symbol
     attr_val = isa(v, Symbol) && ! startswith(string(k), ":") ? Stipple.julia_to_vue(v) : v
 
