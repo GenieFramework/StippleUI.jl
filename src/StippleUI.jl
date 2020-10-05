@@ -53,6 +53,9 @@ include("Separator.jl")
 include("Space.jl")
 include("Table.jl")
 include("Toggle.jl")
+############# new Elements ##################
+include("Drawer.jl")
+
 
 function __init__()
   push!(Stipple.Layout.THEMES, theme)
