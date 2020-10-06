@@ -10,13 +10,12 @@ Genie.Renderer.Html.register_normal_element("q__btn__group", context = @__MODULE
 
 function button(
                 label::String = "",
-                clickEvent::String = "",
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
 
   wrap() do
-    q__btn(args...; attributes([:label => label, Symbol("@click") => clickEvent, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    q__btn(args...; attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
