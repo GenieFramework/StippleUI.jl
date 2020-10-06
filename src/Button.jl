@@ -15,7 +15,7 @@ function button(
                 kwargs...)
 
   wrap() do
-    q__btn(args...; attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    q__btn(args...; attributes([:label => label, Symobol("@click") => ("process = true"), kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
