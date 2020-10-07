@@ -54,6 +54,7 @@ include("Space.jl")
 include("Table.jl")
 include("Toggle.jl")
 ############# new Elements ##################
+include("Layout.jl")
 include("Drawer.jl")
 
 
