@@ -1,5 +1,7 @@
-using Genie, Genie.Router, Genie.Renderer.Html
-using StippleUI.Button, StippleUI.Layout
+using Genie, Genie.Router, Genie.Renderer.Html, Stipple
+using StippleUI.Button
+
+import StippleUI.Layout
 
 Base.@kwdef mutable struct Model <: ReactiveModel
   process::R{Bool} = false
@@ -9,8 +11,6 @@ end
 
 model = Stipple.init(Model())
 
-hier = string(Symbol("@click"),"=\"process = true\"")
-
 on(model.process) do _
   if (model.process[])
     model.output[] = model.input[] |> reverse
@@ -19,30 +19,24 @@ on(model.process) do _
 end
 
 function ui()
-page(
-  root(model), class="container", [
-    StipplUI.Layout.layout(
+  page(
+    root(model), class="container",
+    [
       p([
-        " Input "
+        "Input "
         input("", @bind(:input), @on("keyup.enter", "process = true"))
       ])
 
       p([
-        Button.button(label="Action!", click="process = true",color="primary")
+        Button.button("Action!", click=("process = true"), color="primary")
       ])
 
       p([
-        Html.button("Action!", click="process = true")
-      ])
-
-      p([
-        " Output: "
+        "Output: "
         span("", @text(:output))
       ])
-     )
     ]
-  )|> html
-
+  ) |> html
 end
 
 route("/", ui)
