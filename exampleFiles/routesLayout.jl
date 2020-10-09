@@ -1,5 +1,5 @@
 using Genie, Genie.Router, Genie.Renderer.Html, Stipple
-using StippleUI.Button
+using StippleUI.Button, StippleUI.Drawer
 
 import StippleUI.Layout
 
@@ -21,21 +21,28 @@ end
 function ui()
   page(
     root(model), class="container",
-    [
-      p([
-        "Input "
-        input("", @bind(:input), @on("keyup.enter", "process = true"))
-      ])
-
-      p([
-        Button.button("Action!", click=("process = true"), color="primary")
-      ])
-
-      p([
-        "Output: "
-        span("", @text(:output))
-      ])
-    ]
+      [
+         Layout.layout(view="lhh LpR lff",style="height: 500px", class="shadow-2 rounded-borders",[
+              Drawer.drawer(showifabove="", side="left", bordered="", dashedwidth="200"  , [
+                  p("Here comes the mouse :-)")
+              ]),
+              Layout.pageContainer([
+                Layout.page(padding="",[
+                    p([
+                      "Input "
+                      input("", @bind(:input), @on("keyup.enter", "process = true"))
+                    ]),
+                    p([
+                      Button.button("Action!", click=("process = true"), color="primary")
+                    ]),
+                    p([
+                      "Output: "
+                      span("", @text(:output))
+                    ])
+                ])
+              ])
+          ])
+     ]
   ) |> html
 end
 
