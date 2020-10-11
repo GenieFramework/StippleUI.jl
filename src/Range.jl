@@ -15,7 +15,7 @@ Base.@kwdef mutable struct RangeData{T}
   range::UnitRange{T}
 end
 
-function range( range::AbstractRange{T} where T <: Real,
+function Base.range( range::AbstractRange{T} where T <: Real,
                 fieldname::Union{Symbol,Nothing},
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,

@@ -3,6 +3,8 @@ module StippleUI
 import Genie
 import Stipple
 
+using Stipple.Reexport
+
 const DEFAULT_WRAPPER = Genie.Renderer.Html.template
 
 #===#
@@ -53,6 +55,34 @@ include("Separator.jl")
 include("Space.jl")
 include("Table.jl")
 include("Toggle.jl")
+
+#===#
+
+@reexport using .Badge
+@reexport using .Banner
+@reexport using .BigNumber
+@reexport using .Button
+@reexport using .Card
+@reexport using .Checkbox
+@reexport using .Chip
+@reexport using .Dashboard
+@reexport using .Dialog
+@reexport using .Form
+@reexport using .FormInput
+@reexport using .Heading
+@reexport using .Icon
+@reexport using .List
+@reexport using .Radio
+@reexport using .Range
+@reexport using .Select
+@reexport using .Separator
+@reexport using .Space
+@reexport using .Table
+@reexport using .Toggle
+
+#===#
+
+#===#
 
 function __init__()
   push!(Stipple.Layout.THEMES, theme)

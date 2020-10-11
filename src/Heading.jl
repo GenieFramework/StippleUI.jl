@@ -5,8 +5,8 @@ import Genie, Stipple
 export heading
 
 function heading(title::String = "";
-                  class = "",
-                  img = Genie.Renderer.Html.img(class="st-logo", src="/img/st-logo.svg"),
+                  class::String = "",
+                  img::Union{String,Nothing} = nothing,
                   h = Genie.Renderer.Html.h1(title, class="st-header__title text-h3"),
                   kwargs...)
 
