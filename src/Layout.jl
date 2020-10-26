@@ -18,7 +18,7 @@ function layout(args...;
      end
 end
 
-function pageContainer(args...;
+function page_container(args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
       wrap() do
