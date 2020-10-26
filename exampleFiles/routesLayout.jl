@@ -26,7 +26,7 @@ function ui()
               Drawer.drawer(showifabove="", side="left", bordered="", dashedwidth="200"  , [
                   p("Here comes the mouse :-)")
               ]),
-              Layout.pageContainer([
+              Layout.page_container([
                 Layout.page(padding="",[
                     p([
                       "Input "
