@@ -19,7 +19,7 @@ end
 
 const tagname = "st-dashboard"
 
-function dashboard(elemid, content::Union{String,Vector}; partial::Bool = true, title::String = "Stipple Dashboard",
+function dashboard(elemid, content::Union{String,Vector}; partial::Bool = true, title::String = "Stipple Dashboard", head_content::String = "",
                     class::String = "", style::String = "", channel::String = Genie.config.webchannels_default_route, kwargs...)
   content = if isa(content, Vector)
     push!(pushfirst!(content, "<$tagname>"), "</$tagname>")
@@ -28,7 +28,8 @@ function dashboard(elemid, content::Union{String,Vector}; partial::Bool = true, 
   end
   kwargs = NamedTuple(delete!(Dict(kwargs...), :id), :id, elemid)
 
-  Stipple.layout(Genie.Renderer.Html.div(content; kwargs...), partial=partial, title=title, class=class, style=style, channel=channel)
+  Stipple.layout(Genie.Renderer.Html.div(content; kwargs...); partial=partial, title=title, class=class,
+                                                              head_content=head_content, style=style, channel=channel)
 end
 
 end
