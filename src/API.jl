@@ -1,8 +1,9 @@
 module API
 
-using Stipple
+using Stipple, StippleUI
+import Genie.Renderer.Html: HTMLString, normal_element
 
-export attributes
+export attributes, quasar, vue
 
 const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "autoclose" => "auto-close",
@@ -100,6 +101,31 @@ function attributes(kwargs::Vector{X},
   NamedTuple(attrs)
 end
 
+Genie.Renderer.Html.register_normal_element("q__elem", context = @__MODULE__)
+
+function quasar(elem::Symbol, args...;
+                wrap::Function = StippleUI.NO_WRAPPER,
+                kwargs...) where {T<:Stipple.ReactiveModel}
+  wrap() do
+    q__elem(args...;
+            attributes(
+              [Symbol(replace("$k", "_"=>"-")) => v for (k,v) in kwargs],
+              ATTRIBUTES_MAPPINGS
+            )...)
+  end |> x->replace(x, "q-elem"=>"q-$elem")
+end
+
+function vue(elem::Symbol, args...;
+                wrap::Function = StippleUI.NO_WRAPPER,
+                kwargs...) where {T<:Stipple.ReactiveModel}
+  wrap() do
+    q__elem(args...;
+            attributes(
+              [Symbol(replace("$k", "_"=>"-")) => v for (k,v) in kwargs],
+              ATTRIBUTES_MAPPINGS
+            )...)
+  end |> x->replace(x, "q-elem"=>"vue-$elem")
+end
 
 function __init__() :: Nothing
   Stipple.rendering_mappings(ATTRIBUTES_MAPPINGS)
