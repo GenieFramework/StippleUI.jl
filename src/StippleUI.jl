@@ -6,6 +6,7 @@ import Stipple
 using Stipple.Reexport
 
 const DEFAULT_WRAPPER = Genie.Renderer.Html.template
+const NO_WRAPPER = f->f()
 
 #===#
 
@@ -58,10 +59,13 @@ include("Toggle.jl")
 ############# new Elements ##################
 include("Layout.jl")
 include("Drawer.jl")
+include("Uploader.jl")
 
 
 #===#
 
+import .API: quasar, quasar_pure, vue, vue_pure
+export quasar, quasar_pure, vue, vue_pure
 @reexport using .Badge
 @reexport using .Banner
 @reexport using .BigNumber
@@ -83,6 +87,7 @@ include("Drawer.jl")
 @reexport using .Space
 @reexport using .Table
 @reexport using .Toggle
+@reexport using .Uploader
 
 #===#
 
