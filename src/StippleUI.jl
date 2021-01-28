@@ -59,6 +59,7 @@ include("Toggle.jl")
 ############# new Elements ##################
 include("Layout.jl")
 include("Drawer.jl")
+include("Uploader.jl")
 
 
 #===#
@@ -86,6 +87,7 @@ export quasar, vue
 @reexport using .Space
 @reexport using .Table
 @reexport using .Toggle
+@reexport using .Uploader
 
 #===#
 
