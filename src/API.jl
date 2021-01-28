@@ -3,7 +3,7 @@ module API
 using Stipple, StippleUI
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export attributes, quasar, vue
+export attributes, quasar, vue, quasar_pure, vue_pure
 
 const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "autoclose" => "auto-close",
@@ -101,31 +101,36 @@ function attributes(kwargs::Vector{X},
   NamedTuple(attrs)
 end
 
-Genie.Renderer.Html.register_normal_element("q__elem", context = @__MODULE__)
+function q__elem(f::Function, elem::Symbol, args...; attrs...) :: HTMLString
+  normal_element(f, string(elem), [args...], Pair{Symbol,Any}[attrs...])
+end
+
+function q__elem(elem::Symbol, children::Union{String,Vector{String}} = "", args...; attrs...) :: HTMLString
+  normal_element(children, string(elem), [args...], Pair{Symbol,Any}[attrs...])
+end
+
+function q__elem(elem::Symbol, children::Any, args...; attrs...) :: HTMLString
+  normal_element(string(children), string(elem), [args...], Pair{Symbol,Any}[attrs...])
+end
 
 function quasar(elem::Symbol, args...;
-                wrap::Function = StippleUI.NO_WRAPPER,
+                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...) where {T<:Stipple.ReactiveModel}
   wrap() do
-    q__elem(args...;
-            attributes(
-              [Symbol(replace("$k", "_"=>"-")) => v for (k,v) in kwargs],
-              ATTRIBUTES_MAPPINGS
-            )...)
-  end |> x->replace(x, "q-elem"=>"q-$elem")
+    q__elem(Symbol("q-$elem"), args...; attributes([collect(kwargs)...], ATTRIBUTES_MAPPINGS)...)
+  end
 end
 
 function vue(elem::Symbol, args...;
-                wrap::Function = StippleUI.NO_WRAPPER,
+                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...) where {T<:Stipple.ReactiveModel}
   wrap() do
-    q__elem(args...;
-            attributes(
-              [Symbol(replace("$k", "_"=>"-")) => v for (k,v) in kwargs],
-              ATTRIBUTES_MAPPINGS
-            )...)
-  end |> x->replace(x, "q-elem"=>"vue-$elem")
+    q__elem(Symbol("vue-$elem"), args...; attributes([collect(kwargs)...], ATTRIBUTES_MAPPINGS)...)
+  end
 end
+
+quasar_pure(args...; kwargs...) = quasar(args...; wrap=StippleUI.NO_WRAPPER, kwargs...)
+vue_pure(args...; kwargs...) = vue(args...; wrap=StippleUI.NO_WRAPPER, kwargs...)
 
 function __init__() :: Nothing
   Stipple.rendering_mappings(ATTRIBUTES_MAPPINGS)
