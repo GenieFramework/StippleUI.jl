@@ -16,7 +16,7 @@ function theme() :: String
       :css) |> Genie.Renderer.respond
   end
 
-  Stipple.Elements.stylesheet("/css/stipple/quasar.min.css")
+  Stipple.Elements.stylesheet("$(Genie.config.base_path)css/stipple/quasar.min.css")
 end
 
 #===#
@@ -28,7 +28,7 @@ function deps() :: String
       :javascript) |> Genie.Renderer.respond
   end
 
-  Genie.Renderer.Html.script(src="/js/stipple/quasar.umd.min.js")
+  Genie.Renderer.Html.script(src="$(Genie.config.base_path)js/stipple/quasar.umd.min.js")
 end
 
 #===#
