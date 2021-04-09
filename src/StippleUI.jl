@@ -44,10 +44,12 @@ include("Checkbox.jl")
 include("Chip.jl")
 include("Dashboard.jl")
 include("Dialog.jl")
+include("Drawer.jl")
 include("Form.jl")
 include("FormInput.jl")
 include("Heading.jl")
 include("Icon.jl")
+include("Layout.jl")
 include("List.jl")
 include("Radio.jl")
 include("Range.jl")
@@ -56,16 +58,15 @@ include("Separator.jl")
 include("Space.jl")
 include("Table.jl")
 include("Toggle.jl")
-############# new Elements ##################
-include("Layout.jl")
-include("Drawer.jl")
 include("Uploader.jl")
 
 
 #===#
 
 import .API: quasar, quasar_pure, vue, vue_pure
-export quasar, quasar_pure, vue, vue_pure
+
+export quasar, quasar_pure, vue, vue_pure, @click
+
 @reexport using .Badge
 @reexport using .Banner
 @reexport using .BigNumber
@@ -90,6 +91,32 @@ export quasar, quasar_pure, vue, vue_pure
 @reexport using .Uploader
 
 #===#
+
+"""
+    `@click(expr)`
+
+Defines a js routine that is called by a click of the quasar component.
+If a symbol argument is supplied, `@click` sets this value to true.
+
+`@click("savefile = true")` or `@click("myjs_func();")` or `@click(:button)`
+
+Modifers can be appended:
+```
+@click(:me, :native)
+# "@click.native='me = true'"
+```
+"""
+macro click(expr, mode="")
+  quote
+    x = $(esc(expr))
+    m = $(esc(mode))
+    if x isa Symbol
+      """@click$(m == "" ? "" : ".$m")='$x = true'"""
+    else
+      "@click='$(replace(x, "'" => raw"\'"))'"
+    end
+  end
+end
 
 #===#
 
