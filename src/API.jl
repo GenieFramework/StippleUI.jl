@@ -92,7 +92,8 @@ function attributes(kwargs::Vector{X},
       k = mappings[string(k)]
     end
 
-    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") && ! startswith(string(k), "v-") ? ":" : ""), "$k") |> Symbol
+    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") && 
+      ! ( startswith(string(k), "v-") || startswith(string(k), "v" * Genie.config.html_parser_char_dash) ) ? ":" : ""), "$k") |> Symbol
     attr_val = isa(v, Symbol) && ! startswith(string(k), ":") ? Stipple.julia_to_vue(v) : v
 
     attrs[attr_key] = attr_val
