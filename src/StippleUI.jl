@@ -45,6 +45,7 @@ include("Chip.jl")
 include("Dashboard.jl")
 include("Dialog.jl")
 include("Drawer.jl")
+include("Editor.jl")
 include("Form.jl")
 include("FormInput.jl")
 include("Heading.jl")
@@ -76,6 +77,7 @@ export quasar, quasar_pure, vue, vue_pure, @click
 @reexport using .Chip
 @reexport using .Dashboard
 @reexport using .Dialog
+@reexport using .Editor
 @reexport using .Form
 @reexport using .FormInput
 @reexport using .Heading
