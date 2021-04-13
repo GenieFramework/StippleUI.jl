@@ -26,7 +26,7 @@ function dashboard(elemid, content::Union{String,Vector}; partial::Bool = true, 
   else
     string("<$tagname>", content, "</$tagname>")
   end
-  kwargs = NamedTuple(delete!(Dict(kwargs...), :id), :id, elemid)
+  kwargs = NamedTuple(delete!(Stipple.OptDict(kwargs...), :id), :id, elemid)
 
   Stipple.layout(Genie.Renderer.Html.div(content; kwargs...); partial=partial, title=title, class=class,
                                                               head_content=head_content, style=style, channel=channel)
