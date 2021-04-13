@@ -19,10 +19,11 @@ function Base.range(
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
+                lazy = false,
                 kwargs...)
 
   wrap() do
-    q__range( args...;
+    q__range( "", lazy ? @on(:change," val => { $fieldname } ") : "" , args...;
               attributes(
                         [ Symbol(":min") => first(range),
                           Symbol(":max") => last(range),
@@ -33,15 +34,16 @@ function Base.range(
 end
 
 function slider(range::AbstractRange{T} where T <: Real,
-                fieldname::Symbol,
+                fieldname::Union{Symbol, Nothing} = nothing,
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
+                lazy = false,
                 kwargs...)
 
   wrap() do
-    q__slider(args...; attributes(
-      [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
-      :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    q__slider("", lazy ? @on(:change," val => { $fieldname } ") : "", args...; attributes(
+    [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
+    :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
