@@ -28,7 +28,8 @@ function Base.range(
                         [ Symbol(":min") => first(range),
                           Symbol(":max") => last(range),
                           Symbol(":step") => step(range),
-                          :fieldname => fieldname, kwargs...
+                          ( lazy ? () : (:fieldname => fieldname,) )...,
+                          kwargs...
                         ], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
@@ -43,7 +44,7 @@ function slider(range::AbstractRange{T} where T <: Real,
   wrap() do
     q__slider("", lazy ? @on(:change," val => { $fieldname } ") : "", args...; attributes(
     [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
-    :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    ( lazy ? () : (:fieldname => fieldname,) )..., kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
