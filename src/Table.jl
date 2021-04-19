@@ -143,4 +143,8 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp
 end
 
+function Base.parse(::Type{DataTable{DataFrames.DataFrame}}, d::Dict{String,Any})
+  @warn "Not implemented" # todo implement parser
+end
+
 end
