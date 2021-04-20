@@ -1,7 +1,7 @@
 name = "StippleUI"
 uuid = "a3c5d34a-b254-4859-a8fa-b86abb7e84a3"
 authors = ["Adrian Salceanu <e@essenciary.com>"]
-version = "0.4"
+version = "0.4.1"
 
 [deps]
 Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
