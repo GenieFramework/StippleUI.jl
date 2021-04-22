@@ -1,7 +1,7 @@
 name = "StippleUI"
 uuid = "a3c5d34a-b254-4859-a8fa-b86abb7e84a3"
 authors = ["Adrian Salceanu <e@essenciary.com>"]
-version = "0.5"
+version = "0.5.1-DEV"
 
 [deps]
 Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
@@ -10,7 +10,7 @@ Genie = "c43c736e-a2d1-11e8-161f-af95117fbd1e"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 
 [compat]
-DataFrames = "0.20, 0.21, 0.22"
+DataFrames = "0.20, 0.21, 0.22, 1.0"
 Genie = "1"
 JSON = "0.21"
 Stipple = "0.11"
