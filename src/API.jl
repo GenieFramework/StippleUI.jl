@@ -3,7 +3,7 @@ module API
 using Stipple, StippleUI
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export attributes, quasar, vue, quasar_pure, vue_pure
+export attributes, quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure
 
 const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "autoclose" => "auto-close",
