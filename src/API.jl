@@ -123,28 +123,30 @@ function q__elem(elem::Symbol, children::Any, args...; attrs...) :: HTMLString
   normal_element(string(children), string(elem), [args...], Pair{Symbol,Any}[attrs...])
 end
 
-function xelem(elem::Symbol, prefix::String, args...;
+function xelem(elem::Symbol, args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
-              kwargs...) where {T<:Stipple.ReactiveModel}
+              kwargs...)
   wrap() do
-    q__elem(Symbol("$prefix-$elem"), args...; attributes([collect(kwargs)...], ATTRIBUTES_MAPPINGS)...)
+    q__elem(elem, args...; attributes([collect(kwargs)...], ATTRIBUTES_MAPPINGS)...)
   end
 end
 
 function quasar(elem::Symbol, args...;
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                kwargs...) where {T<:Stipple.ReactiveModel}
-  xelem(elem, "q", args...; wrap, kwargs...)
+               wrap::Function = StippleUI.DEFAULT_WRAPPER,
+               kwargs...)
+  xelem(elem, :q, args...; wrap, kwargs...)
 end
 
 function vue(elem::Symbol, args...;
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                kwargs...) where {T<:Stipple.ReactiveModel}
-  xelem(elem, "vue", args...; wrap, kwargs...)
+            wrap::Function = StippleUI.DEFAULT_WRAPPER,
+            kwargs...)
+  xelem(elem, :vue, args...; wrap, kwargs...)
 end
 
-quasar_pure(args...; kwargs...) = quasar(args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
-vue_pure(args...; kwargs...) = vue(args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
+xelem(elem::Symbol, prefix::Symbol, args...; kwargs...) = xelem(Symbol("$prefix-$elem"), args...; kwargs...)
+xelem_pure(elem::Symbol, args...; kwargs...) = xelem(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
+quasar_pure(elem::Symbol, args...; kwargs...) = quasar(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
+vue_pure(elem::Symbol, args...; kwargs...) = vue(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
 
 function __init__() :: Nothing
   Stipple.rendering_mappings(ATTRIBUTES_MAPPINGS)
