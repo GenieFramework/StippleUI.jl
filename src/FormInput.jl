@@ -19,28 +19,24 @@ function textfield( label::String = "",
 end
 
 
-function numberfield( fieldname::Union{Symbol,Nothing} = nothing,
+function numberfield( label::String = "",
+                      fieldname::Union{Symbol,Nothing} = nothing,
                       args...;
                       wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                      type = :number,
                       kwargs...)
-
-  wrap() do
-    textfield(args...;  attributes(
-                          [:fieldname => fieldname, kwargs...],
+    textfield(label, nothing, args...;  attributes(
+                          [:fieldname => fieldname, :wrap => wrap, :type => "number", kwargs...],
                           Dict("fieldname" => "v-model.number")
                         )...)
-  end
 end
 
-function textarea(
+function textarea(label::String = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
                   wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                  type = :textarea,
                   kwargs...)
 
-  textfield(args...; attributes([:fieldname => fieldname, kwargs...])...)
+  textfield(label, fieldname, args...; type="textarea", wrap=wrap, kwargs...)
 end
 
 function filefield( label::String = "",
