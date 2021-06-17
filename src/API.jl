@@ -125,9 +125,11 @@ end
 
 function xelem(elem::Symbol, args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
+              attributesmappings::Dict{String, String} = Dict{String, String}(),
+              mergemappings = true,
               kwargs...)
   wrap() do
-    q__elem(elem, args...; attributes([collect(kwargs)...], ATTRIBUTES_MAPPINGS)...)
+    q__elem(elem, args...; attributes([kwargs...], mergemappings ? merge(ATTRIBUTES_MAPPINGS, attributesmappings) : attributesmappings)...)
   end
 end
 
