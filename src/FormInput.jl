@@ -24,10 +24,10 @@ function numberfield( label::String = "",
                       args...;
                       wrap::Function = StippleUI.DEFAULT_WRAPPER,
                       kwargs...)
-    textfield(label, nothing, args...;  attributes(
-                          [:fieldname => fieldname, :wrap => wrap, :type => "number", kwargs...],
-                          Dict("fieldname" => "v-model.number")
-                        )...)
+  wrap() do
+    q__input(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], 
+              merge(StippleUI.API.ATTRIBUTES_MAPPINGS, Dict("fieldname" => "v-model.number")))...)
+  end
 end
 
 function textarea(label::String = "",
