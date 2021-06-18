@@ -68,14 +68,13 @@ function columns(t::T)::Vector{Column} where {T<:DataTable}
 end
 
 function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
-  count = 0
   rows = []
 
-  for row in DataFrames.eachrow(t.data)
+  for (count, row) in enumerate(DataFrames.eachrow(t.data))
     r = Dict()
-
+    
     if t.opts.addid
-      r[t.opts.idcolumn] = (count += 1)
+      r[t.opts.idcolumn] = count
     end
 
     r[ID] = count
