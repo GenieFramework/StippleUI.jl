@@ -1,6 +1,6 @@
 module Table
 
-import DataFrames, JSON
+import DataFrames
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template
 
@@ -72,7 +72,7 @@ function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
 
   for (count, row) in enumerate(DataFrames.eachrow(t.data))
     r = Dict()
-    
+
     if t.opts.addid
       r[t.opts.idcolumn] = count
     end
