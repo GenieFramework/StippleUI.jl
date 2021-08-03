@@ -7,7 +7,7 @@ export radio
 
 Genie.Renderer.Html.register_normal_element("q__radio", context = @__MODULE__)
 
-function radio( label::String = "",
+function radio( label::AbstractString = "",
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
