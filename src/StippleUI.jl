@@ -52,11 +52,13 @@ include("Heading.jl")
 include("Icon.jl")
 include("Layout.jl")
 include("List.jl")
+include("Menu.jl")
 include("Radio.jl")
 include("Range.jl")
 include("Select.jl")
 include("Separator.jl")
 include("Space.jl")
+include("Spinner.jl")
 include("Table.jl")
 include("Toggle.jl")
 include("Uploader.jl")
@@ -83,11 +85,13 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click
 @reexport using .Heading
 @reexport using .Icon
 @reexport using .List
+@reexport using .Menu
 @reexport using .Radio
 @reexport using .Range
 @reexport using .Select
 @reexport using .Separator
 @reexport using .Space
+@reexport using .Spinner
 @reexport using .Table
 @reexport using .Toggle
 @reexport using .Uploader
