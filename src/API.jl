@@ -11,11 +11,9 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "bottomslots" => "bottom-slots",
   "checkedicon" => "checked-icon",
   "clearicon" => "clear-icon",
-  #"click" => "@click",
   "contentclass" => "content-class",
   "contentstyle" => "content-style",
   "darkpercentage" => "dark-percentage",
-  #"dashedwidth" =>":width",
   "definitions" => ":definitions",
   "dropnative" => "@drop.native",
   "dragonlyrange" => "drag-only-range",
@@ -101,7 +99,7 @@ function attributes(kwargs::Vector{X},
       k = mappings[string(k)]
     end
 
-    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") && 
+    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") &&
       ! ( startswith(string(k), "v-") || startswith(string(k), "v" * Genie.config.html_parser_char_dash) ) ? ":" : ""), "$k") |> Symbol
     attr_val = isa(v, Symbol) && ! startswith(string(k), ":") ? Stipple.julia_to_vue(v) : v
 

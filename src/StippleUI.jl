@@ -109,7 +109,7 @@ If a symbol argument is supplied, `@click` sets this value to true.
 Modifers can be appended:
 ```
 @click(:me, :native)
-# "@click.native='me = true'"
+# "v-on:click.native='me = true'"
 ```
 """
 macro click(expr, mode="")
@@ -117,9 +117,9 @@ macro click(expr, mode="")
     x = $(esc(expr))
     m = $(esc(mode))
     if x isa Symbol
-      """@click$(m == "" ? "" : ".$m")='$x = true'"""
+      """v-on:click$(m == "" ? "" : ".$m")='$x = true'"""
     else
-      "@click='$(replace(x, "'" => raw"\'"))'"
+      "v-on:click='$(replace(x, "'" => raw"\'"))'"
     end
   end
 end
