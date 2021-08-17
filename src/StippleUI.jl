@@ -50,6 +50,7 @@ include("Form.jl")
 include("FormInput.jl")
 include("Heading.jl")
 include("Icon.jl")
+include("Intersection.jl")
 include("Layout.jl")
 include("List.jl")
 include("Menu.jl")
@@ -84,6 +85,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click
 @reexport using .FormInput
 @reexport using .Heading
 @reexport using .Icon
+@reexport using .Intersection
 @reexport using .List
 @reexport using .Menu
 @reexport using .Radio
