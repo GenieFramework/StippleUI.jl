@@ -3,8 +3,6 @@ module Knob
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, void_element, template
 
-using Stipple
-
 export knob
 
 Genie.Renderer.Html.register_void_element("q__knob", context = @__MODULE__)

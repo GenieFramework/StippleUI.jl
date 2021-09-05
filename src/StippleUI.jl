@@ -59,6 +59,7 @@ include("Radio.jl")
 include("Range.jl")
 include("Select.jl")
 include("Separator.jl")
+include("Slider.jl")
 include("Space.jl")
 include("Spinner.jl")
 include("Table.jl")
@@ -94,6 +95,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click
 @reexport using .Range
 @reexport using .Select
 @reexport using .Separator
+@reexport using .Slider
 @reexport using .Space
 @reexport using .Spinner
 @reexport using .Table
