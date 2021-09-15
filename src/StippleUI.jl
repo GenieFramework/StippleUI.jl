@@ -68,9 +68,9 @@ include("Uploader.jl")
 
 #===#
 
-import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure
+import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
-export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click
+export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 
 @reexport using .Badge
 @reexport using .Banner

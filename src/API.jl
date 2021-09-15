@@ -1,9 +1,9 @@
 module API
 
-using Stipple, StippleUI
+using Stipple, StippleUI, Colors
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export attributes, quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure
+export attributes, quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors
 
 const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "autoclose" => "auto-close",
@@ -147,6 +147,29 @@ xelem(elem::Symbol, prefix::Symbol, args...; kwargs...) = xelem(Symbol("$prefix-
 xelem_pure(elem::Symbol, args...; kwargs...) = xelem(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
 quasar_pure(elem::Symbol, args...; kwargs...) = quasar(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
 vue_pure(elem::Symbol, args...; kwargs...) = vue(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
+
+"""
+    `csscolors(name, color)`
+    `csscolors(names, colors)`
+    `csscolors(prefix, colors)`
+
+Construct a css string that defines colors to be used for styling quasar elements.
+# Usage
+css = styles(csscolors(:stipple, [RGB(0.2, 0.4, 0.8), "#123456", RGBA(0.1, 0.2, 0.3, 0.5)]))
+
+ui() = css * dashboard(vm(model), class="container", [
+  btn("Hit me", @click(:pressed), color="stipple-3")
+])
+"""
+function csscolors(name, color::AbstractString)
+  ".text-$name { color: $color }\n.bg-$name   { background: $color !important}"
+end
+
+csscolors(name, color::Colorant) = csscolors(name, "#" * hex(color, :auto))
+
+csscolors(names::Vector, colors::Vector) = join([csscolors(n, c) for (n, c) in zip(names, colors)], "\n")
+
+csscolors(prefix::Union{Symbol, AbstractString}, colors::Vector) = csscolors("$prefix-" .* string.(1:length(colors)), colors)
 
 function __init__() :: Nothing
   Stipple.rendering_mappings(ATTRIBUTES_MAPPINGS)
