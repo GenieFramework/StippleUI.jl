@@ -1,9 +1,9 @@
-module Button
+module Buttons
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export btn, btngroup
+export btn, btngroup, Btn
 
 Genie.Renderer.Html.register_normal_element("q__btn", context = @__MODULE__)
 Genie.Renderer.Html.register_normal_element("q__btn__group", context = @__MODULE__)
@@ -21,7 +21,7 @@ function btn( label::String = "",
   end
 end
 
-function btn( content::Function,
+function btn( content::Union{Function,Vector},
               label::String = "",
               args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
@@ -37,7 +37,22 @@ function btn( args...;
   btn(label, args...; wrap = wrap, content = content, kwargs...)
 end
 
-const button = btn
+
+mutable struct Btn
+  label
+  args
+  wrap
+  content
+  kwargs
+
+  Btn(label::String = "",
+      args...;
+      wrap::Function = StippleUI.DEFAULT_WRAPPER,
+      content::Union{String,Vector,Function} = "",
+      kwargs...) = new(fieldname, args, wrap, mask, kwargs)
+end
+
+Base.string(bt::Btn) = string(bt.label, bt.args...; bt.wrap, bt.content, bt.kwargs...)
 
 
 function btngroup(args...;
@@ -47,7 +62,5 @@ function btngroup(args...;
     q__btn__group(args...; kwargs...)
   end
 end
-
-const buttongroup = btngroup
 
 end

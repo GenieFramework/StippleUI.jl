@@ -1,0 +1,83 @@
+/*
+patches style conflicts between Quasar and Bootstrap, especially caused by both libraries
+defining .col and .row classes.
+*/
+
+.q-table__control .q-field__append.q-field__marginal.row.no-wrap.items-center.q-anchor--skip {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-table__control .q-field__control.relative-position.row.no-wrap .col {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-table__control .q-table__select {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.q-table__control .q-btn__content.text-center.col.items-center.q-anchor--skip.justify-center.row {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-table__control .q-btn__wrapper.col.row.q-anchor--skip {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-btn__content.text-center.col.items-center.q-anchor--skip.justify-center.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  position: unset !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.q-btn__wrapper.col.row.q-anchor--skip {
+  position: unset !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-field__control-container.col.relative-position.row.no-wrap.q-anchor--skip {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-field__control-container.col.relative-position.row.no-wrap.q-anchor--skip .q-field__native.row.items-center {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+label.q-field.row.no-wrap.items-start.q-select.q-field--auto-height.q-select--without-input.q-select--without-chips.q-select--single.q-field--standard.q-field--float.q-field--dense.q-validation-component {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-field__inner.relative-position.col.self-stretch {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.q-field__control.relative-position.row.no-wrap.text-primary {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-field__control.relative-position.row.no-wrap {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.q-table__bottom.row.items-center.justify-end {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}

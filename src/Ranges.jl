@@ -1,4 +1,4 @@
-module Range
+module Ranges
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, template

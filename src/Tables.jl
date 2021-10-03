@@ -1,4 +1,4 @@
-module Table
+module Tables
 
 import DataFrames
 using Genie, Stipple, StippleUI, StippleUI.API

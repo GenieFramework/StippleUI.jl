@@ -1,4 +1,4 @@
-module Spinner
+module Spinners
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element

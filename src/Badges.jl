@@ -1,9 +1,9 @@
-module Badge
+module Badges
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export badge
+export badge, Badge
 
 Genie.Renderer.Html.register_normal_element("q__badge", context = @__MODULE__)
 
@@ -29,5 +29,19 @@ function badge( fieldname::Union{Symbol,Nothing} = nothing,
             )...)
   end
 end
+
+mutable struct Badge
+  fieldname
+  args
+  wrap
+  kwargs
+
+  Badge(fieldname::Union{Symbol,Nothing} = nothing,
+        args...;
+        wrap::Function = StippleUI.DEFAULT_WRAPPER,
+        kwargs...) = new(fieldname, args, wrap, kwargs)
+end
+
+Base.string(b::Badge) = badge(b.fieldname, b.args...; b.wrap, b.kwargs...)
 
 end

@@ -1,4 +1,4 @@
-module Knob
+module Knobs
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, void_element, template

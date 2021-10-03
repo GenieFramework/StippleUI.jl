@@ -10,14 +10,25 @@ const NO_WRAPPER = f->f()
 
 #===#
 
-function theme() :: String
+function theme(; twbpatch::Bool = true) :: String
   Genie.Router.route("/css/stipple/quasar.min.css") do
     Genie.Renderer.WebRenderable(
       read(joinpath(@__DIR__, "..", "files", "css", "quasar.min.css"), String),
       :css) |> Genie.Renderer.respond
   end
 
-  Stipple.Elements.stylesheet("$(Genie.config.base_path)css/stipple/quasar.min.css")
+  if twbpatch
+    Genie.Router.route("/css/stipple/twbpatch.css") do
+      Genie.Renderer.WebRenderable(
+        read(joinpath(@__DIR__, "..", "files", "css", "bootstrap-patch.css"), String),
+        :css) |> Genie.Renderer.respond
+    end
+  end
+
+  string(
+    Stipple.Elements.stylesheet("$(Genie.config.base_path)css/stipple/quasar.min.css"),
+    Stipple.Elements.stylesheet("$(Genie.config.base_path)css/stipple/twbpatch.css")
+  )
 end
 
 #===#
@@ -35,35 +46,38 @@ end
 #===#
 
 include("API.jl")
-include("Badge.jl")
-include("Banner.jl")
-include("BigNumber.jl")
-include("Button.jl")
-include("Card.jl")
-include("Checkbox.jl")
-include("Chip.jl")
-include("Dashboard.jl")
-include("Dialog.jl")
-include("Drawer.jl")
-include("Editor.jl")
-include("Form.jl")
-include("FormInput.jl")
-include("Heading.jl")
-include("Icon.jl")
-include("Intersection.jl")
-include("Knob.jl")
-include("Layout.jl")
-include("List.jl")
-include("Menu.jl")
-include("Radio.jl")
-include("Range.jl")
-include("Select.jl")
-include("Separator.jl")
-include("Space.jl")
-include("Spinner.jl")
-include("Table.jl")
-include("Toggle.jl")
-include("Uploader.jl")
+include("PopupProxies.jl")
+
+include("Badges.jl")
+include("Banners.jl")
+include("BigNumbers.jl")
+include("Buttons.jl")
+include("Cards.jl")
+include("Checkboxes.jl")
+include("Chips.jl")
+include("Dashboards.jl")
+include("DatePickers.jl")
+include("Dialogs.jl")
+include("Drawers.jl")
+include("Editors.jl")
+include("Forms.jl")
+include("FormInputs.jl")
+include("Headings.jl")
+include("Icons.jl")
+include("Intersections.jl")
+include("Knobs.jl")
+include("Layouts.jl")
+include("Lists.jl")
+include("Menus.jl")
+include("Radios.jl")
+include("Ranges.jl")
+include("Selects.jl")
+include("Separators.jl")
+include("Spaces.jl")
+include("Spinners.jl")
+include("Tables.jl")
+include("Toggles.jl")
+include("Uploaders.jl")
 
 
 #===#
@@ -72,33 +86,36 @@ import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
 export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 
-@reexport using .Badge
-@reexport using .Banner
-@reexport using .BigNumber
-@reexport using .Button
-@reexport using .Card
-@reexport using .Checkbox
-@reexport using .Chip
-@reexport using .Dashboard
-@reexport using .Dialog
-@reexport using .Editor
-@reexport using .Form
-@reexport using .FormInput
-@reexport using .Heading
-@reexport using .Icon
-@reexport using .Intersection
-@reexport using .Knob
-@reexport using .List
-@reexport using .Menu
-@reexport using .Radio
-@reexport using .Range
-@reexport using .Select
-@reexport using .Separator
-@reexport using .Space
-@reexport using .Spinner
-@reexport using .Table
-@reexport using .Toggle
-@reexport using .Uploader
+@reexport using .PopupProxies
+
+@reexport using .Badges
+@reexport using .Banners
+@reexport using .BigNumbers
+@reexport using .Buttons
+@reexport using .Cards
+@reexport using .Checkboxes
+@reexport using .Chips
+@reexport using .Dashboards
+@reexport using .DatePickers
+@reexport using .Dialogs
+@reexport using .Editors
+@reexport using .Forms
+@reexport using .FormInputs
+@reexport using .Headings
+@reexport using .Icons
+@reexport using .Intersections
+@reexport using .Knobs
+@reexport using .Lists
+@reexport using .Menus
+@reexport using .Radios
+@reexport using .Ranges
+@reexport using .Selects
+@reexport using .Separators
+@reexport using .Spaces
+@reexport using .Spinners
+@reexport using .Tables
+@reexport using .Toggles
+@reexport using .Uploaders
 
 #===#
 

@@ -1,4 +1,4 @@
-module FormInput
+module FormInputs
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, template
@@ -11,32 +11,50 @@ Genie.Renderer.Html.register_normal_element("q__file", context = @__MODULE__)
 function textfield( label::String = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
+                    content::Union{String,Vector,Function} = "",
                     wrap::Function = StippleUI.DEFAULT_WRAPPER,
                     kwargs...)
   wrap() do
-    q__input(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    q__input([isa(content, Function) ? content() : join(content)],
+              args...;
+              attributes([:label => label,
+                          :fieldname => fieldname,
+                          kwargs...],
+                          StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
+textfield(content::Union{Vector,Function},
+          fieldname::Union{Symbol,Nothing} = nothing,
+          args...;
+          wrap::Function = StippleUI.DEFAULT_WRAPPER,
+          label::String = "",
+          kwargs...) = textfield(label, fieldname, args...; content, wrap, kwargs...)
 
 function numberfield( label::String = "",
                       fieldname::Union{Symbol,Nothing} = nothing,
                       args...;
+                      content::Union{String,Vector,Function} = "",
                       wrap::Function = StippleUI.DEFAULT_WRAPPER,
                       kwargs...)
   wrap() do
-    q__input(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], 
-              merge(StippleUI.API.ATTRIBUTES_MAPPINGS, Dict("fieldname" => "v-model.number")))...)
+    q__input( [isa(content, Function) ? content() : join(content)],
+              args...;
+              attributes([:label => label,
+                          :fieldname => fieldname, kwargs...],
+                          merge(StippleUI.API.ATTRIBUTES_MAPPINGS, Dict("fieldname" => "v-model.number"))
+                        )...)
   end
 end
 
 function textarea(label::String = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
+                  content::Union{String,Vector,Function} = "",
                   wrap::Function = StippleUI.DEFAULT_WRAPPER,
                   kwargs...)
 
-  textfield(label, fieldname, args...; type="textarea", wrap=wrap, kwargs...)
+  textfield(label, fieldname, args...; type="textarea", wrap=wrap, content=content, kwargs...)
 end
 
 function filefield( label::String = "",

@@ -1,4 +1,4 @@
-module Heading
+module Headings
 
 import Genie, Stipple
 
