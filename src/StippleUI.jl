@@ -8,39 +8,45 @@ using Stipple.Reexport
 const DEFAULT_WRAPPER = Genie.Renderer.Html.template
 const NO_WRAPPER = f->f()
 
+const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
+
 #===#
 
 function theme(; twbpatch::Bool = true) :: String
-  Genie.Router.route("/css/stipple/quasar.min.css") do
-    Genie.Renderer.WebRenderable(
-      read(joinpath(@__DIR__, "..", "files", "css", "quasar.min.css"), String),
-      :css) |> Genie.Renderer.respond
-  end
-
-  if twbpatch
-    Genie.Router.route("/css/stipple/twbpatch.css") do
+  if ! Genie.Assets.external_assets(assets_config)
+    Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")) do
       Genie.Renderer.WebRenderable(
-        read(joinpath(@__DIR__, "..", "files", "css", "bootstrap-patch.css"), String),
+        read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="css", file="quasar.min"), String),
         :css) |> Genie.Renderer.respond
+    end
+
+    if twbpatch
+      Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="twbpatch")) do
+        Genie.Renderer.WebRenderable(
+          read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="css", file="twbpatch"), String),
+          :css) |> Genie.Renderer.respond
+      end
     end
   end
 
   string(
-    Stipple.Elements.stylesheet("$(Genie.config.base_path)css/stipple/quasar.min.css"),
-    Stipple.Elements.stylesheet("$(Genie.config.base_path)css/stipple/twbpatch.css")
+    Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")),
+    Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="twbpatch"))
   )
 end
 
 #===#
 
 function deps() :: String
-  Genie.Router.route("/js/stipple/quasar.umd.min.js") do
-    Genie.Renderer.WebRenderable(
-      read(joinpath(@__DIR__, "..", "files", "js", "quasar.umd.min.js"), String),
-      :javascript) |> Genie.Renderer.respond
+  if ! Genie.Assets.external_assets(assets_config)
+    Genie.Router.route(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min")) do
+      Genie.Renderer.WebRenderable(
+        read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.min"), String),
+        :javascript) |> Genie.Renderer.respond
+    end
   end
 
-  Genie.Renderer.Html.script(src="$(Genie.config.base_path)js/stipple/quasar.umd.min.js")
+  Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min"))")
 end
 
 #===#
