@@ -21,9 +21,9 @@ function theme(; twbpatch::Bool = true) :: String
     end
 
     if twbpatch
-      Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="twbpatch")) do
+      Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch")) do
         Genie.Renderer.WebRenderable(
-          read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="css", file="twbpatch"), String),
+          read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="css", file="bootstrap-patch"), String),
           :css) |> Genie.Renderer.respond
       end
     end
@@ -31,7 +31,7 @@ function theme(; twbpatch::Bool = true) :: String
 
   string(
     Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")),
-    Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="twbpatch"))
+    Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch"))
   )
 end
 
