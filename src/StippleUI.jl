@@ -16,14 +16,14 @@ function theme(; twbpatch::Bool = true) :: String
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")) do
       Genie.Renderer.WebRenderable(
-        read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="css", file="quasar.min"), String),
+        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="css", file="quasar.min")),
         :css) |> Genie.Renderer.respond
     end
 
     if twbpatch
       Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch")) do
         Genie.Renderer.WebRenderable(
-          read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="css", file="bootstrap-patch"), String),
+          Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="css", file="bootstrap-patch")),
           :css) |> Genie.Renderer.respond
       end
     end
@@ -41,7 +41,7 @@ function deps() :: String
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min")) do
       Genie.Renderer.WebRenderable(
-        read(Genie.Assets.asset_file(cwd=abspath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.min"), String),
+        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.min")),
         :javascript) |> Genie.Renderer.respond
     end
   end
