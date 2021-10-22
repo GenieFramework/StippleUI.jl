@@ -13,7 +13,7 @@ Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
 [compat]
 Colors = "0.12"
 DataFrames = "0.20, 0.21, 0.22, 1.0"
-Genie = "4"
+Genie = "4, 3"
 Stipple = "0.16"
 julia = "1.6"
 
