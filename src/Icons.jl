@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export icon
 
-Genie.Renderer.Html.register_normal_element("q__icon", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__icon", context = Genie.Renderer.Html)
+end
 
 function icon(name::Union{String,Symbol},
               args...;
@@ -14,7 +16,7 @@ function icon(name::Union{String,Symbol},
               kwargs...)
 
   wrap() do
-    q__icon([isa(content, Function) ? content() : join(content)], args...; attributes([:name => name, kwargs...])...)
+    Genie.Renderer.Html.q__icon([isa(content, Function) ? content() : join(content)], args...; attributes([:name => name, kwargs...])...)
   end
 end
 

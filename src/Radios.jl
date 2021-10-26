@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element, template
 
 export radio
 
-Genie.Renderer.Html.register_normal_element("q__radio", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__radio", context = Genie.Renderer.Html)
+end
 
 function radio( label::AbstractString = "",
                 fieldname::Union{Symbol,Nothing} = nothing,
@@ -13,7 +15,7 @@ function radio( label::AbstractString = "",
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
   wrap() do
-    q__radio(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    Genie.Renderer.Html.q__radio(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

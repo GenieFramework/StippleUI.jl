@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element, select, template
 
 export editor
 
-Genie.Renderer.Html.register_normal_element("q__editor", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__editor", context = Genie.Renderer.Html)
+end
 
 """
   editor(fieldname, args...; wrap, kwargs...)
@@ -26,7 +28,7 @@ function editor(fieldname::Symbol,
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
   wrap() do
-    q__editor(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    Genie.Renderer.Html.q__editor(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

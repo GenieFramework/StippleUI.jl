@@ -5,8 +5,10 @@ import Genie.Renderer.Html: HTMLString, normal_element, template
 
 export textfield, numberfield, textarea, filefield
 
-Genie.Renderer.Html.register_normal_element("q__input", context = @__MODULE__)
-Genie.Renderer.Html.register_normal_element("q__file", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__input", context = Genie.Renderer.Html)
+  Genie.Renderer.Html.register_normal_element("q__file", context = Genie.Renderer.Html)
+end
 
 function textfield( label::String = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
@@ -15,7 +17,7 @@ function textfield( label::String = "",
                     wrap::Function = StippleUI.DEFAULT_WRAPPER,
                     kwargs...)
   wrap() do
-    q__input([isa(content, Function) ? content() : join(content)],
+    Genie.Renderer.Html.q__input([isa(content, Function) ? content() : join(content)],
               args...;
               attributes([:label => label,
                           :fieldname => fieldname,
@@ -38,7 +40,7 @@ function numberfield( label::String = "",
                       wrap::Function = StippleUI.DEFAULT_WRAPPER,
                       kwargs...)
   wrap() do
-    q__input( [isa(content, Function) ? content() : join(content)],
+    Genie.Renderer.Html.q__input( [isa(content, Function) ? content() : join(content)],
               args...;
               attributes([:label => label,
                           :fieldname => fieldname, kwargs...],
@@ -64,7 +66,8 @@ function filefield( label::String = "",
                     kwargs...)
 
   wrap() do
-    q__file(args...; attributes(
+    Genie.Renderer.Html.q__file(args...;
+            attributes(
                         [:label => label, :fieldname => fieldname, kwargs...],
                         Dict("fieldname" => "v-model",
                               "itemaligned" => "item-aligned", "stacklabel" => "stack-label", "bottomslots" => "bottom-slots",

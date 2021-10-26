@@ -7,7 +7,9 @@ using Stipple
 
 export popup_proxy, PopupProxy
 
-Genie.Renderer.Html.register_normal_element("q__popup__proxy", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__popup__proxy", context = Genie.Renderer.Html)
+end
 
 """
     popup_proxy()
@@ -20,7 +22,7 @@ function popup_proxy(
                       content::Union{String,Vector,Function} = "",
                       kwargs...)
 
-    q__popup__proxy([isa(content, Function) ? content() : join(content)],
+  Genie.Renderer.Html.q__popup__proxy([isa(content, Function) ? content() : join(content)],
                     args...;
                     attributes(
                               [

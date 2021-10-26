@@ -5,8 +5,10 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export btn, btngroup, Btn
 
-Genie.Renderer.Html.register_normal_element("q__btn", context = @__MODULE__)
-Genie.Renderer.Html.register_normal_element("q__btn__group", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__btn", context = Genie.Renderer.Html)
+  Genie.Renderer.Html.register_normal_element("q__btn__group", context = Genie.Renderer.Html)
+end
 
 function btn( label::String = "",
               args...;
@@ -15,7 +17,7 @@ function btn( label::String = "",
               kwargs...)
 
   wrap() do
-    q__btn([isa(content, Function) ? content() : join(content)],
+    Genie.Renderer.Html.q__btn([isa(content, Function) ? content() : join(content)],
             args...;
             attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
@@ -59,7 +61,7 @@ function btngroup(args...;
                     wrap::Function = StippleUI.DEFAULT_WRAPPER,
                     kwargs...)
   wrap() do
-    q__btn__group(args...; kwargs...)
+    Genie.Renderer.Html.q__btn__group(args...; kwargs...)
   end
 end
 

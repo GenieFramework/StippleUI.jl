@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export chip
 
-Genie.Renderer.Html.register_normal_element("q__chip", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__chip", context = Genie.Renderer.Html)
+end
 
 function chip(label::String = "",
               fieldname::Union{Symbol,Nothing} = nothing,
@@ -14,7 +16,8 @@ function chip(label::String = "",
               kwargs...)
 
   wrap() do
-    q__chip(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    Genie.Renderer.Html.q__chip(args...; attributes([:label => label, :fieldname => fieldname, kwargs...],
+                                          StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

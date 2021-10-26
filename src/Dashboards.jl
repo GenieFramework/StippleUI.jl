@@ -3,16 +3,18 @@ module Dashboards
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export dashboard
+function __init__()
+  Genie.Renderer.Html.register_normal_element("st__dashboard", context = Genie.Renderer.Html)
+end
 
-Genie.Renderer.Html.register_normal_element("st__dashboard", context = @__MODULE__)
+export dashboard
 
 function dashboard( args...;
                     wrap::Function = StippleUI.DEFAULT_WRAPPER,
                     kwargs...)
 
   wrap() do
-    st__dashboard(args...; kwargs...)
+    Genie.Renderer.Html.st__dashboard(args...; kwargs...)
   end
 end
 

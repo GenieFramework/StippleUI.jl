@@ -18,7 +18,9 @@ import Genie.Renderer.Html: HTMLString, normal_element, template
 
 export datepicker, DateRange, DatePicker
 
-Genie.Renderer.Html.register_normal_element("q__date", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__date", context = Genie.Renderer.Html)
+end
 
 """
     DateRange
@@ -49,7 +51,7 @@ function datepicker(
                     kwargs...)
 
   wrap() do
-    q__date([isa(content, Function) ? content() : join(content)],
+    Genie.Renderer.Html.q__date([isa(content, Function) ? content() : join(content)],
             args...;
             attributes(
                   [ :fieldname => fieldname,

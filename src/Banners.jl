@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export banner
 
-Genie.Renderer.Html.register_normal_element("q__banner", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__banner", context = Genie.Renderer.Html)
+end
 
 function banner(content::String = "",
                 args...;
@@ -15,7 +17,7 @@ function banner(content::String = "",
                 kwargs...)
 
   wrap() do
-    q__banner(args...; kwargs...) do
+    Genie.Renderer.Html.q__banner(args...; kwargs...) do
       string(
         (icon !== nothing ? wrap(()->icon, Symbol("v-slot:avatar")) : ""),
         content,

@@ -5,14 +5,16 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export intersection
 
-Genie.Renderer.Html.register_normal_element("q__intersection", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__intersection", context = Genie.Renderer.Html)
+end
 
 function intersection(args...;
                       wrap::Function = StippleUI.DEFAULT_WRAPPER,
                       kwargs...)
 
   wrap() do
-    q__intersection(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    Genie.Renderer.Html.q__intersection(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export menu
 
-Genie.Renderer.Html.register_normal_element("q__menu", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__menu", context = Genie.Renderer.Html)
+end
 
 function menu(
               fieldname::Union{Symbol,Nothing} = nothing,
@@ -15,7 +17,7 @@ function menu(
               kwargs...)
 
   wrap() do
-    q__menu(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...) do
+    Genie.Renderer.Html.q__menu(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...) do
       join(content)
     end
   end

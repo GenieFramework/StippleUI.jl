@@ -7,8 +7,10 @@ using Stipple
 
 export range, RangeData, slider
 
-Genie.Renderer.Html.register_normal_element("q__range", context = @__MODULE__)
-Genie.Renderer.Html.register_normal_element("q__slider", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__range", context = Genie.Renderer.Html)
+  Genie.Renderer.Html.register_normal_element("q__slider", context = Genie.Renderer.Html)
+end
 
 Base.@kwdef mutable struct RangeData{T}
   range::UnitRange{T}
@@ -23,7 +25,7 @@ function Base.range(
                 kwargs...)
 
   wrap() do
-    q__range( "", lazy ? @on(:change," val => { $fieldname } ") : "" , args...;
+    Genie.Renderer.Html.q__range( "", lazy ? @on(:change," val => { $fieldname } ") : "" , args...;
               attributes(
                         [ Symbol(":min") => first(range),
                           Symbol(":max") => last(range),
@@ -42,9 +44,10 @@ function slider(range::AbstractRange{T} where T <: Real,
                 kwargs...)
 
   wrap() do
-    q__slider("", lazy ? @on(:change," val => { $fieldname } ") : "", args...; attributes(
-    [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
-    ( lazy ? () : (:fieldname => fieldname,) )..., kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    Genie.Renderer.Html.q__slider("", lazy ? @on(:change," val => { $fieldname } ") : "", args...;
+    attributes(
+      [Symbol(":min") => first(range), Symbol(":max") => last(range), Symbol(":step") => step(range),
+      ( lazy ? () : (:fieldname => fieldname,) )..., kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

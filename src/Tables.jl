@@ -6,7 +6,9 @@ import Genie.Renderer.Html: HTMLString, normal_element, table, template
 
 export Column, DataTablePagination, DataTableOptions, DataTable
 
-Genie.Renderer.Html.register_normal_element("q__table", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__table", context = Genie.Renderer.Html)
+end
 
 const ID = "__id"
 
@@ -105,7 +107,7 @@ function Genie.Renderer.Html.table( fieldname::Symbol,
                                     kwargs...) :: String
 
   wrap() do
-    q__table(args...; attributes(
+    Genie.Renderer.Html.q__table(args...; attributes(
       [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
       :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end

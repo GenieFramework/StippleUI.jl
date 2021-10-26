@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export badge, Badge
 
-Genie.Renderer.Html.register_normal_element("q__badge", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__badge", context = Genie.Renderer.Html)
+end
 
 """
 floating::Bool = false
@@ -22,7 +24,7 @@ function badge( fieldname::Union{Symbol,Nothing} = nothing,
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...) where {T<:Stipple.ReactiveModel}
   wrap() do
-    q__badge(args...;
+    Genie.Renderer.Html.q__badge(args...;
             attributes(
               [:fieldname => fieldname, kwargs...],
               StippleUI.API.ATTRIBUTES_MAPPINGS

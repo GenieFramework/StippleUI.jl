@@ -5,7 +5,9 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export bignumber
 
-Genie.Renderer.Html.register_normal_element("st__big__number", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("st__big__number", context = Genie.Renderer.Html)
+end
 
 """
 bignumber(label::String = "",
@@ -28,7 +30,7 @@ function bignumber( label::Union{String,Symbol} = "",
                     wrap::Function = StippleUI.DEFAULT_WRAPPER,
                     kwargs...)
   wrap() do
-    st__big__number(args...; attributes([:title => label, :number => number, kwargs...])...)
+    Genie.Renderer.Html.st__big__number(args...; attributes([:title => label, :number => number, kwargs...])...)
   end
 end
 

@@ -5,13 +5,15 @@ import Genie.Renderer.Html: HTMLString, normal_element
 
 export uploader
 
-Genie.Renderer.Html.register_normal_element("q__uploader", context = @__MODULE__)
+function __init__()
+  Genie.Renderer.Html.register_normal_element("q__uploader", context = Genie.Renderer.Html)
+end
 
 function uploader(args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
   wrap() do
-    q__uploader(args...; kwargs...)
+    Genie.Renderer.Html.q__uploader(args...; kwargs...)
   end
 end
 
