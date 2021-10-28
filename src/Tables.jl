@@ -144,7 +144,11 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp
 end
 
-function Base.parse(::Type{DataTable{DataFrames.DataFrame}}, d::Dict{String,Any})
+function Base.parse(::Type{DataTable}, ::Dict{String,Any})
+  # todo: add support
+end
+
+function Base.parse(::Type{DataTable{DataFrames.DataFrame}}, ::Dict{String,Any})
   # error("Not implemented") # todo implement parser
 end
 
