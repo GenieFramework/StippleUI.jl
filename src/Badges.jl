@@ -1,13 +1,11 @@
 module Badges
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export badge, Badge
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__badge", context = Genie.Renderer.Html)
-end
+register_normal_element("q__badge", context = @__MODULE__)
 
 """
 floating::Bool = false
@@ -24,7 +22,7 @@ function badge( fieldname::Union{Symbol,Nothing} = nothing,
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...) where {T<:Stipple.ReactiveModel}
   wrap() do
-    Genie.Renderer.Html.q__badge(args...;
+    q__badge(args...;
             attributes(
               [:fieldname => fieldname, kwargs...],
               StippleUI.API.ATTRIBUTES_MAPPINGS

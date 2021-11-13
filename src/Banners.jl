@@ -1,13 +1,11 @@
 module Banners
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export banner
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__banner", context = Genie.Renderer.Html)
-end
+register_normal_element("q__banner", context = @__MODULE__)
 
 function banner(content::String = "",
                 args...;
@@ -17,7 +15,7 @@ function banner(content::String = "",
                 kwargs...)
 
   wrap() do
-    Genie.Renderer.Html.q__banner(args...; kwargs...) do
+    q__banner(args...; kwargs...) do
       string(
         (icon !== nothing ? wrap(()->icon, Symbol("v-slot:avatar")) : ""),
         content,

@@ -1,11 +1,9 @@
 module Dashboards
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("st__dashboard", context = Genie.Renderer.Html)
-end
+register_normal_element("st__dashboard", context = @__MODULE__)
 
 export dashboard
 
@@ -14,7 +12,7 @@ function dashboard( args...;
                     kwargs...)
 
   wrap() do
-    Genie.Renderer.Html.st__dashboard(args...; kwargs...)
+    st__dashboard(args...; kwargs...)
   end
 end
 

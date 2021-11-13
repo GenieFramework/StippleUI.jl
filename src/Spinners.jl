@@ -1,17 +1,15 @@
 module Spinners
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export spinner
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__spinner", context = Genie.Renderer.Html)
+register_normal_element("q__spinner", context = @__MODULE__)
 
-  for spinner in ["audio", "ball", "bars", "box", "clock", "comment", "cube", "dots", "facebook", "gears", "grid",
-                  "hearts", "hourglass", "infinity", "ios", "orbit", "oval", "pie", "puff", "radio", "rings", "tail"]
-    Genie.Renderer.Html.register_normal_element("q__spinner__$spinner", context = Genie.Renderer.Html)
-  end
+for spinner in ["audio", "ball", "bars", "box", "clock", "comment", "cube", "dots", "facebook", "gears", "grid",
+                "hearts", "hourglass", "infinity", "ios", "orbit", "oval", "pie", "puff", "radio", "rings", "tail"]
+  register_normal_element("q__spinner__$spinner", context = @__MODULE__)
 end
 
 function spinner(spinner_type::Union{String,Symbol} = "",

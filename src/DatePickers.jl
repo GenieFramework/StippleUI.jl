@@ -14,13 +14,11 @@ using Stipple, Stipple.Reexport
 
 @reexport using Dates
 
-import Genie.Renderer.Html: HTMLString, normal_element, template
+import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
 export datepicker, DateRange, DatePicker
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__date", context = Genie.Renderer.Html)
-end
+register_normal_element("q__date", context = @__MODULE__)
 
 """
     DateRange
@@ -51,7 +49,7 @@ function datepicker(
                     kwargs...)
 
   wrap() do
-    Genie.Renderer.Html.q__date([isa(content, Function) ? content() : join(content)],
+    q__date([isa(content, Function) ? content() : join(content)],
             args...;
             attributes(
                   [ :fieldname => fieldname,

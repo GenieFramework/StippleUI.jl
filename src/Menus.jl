@@ -1,13 +1,11 @@
 module Menus
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export menu
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__menu", context = Genie.Renderer.Html)
-end
+register_normal_element("q__menu", context = @__MODULE__)
 
 function menu(
               fieldname::Union{Symbol,Nothing} = nothing,
@@ -17,7 +15,7 @@ function menu(
               kwargs...)
 
   wrap() do
-    Genie.Renderer.Html.q__menu(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...) do
+    q__menu(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...) do
       join(content)
     end
   end

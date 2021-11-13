@@ -1,13 +1,11 @@
 module Icons
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export icon
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__icon", context = Genie.Renderer.Html)
-end
+register_normal_element("q__icon", context = @__MODULE__)
 
 function icon(name::Union{String,Symbol},
               args...;
@@ -16,7 +14,7 @@ function icon(name::Union{String,Symbol},
               kwargs...)
 
   wrap() do
-    Genie.Renderer.Html.q__icon([isa(content, Function) ? content() : join(content)], args...; attributes([:name => name, kwargs...])...)
+    q__icon([isa(content, Function) ? content() : join(content)], args...; attributes([:name => name, kwargs...])...)
   end
 end
 

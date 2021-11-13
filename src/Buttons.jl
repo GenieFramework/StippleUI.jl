@@ -1,14 +1,12 @@
 module Buttons
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element
+import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export btn, btngroup, Btn
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__btn", context = Genie.Renderer.Html)
-  Genie.Renderer.Html.register_normal_element("q__btn__group", context = Genie.Renderer.Html)
-end
+register_normal_element("q__btn", context = @__MODULE__)
+register_normal_element("q__btn__group", context = @__MODULE__)
 
 function btn( label::String = "",
               args...;
@@ -17,7 +15,7 @@ function btn( label::String = "",
               kwargs...)
 
   wrap() do
-    Genie.Renderer.Html.q__btn([isa(content, Function) ? content() : join(content)],
+    q__btn([isa(content, Function) ? content() : join(content)],
             args...;
             attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end

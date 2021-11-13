@@ -1,13 +1,11 @@
 module Toggles
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element, template
+import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
 export toggle
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__toggle", context = Genie.Renderer.Html)
-end
+register_normal_element("q__toggle", context = @__MODULE__)
 
 function toggle(label::String = "",
                 fieldname::Union{Symbol,Nothing} = nothing,
@@ -15,7 +13,7 @@ function toggle(label::String = "",
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
   wrap() do
-    Genie.Renderer.Html.q__toggle(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    q__toggle(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 

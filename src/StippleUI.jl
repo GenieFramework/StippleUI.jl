@@ -104,6 +104,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Dashboards
 @reexport using .DatePickers
 @reexport using .Dialogs
+@reexport using .Drawers
 @reexport using .Editors
 @reexport using .Forms
 @reexport using .FormInputs

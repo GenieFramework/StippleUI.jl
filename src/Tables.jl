@@ -2,13 +2,11 @@ module Tables
 
 import DataFrames
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element, table, template
+import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
 export Column, DataTablePagination, DataTableOptions, DataTable
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__table", context = Genie.Renderer.Html)
-end
+register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
 
@@ -97,7 +95,7 @@ function data(t::T, fieldname::Symbol; datakey = "data_$fieldname", columnskey =
   )
 end
 
-function Genie.Renderer.Html.table( fieldname::Symbol,
+function table( fieldname::Symbol,
                                     args...;
                                     rowkey::String = ID,
                                     title::String = "",
@@ -107,7 +105,7 @@ function Genie.Renderer.Html.table( fieldname::Symbol,
                                     kwargs...) :: String
 
   wrap() do
-    Genie.Renderer.Html.q__table(args...; attributes(
+    q__table(args...; attributes(
       [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
       :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end

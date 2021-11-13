@@ -1,15 +1,13 @@
 module PopupProxies
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element, template
+import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
 using Stipple
 
 export popup_proxy, PopupProxy
 
-function __init__()
-  Genie.Renderer.Html.register_normal_element("q__popup__proxy", context = Genie.Renderer.Html)
-end
+register_normal_element("q__popup__proxy", context = @__MODULE__)
 
 """
     popup_proxy()
@@ -22,7 +20,7 @@ function popup_proxy(
                       content::Union{String,Vector,Function} = "",
                       kwargs...)
 
-  Genie.Renderer.Html.q__popup__proxy([isa(content, Function) ? content() : join(content)],
+  q__popup__proxy([isa(content, Function) ? content() : join(content)],
                     args...;
                     attributes(
                               [
