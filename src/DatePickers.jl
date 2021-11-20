@@ -86,7 +86,7 @@ Base.string(dp::DatePicker) = datepicker(dp.fieldname, dp.args...; dp.wrap, dp.m
 
 # internals
 
-function Base.convert(::Type{Date}, d::String) :: Date
+function Base.parse(::Type{Date}, d::String) :: Date
   Date(d)
 end
 
