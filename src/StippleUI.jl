@@ -70,6 +70,7 @@ include("Forms.jl")
 include("FormInputs.jl")
 include("Headings.jl")
 include("Icons.jl")
+include("InnerLoaders.jl")
 include("Intersections.jl")
 include("Knobs.jl")
 include("Layouts.jl")
@@ -77,6 +78,7 @@ include("Lists.jl")
 include("Menus.jl")
 include("Radios.jl")
 include("Ranges.jl")
+include("ScrollAreas.jl")
 include("Selects.jl")
 include("Separators.jl")
 include("Spaces.jl")
@@ -110,12 +112,14 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .FormInputs
 @reexport using .Headings
 @reexport using .Icons
+@reexport using .InnerLoaders
 @reexport using .Intersections
 @reexport using .Knobs
 @reexport using .Lists
 @reexport using .Menus
 @reexport using .Radios
 @reexport using .Ranges
+@reexport using .ScrollAreas
 @reexport using .Selects
 @reexport using .Separators
 @reexport using .Spaces
