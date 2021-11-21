@@ -14,7 +14,7 @@ Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
 Colors = "0.12"
 DataFrames = "1.0"
 Genie = "4"
-Stipple = "0.17"
+Stipple = "0.17, 0.16"
 julia = "1.6"
 
 [extras]
