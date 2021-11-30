@@ -33,4 +33,10 @@ function dashboard(elemid, content::Union{String,Vector}; partial::Bool = true, 
                                                               head_content=head_content, style=style, channel=channel)
 end
 
+function dashboard(model::M, args...; kwargs...) where {M<:ReactiveModel}
+  hasproperty(model, :channel) || throw(Stipple.MissingPropertyException(:channel, model))
+
+  dashboard(vm(model), args...; channel = model.channel, kwargs...)
+end
+
 end
