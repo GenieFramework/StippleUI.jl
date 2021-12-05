@@ -1,0 +1,20 @@
+site_name:        StippleUI.jl
+repo_url:         https://github.com/GenieFramework/StippleUI.jl
+site_description: UI elements for Stipple.jl
+site_author:      Adrian Salceanu
+
+theme: readthedocs
+
+extra_css:
+  - assets/Documenter.css
+
+markdown_extensions:
+  - extra
+  - tables
+  - fenced_code
+  - mdx_math
+
+docs_dir: 'build'
+
+pages:
+  - Home: index.md

@@ -19,7 +19,7 @@ end
 
 const tagname = "st-dashboard"
 
-function dashboard(elemid, content::Union{String,Vector}; partial::Bool = true, title::String = "Stipple Dashboard", head_content::String = "",
+function dashboard(elemid::Union{AbstractString,Symbol}, content::Union{String,Vector}; partial::Bool = true, title::String = "Stipple Dashboard", head_content::String = "",
                     class::String = "", style::String = "", channel::String = Genie.config.webchannels_default_route, kwargs...)
   content = if isa(content, Vector)
     push!(pushfirst!(content, "<$tagname>"), "</$tagname>")
