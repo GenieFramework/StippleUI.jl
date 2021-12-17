@@ -12,7 +12,7 @@ const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 #===#
 
-function theme(; twbpatch::Bool = true) :: String
+function theme(; twbpatch::Bool = false) :: String
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")) do
       Genie.Renderer.WebRenderable(
@@ -31,7 +31,7 @@ function theme(; twbpatch::Bool = true) :: String
 
   string(
     Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")),
-    Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch"))
+    (twbpatch ? Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch")) : "")
   )
 end
 
@@ -66,6 +66,7 @@ include("DatePickers.jl")
 include("Dialogs.jl")
 include("Drawers.jl")
 include("Editors.jl")
+include("ExpansionItems.jl")
 include("Forms.jl")
 include("FormInputs.jl")
 include("Headings.jl")
@@ -108,6 +109,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Dialogs
 @reexport using .Drawers
 @reexport using .Editors
+@reexport using .ExpansionItems
 @reexport using .Forms
 @reexport using .FormInputs
 @reexport using .Headings
