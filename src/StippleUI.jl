@@ -71,6 +71,7 @@ include("Forms.jl")
 include("FormInputs.jl")
 include("Headings.jl")
 include("Icons.jl")
+include("ImageViews.jl")
 include("InnerLoaders.jl")
 include("Intersections.jl")
 include("Knobs.jl")
@@ -114,6 +115,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .FormInputs
 @reexport using .Headings
 @reexport using .Icons
+@reexport using .ImageViews
 @reexport using .InnerLoaders
 @reexport using .Intersections
 @reexport using .Knobs
