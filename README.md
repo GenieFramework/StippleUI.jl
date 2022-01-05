@@ -16,6 +16,38 @@ higher level components (badges, banners, cards, dialogs, chips, icons), and lay
 pkg> add StippleUI
 ```
 
+## Examples
+
+### Checkboxes 
+
+`checkbox` is a handy widget that one can use to give a user a list of options:
+
+```julia
+using Stipple, StippleUI
+
+@reactive mutable struct Model <: ReactiveModel
+  valone::R{Bool} = false
+  valtwo::R{Bool} = false
+  valthree::R{Bool} = false
+end
+
+function ui(my_model)
+  page(
+    my_model, class="container", [
+      checkbox(label = "Apples", fieldname = :valone, dense = true),
+      checkbox(label = "Bananas", fieldname = :valtwo, dense = true),
+      checkbox(label = "Mangos", fieldname = :valthree, dense = true)
+    ]
+  )
+end
+
+my_model = Stipple.init(Model)
+
+route("/") do 
+  html(ui(my_model), context = @__MODULE__)
+end
+```
+
 ## Demos
 
 ### German Credits visualisation dashboard
