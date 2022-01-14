@@ -17,14 +17,14 @@ outline::Bool = true
 color::String = "blue"
 textcolor::String = "teal-10"
 """
-function badge( fieldname::Union{Symbol,Nothing} = nothing,
+function badge( fieldname::Union{Symbol,String,Nothing} = nothing,
                 args...;
                 wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...) where {T<:Stipple.ReactiveModel}
   wrap() do
     q__badge(args...;
             attributes(
-              [:fieldname => fieldname, kwargs...],
+              [(isa(fieldname, String) ? :label : :fieldname) => fieldname, kwargs...],
               StippleUI.API.ATTRIBUTES_MAPPINGS
             )...)
   end

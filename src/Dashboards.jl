@@ -34,7 +34,7 @@ function dashboard(elemid::Union{AbstractString,Symbol}, content::Union{String,V
 end
 
 function dashboard(model::M, args...; kwargs...) where {M<:ReactiveModel}
-  dashboard(vm(model), args...; channel = model.channel__, kwargs...)
+  dashboard(vm(model), args...; channel = getchannel(model), kwargs...)
 end
 
 end
