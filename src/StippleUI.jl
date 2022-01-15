@@ -54,6 +54,7 @@ end
 include("API.jl")
 include("PopupProxies.jl")
 
+include("Avatars.jl")
 include("Badges.jl")
 include("Banners.jl")
 include("BigNumbers.jl")
@@ -98,6 +99,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 
 @reexport using .PopupProxies
 
+@reexport using .Avatars
 @reexport using .Badges
 @reexport using .Banners
 @reexport using .BigNumbers

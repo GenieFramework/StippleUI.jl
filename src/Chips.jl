@@ -7,15 +7,12 @@ export chip
 
 register_normal_element("q__chip", context = @__MODULE__)
 
-function chip(label::String = "",
-              fieldname::Union{Symbol,Nothing} = nothing,
-              args...;
+function chip(args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
 
   wrap() do
-    q__chip(args...; attributes([:label => label, :fieldname => fieldname, kwargs...],
-                                          StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    q__chip(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
   end
 end
 
