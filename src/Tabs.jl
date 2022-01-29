@@ -7,6 +7,10 @@ export tab
 
 register_normal_element("q__tab", context = @__MODULE__)
 
+"""
+    tab()
+Renders a tab layout element.
+"""
 function tab(args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
