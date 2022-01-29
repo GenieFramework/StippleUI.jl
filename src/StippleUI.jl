@@ -79,7 +79,9 @@ include("Knobs.jl")
 include("Layouts.jl")
 include("Lists.jl")
 include("Menus.jl")
+include("MTabs.jl")
 include("Radios.jl")
+include("RTabs.jl")
 include("Ranges.jl")
 include("ScrollAreas.jl")
 include("Selects.jl")
@@ -87,6 +89,7 @@ include("Separators.jl")
 include("Spaces.jl")
 include("Spinners.jl")
 include("Tables.jl")
+include("Tabs.jl")
 include("Toggles.jl")
 include("Uploaders.jl")
 
@@ -123,14 +126,17 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Knobs
 @reexport using .Lists
 @reexport using .Menus
+@reexport using .MTabs
 @reexport using .Radios
 @reexport using .Ranges
+@reexport using .RTabs
 @reexport using .ScrollAreas
 @reexport using .Selects
 @reexport using .Separators
 @reexport using .Spaces
 @reexport using .Spinners
 @reexport using .Tables
+@reexport using .Tabs
 @reexport using .Toggles
 @reexport using .Uploaders
 
