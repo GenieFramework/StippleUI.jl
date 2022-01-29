@@ -7,6 +7,10 @@ export mtab
 
 register_normal_element("q__tabs", context = @__MODULE__)
 
+"""
+    mtab()
+Renders a Qtabs layout element.
+"""
 function mtab(args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
