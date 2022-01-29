@@ -7,6 +7,10 @@ export rtab
 
 register_normal_element("q__route__tab", context = @__MODULE__)
 
+"""
+    tab()
+Renders a QRouteTab layout element.
+"""
 function rtab(args...;
               wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
