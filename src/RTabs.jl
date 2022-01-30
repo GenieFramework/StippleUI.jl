@@ -5,6 +5,8 @@ import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export rtab
 
+# TODO: fix this area to make stipple routing work properly.
+
 register_normal_element("q__route__tab", context = @__MODULE__)
 
 function rtab(args...;
