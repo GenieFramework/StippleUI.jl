@@ -7,10 +7,8 @@ export space
 
 register_normal_element("q__space", context = @__MODULE__)
 
-function space(args...; wrap::Function = StippleUI.DEFAULT_WRAPPER, kwargs...)
-  wrap() do
-    q__space(args...; kwargs...)
-  end
+function space(args...; kwargs...)
+  q__space(args...; kwargs...)
 end
 
 end

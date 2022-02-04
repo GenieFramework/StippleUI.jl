@@ -10,28 +10,16 @@ register_normal_element("q__page__container", context = @__MODULE__)
 register_normal_element("q__page", context = @__MODULE__)
 
 
-function layout(args...;
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                kwargs...)
-    wrap() do
-      q__layout(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-    end
+function layout(args...; kwargs...)
+  q__layout(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
-function page_container(args...;
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                kwargs...)
-      wrap() do
-        q__page__container(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-      end
+function page_container(args...; kwargs...)
+  q__page__container(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
-function page(args...;
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
-              kwargs...)
-      wrap() do
-        q__page(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-      end
+function page(args...; kwargs...)
+  q__page(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 

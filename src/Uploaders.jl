@@ -7,12 +7,8 @@ export uploader
 
 register_normal_element("q__uploader", context = @__MODULE__)
 
-function uploader(args...;
-                  wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                  kwargs...)
-  wrap() do
-    q__uploader(args...; kwargs...)
-  end
+function uploader(args...; kwargs...)
+  q__uploader(args...; kwargs...)
 end
 
 end

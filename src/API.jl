@@ -147,31 +147,24 @@ function q__elem(elem::Symbol, children::Any, args...; attrs...) :: HTMLString
 end
 
 function xelem(elem::Symbol, args...;
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
               attributesmappings::Dict{String, String} = Dict{String, String}(),
               mergemappings = true,
               kwargs...)
-  wrap() do
-    q__elem(elem, args...; attributes([kwargs...], mergemappings ? merge(ATTRIBUTES_MAPPINGS, attributesmappings) : attributesmappings)...)
-  end
+  q__elem(elem, args...; attributes([kwargs...], mergemappings ? merge(ATTRIBUTES_MAPPINGS, attributesmappings) : attributesmappings)...)
 end
 
-function quasar(elem::Symbol, args...;
-               wrap::Function = StippleUI.DEFAULT_WRAPPER,
-               kwargs...)
-  xelem(elem, :q, args...; wrap, kwargs...)
+function quasar(elem::Symbol, args...; kwargs...)
+  xelem(elem, :q, args...; kwargs...)
 end
 
-function vue(elem::Symbol, args...;
-            wrap::Function = StippleUI.DEFAULT_WRAPPER,
-            kwargs...)
-  xelem(elem, :vue, args...; wrap, kwargs...)
+function vue(elem::Symbol, args...; kwargs...)
+  xelem(elem, :vue, args...; kwargs...)
 end
 
 xelem(elem::Symbol, prefix::Symbol, args...; kwargs...) = xelem(Symbol("$prefix-$elem"), args...; kwargs...)
-xelem_pure(elem::Symbol, args...; kwargs...) = xelem(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
-quasar_pure(elem::Symbol, args...; kwargs...) = quasar(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
-vue_pure(elem::Symbol, args...; kwargs...) = vue(elem, args...; wrap = StippleUI.NO_WRAPPER, kwargs...)
+xelem_pure(elem::Symbol, args...; kwargs...) = xelem(elem, args...; kwargs...)
+quasar_pure(elem::Symbol, args...; kwargs...) = quasar(elem, args...; kwargs...)
+vue_pure(elem::Symbol, args...; kwargs...) = vue(elem, args...; kwargs...)
 
 """
     `csscolors(name, color)`

@@ -8,7 +8,7 @@ export editor
 register_normal_element("q__editor", context = @__MODULE__)
 
 """
-  editor(fieldname, args...; wrap, kwargs...)
+  editor(fieldname, args...; kwargs...)
 
 Creates a Quasar editor view editing the content stored in the fieldname property
 of the model.
@@ -21,13 +21,8 @@ Some optional arguments are:
     autocomplete: "on/off
     spellcheck: "true/false"
 """
-function editor(fieldname::Symbol,
-                args...;
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                kwargs...)
-  wrap() do
-    q__editor(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-  end
+function editor(fieldname::Symbol, args...; kwargs...)
+  q__editor(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 end

@@ -5,7 +5,7 @@ import Genie.Renderer.Html: HTMLString, normal_element, template, register_norma
 
 using Stipple
 
-export popup_proxy, PopupProxy, popupproxy
+export popup_proxy, PopupProxy, popupproxy, popup, Popup
 
 register_normal_element("q__popup__proxy", context = @__MODULE__)
 
@@ -35,6 +35,7 @@ popup_proxy(content::Union{Vector,Function},
             kwargs...) = popup_proxy(fieldname, args...; content, kwargs...)
 
 const popupproxy = popup_proxy
+const popup = popup_proxy
 
 mutable struct PopupProxy
   fieldname
@@ -47,6 +48,7 @@ mutable struct PopupProxy
               content::Union{String,Vector,Function} = "",
               kwargs...) = new(fieldname, args, content, kwargs)
 end
+const Popup = PopupProxy
 
 Base.string(pp::PopupProxy) = popup_proxy(pp.fieldname, pp.args...; pp.content, pp.kwargs...)
 

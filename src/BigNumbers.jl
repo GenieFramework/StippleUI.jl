@@ -24,12 +24,8 @@ Renders a Big Number UI element.
 """
 function bignumber( label::Union{String,Symbol} = "",
                     number::Union{Symbol,Number,Nothing,String} = nothing,
-                    args...;
-                    wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                    kwargs...)
-  wrap() do
-    st__big__number(args...; attributes([:title => label, :number => number, kwargs...])...)
-  end
+                    args...; kwargs...)
+  st__big__number(args...; attributes([:title => label, :number => number, kwargs...])...)
 end
 
 end

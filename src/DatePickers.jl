@@ -43,46 +43,40 @@ If the `fieldname` references a `Vector{DateRange}`, both the `multiple` and the
 function datepicker(
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
-                    wrap::Function = StippleUI.DEFAULT_WRAPPER,
                     mask::String = "YYYY-MM-DD",
                     content::Union{String,Vector,Function} = "",
                     kwargs...)
 
-  wrap() do
-    q__date([isa(content, Function) ? content() : join(content)],
-            args...;
-            attributes(
-                  [ :fieldname => fieldname,
-                    :mask => mask,
-                    kwargs...
-                  ], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-  end
+  q__date([isa(content, Function) ? content() : join(content)],
+          args...;
+          attributes(
+                [ :fieldname => fieldname,
+                  :mask => mask,
+                  kwargs...
+                ], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 datepicker( content::Union{Vector,Function},
             fieldname::Union{Symbol,Nothing} = nothing,
             args...;
-            wrap::Function = StippleUI.DEFAULT_WRAPPER,
             mask::String = "YYYY-MM-DD",
-            kwargs...) = datepicker(fieldname, args...; wrap = wrap, mask = mask, content = content, kwargs...)
+            kwargs...) = datepicker(fieldname, args...; mask = mask, content = content, kwargs...)
 
 mutable struct DatePicker
   fieldname
   args
-  wrap
   mask
   content
   kwargs
 
   DatePicker( fieldname::Union{Symbol,Nothing} = nothing,
               args...;
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
               mask::String = "YYYY-MM-DD",
               content::Union{String,Vector,Function} = "",
-              kwargs...) = new(fieldname, args, wrap, mask, kwargs)
+              kwargs...) = new(fieldname, args, mask, kwargs)
 end
 
-Base.string(dp::DatePicker) = datepicker(dp.fieldname, dp.args...; dp.wrap, dp.mask, dp.content, dp.kwargs...)
+Base.string(dp::DatePicker) = datepicker(dp.fieldname, dp.args...; dp.mask, dp.content, dp.kwargs...)
 
 # internals
 

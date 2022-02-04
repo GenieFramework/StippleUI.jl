@@ -10,12 +10,8 @@ register_normal_element("q__item", context = @__MODULE__)
 register_normal_element("q__item__section", context = @__MODULE__)
 register_normal_element("q__item__label", context = @__MODULE__)
 
-function list(args...;
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
-              kwargs...)
-  wrap() do
-    q__list(args...; kwargs...)
-  end
+function list(args...; kwargs...)
+  q__list(args...; kwargs...)
 end
 
 

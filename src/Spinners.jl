@@ -14,12 +14,9 @@ end
 
 function spinner(spinner_type::Union{String,Symbol} = "",
                   args...;
-                  wrap::Function = StippleUI.DEFAULT_WRAPPER,
                   kwargs...)
 
-  wrap() do
-    getfield(@__MODULE__, Symbol("q__spinner$(isempty(string(spinner_type)) ? "" : "__")$spinner_type"))(args...; kwargs...)
-  end
+  getfield(@__MODULE__, Symbol("q__spinner$(isempty(string(spinner_type)) ? "" : "__")$spinner_type"))(args...; kwargs...)
 end
 
 end

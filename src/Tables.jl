@@ -101,14 +101,11 @@ function table( fieldname::Symbol,
                                     title::String = "",
                                     datakey::String = "data_$fieldname",
                                     columnskey::String = "columns_$fieldname",
-                                    wrap::Function = StippleUI.DEFAULT_WRAPPER,
                                     kwargs...) :: String
 
-  wrap() do
-    q__table(args...; attributes(
-      [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
-      :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-  end
+  q__table(args...; attributes(
+    [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
+    :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 #===#

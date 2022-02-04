@@ -11,31 +11,25 @@ register_normal_element("q__btn__dropdown", context = @__MODULE__)
 
 function btn( label::String = "",
               args...;
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
               content::Union{String,Vector,Function} = "",
               kwargs...)
-
-  wrap() do
-    q__btn([isa(content, Function) ? content() : join(content)],
-            args...;
-            attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-  end
+  q__btn([isa(content, Function) ? content() : join(content)],
+          args...;
+          attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 function btn( content::Union{Function,Vector},
               label::String = "",
               args...;
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
-  btn(label, args...; wrap = wrap, content = content, kwargs...)
+  btn(label, args...; content = content, kwargs...)
 end
 
 function btn( args...;
               label::String = "",
               content::Union{String,Vector,Function} = "",
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
-  btn(label, args...; wrap = wrap, content = content, kwargs...)
+  btn(label, args...; content = content, kwargs...)
 end
 
 
@@ -48,29 +42,20 @@ mutable struct Btn
 
   Btn(label::String = "",
       args...;
-      wrap::Function = StippleUI.DEFAULT_WRAPPER,
       content::Union{String,Vector,Function} = "",
-      kwargs...) = new(fieldname, args, wrap, mask, kwargs)
+      kwargs...) = new(fieldname, args, mask, kwargs)
 end
 
-Base.string(bt::Btn) = string(bt.label, bt.args...; bt.wrap, bt.content, bt.kwargs...)
+Base.string(bt::Btn) = string(bt.label, bt.args...; bt.content, bt.kwargs...)
 
 
-function btngroup(args...;
-                    wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                    kwargs...)
-  wrap() do
-    q__btn__group(args...; kwargs...)
-  end
+function btngroup(args...; kwargs...)
+  q__btn__group(args...; kwargs...)
 end
 
 
-function btndropdown(args...;
-                      wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                      kwargs...)
-  wrap() do
-    q__btn__dropdown(args...; kwargs...)
-  end
+function btndropdown(args...; kwargs...)
+  q__btn__dropdown(args...; kwargs...)
 end
 
 

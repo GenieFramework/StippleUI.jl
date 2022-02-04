@@ -7,13 +7,8 @@ register_normal_element("st__dashboard", context = @__MODULE__)
 
 export dashboard
 
-function dashboard( args...;
-                    wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                    kwargs...)
-
-  wrap() do
-    st__dashboard(args...; kwargs...)
-  end
+function dashboard( args...; kwargs...)
+  st__dashboard(args...; kwargs...)
 end
 
 

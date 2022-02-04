@@ -5,9 +5,6 @@ import Stipple
 
 using Stipple.Reexport
 
-const DEFAULT_WRAPPER = Genie.Renderer.Html.template
-const NO_WRAPPER = f->f()
-
 const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 #===#

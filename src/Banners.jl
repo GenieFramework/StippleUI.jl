@@ -11,17 +11,14 @@ function banner(content::String = "",
                 args...;
                 buttons::Vector{String} = String[],
                 icon::Union{String,Nothing} = nothing,
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
 
-  wrap() do
-    q__banner(args...; kwargs...) do
-      string(
-        (icon !== nothing ? wrap(()->icon, Symbol("v-slot:avatar")) : ""),
-        content,
-        (! isempty(buttons) ? wrap(()->join(buttons, "\n"), Symbol("v-slot:action")) : "")
-      )
-    end
+  q__banner(args...; kwargs...) do
+    string(
+      (icon !== nothing ? Genie.Rederer.Html.template(()->icon, Symbol("v-slot:avatar")) : ""),
+      content,
+      (! isempty(buttons) ? Genie.Rederer.Html.template(()->join(buttons, "\n"), Symbol("v-slot:action")) : "")
+    )
   end
 end
 

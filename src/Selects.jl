@@ -8,13 +8,10 @@ register_normal_element("q__select", context = @__MODULE__)
 function select(fieldname::Symbol,
                 args...;
                 options::Symbol,
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
                 kwargs...)
 
-  wrap() do
-    q__select(args...; attributes(
-      [Symbol(":options") => options, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
-  end
+  q__select(args...; attributes(
+    [Symbol(":options") => options, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
 end
 
 end

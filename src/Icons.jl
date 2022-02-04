@@ -10,18 +10,14 @@ register_normal_element("q__icon", context = @__MODULE__)
 function icon(name::Union{String,Symbol},
               args...;
               content::Union{String,Vector,Function} = "",
-              wrap::Function = StippleUI.DEFAULT_WRAPPER,
               kwargs...)
 
-  wrap() do
-    q__icon([isa(content, Function) ? content() : join(content)], args...; attributes([:name => name, kwargs...])...)
-  end
+  q__icon([isa(content, Function) ? content() : join(content)], args...; attributes([:name => name, kwargs...])...)
 end
 
 icon( content::Union{Vector,Function},
       args...;
-      wrap::Function = StippleUI.DEFAULT_WRAPPER,
       name::Union{Symbol,String} = "",
-      kwargs...) = icon(name, args...; content, wrap, kwargs...)
+      kwargs...) = icon(name, args...; content, kwargs...)
 
 end

@@ -18,30 +18,23 @@ color::String = "blue"
 textcolor::String = "teal-10"
 """
 function badge( fieldname::Union{Symbol,String,Nothing} = nothing,
-                args...;
-                wrap::Function = StippleUI.DEFAULT_WRAPPER,
-                kwargs...) where {T<:Stipple.ReactiveModel}
-  wrap() do
-    q__badge(args...;
-            attributes(
-              [(isa(fieldname, String) ? :label : :fieldname) => fieldname, kwargs...],
-              StippleUI.API.ATTRIBUTES_MAPPINGS
-            )...)
-  end
+                args...; kwargs...) where {T<:Stipple.ReactiveModel}
+  q__badge(args...;
+          attributes(
+            [(isa(fieldname, String) ? :label : :fieldname) => fieldname, kwargs...],
+            StippleUI.API.ATTRIBUTES_MAPPINGS
+          )...)
 end
 
 mutable struct Badge
   fieldname
   args
-  wrap
   kwargs
 
   Badge(fieldname::Union{Symbol,Nothing} = nothing,
-        args...;
-        wrap::Function = StippleUI.DEFAULT_WRAPPER,
-        kwargs...) = new(fieldname, args, wrap, kwargs)
+        args...; kwargs...) = new(fieldname, args, kwargs)
 end
 
-Base.string(b::Badge) = badge(b.fieldname, b.args...; b.wrap, b.kwargs...)
+Base.string(b::Badge) = badge(b.fieldname, b.args...; b.kwargs...)
 
 end

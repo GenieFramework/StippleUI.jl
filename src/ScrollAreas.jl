@@ -7,10 +7,8 @@ export scrollarea
 
 register_normal_element("q__scroll__area", context = @__MODULE__)
 
-function scrollarea(args...; wrap::Function = StippleUI.DEFAULT_WRAPPER, kwargs...)
-  wrap() do
-    q__scroll__area(args...; kwargs...)
-  end
+function scrollarea(args...; kwargs...)
+  q__scroll__area(args...; kwargs...)
 end
 
 end
