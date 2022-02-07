@@ -3,7 +3,7 @@ module API
 using Stipple, StippleUI, Colors
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export attributes, quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors
+export attributes, quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors, kw, @kw
 
 const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "autoclose" => "auto-close",
@@ -110,7 +110,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
 );
 
 
-function attributes(kwargs::Vector{X},
+function attributes(kwargs::Union{Vector{X}, Base.Pairs, Dict},
                     mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {X}
 
   attrs = Dict()
@@ -132,6 +132,17 @@ function attributes(kwargs::Vector{X},
   end
 
   NamedTuple(attrs)
+end
+
+function kw(kwargs::Union{Vector{X}, Base.Pairs, Dict}; 
+  attributesmappings::Dict{String,String} = Dict{String,String}(),
+  mergemappings::Bool = true) where X
+  
+  attributes(kwargs, mergemappings ? merge(ATTRIBUTES_MAPPINGS, attributesmappings) : attributesmappings)
+end
+
+macro kw(kwargs)
+  :( attributes($(esc(kwargs)), ATTRIBUTES_MAPPINGS) )
 end
 
 function q__elem(f::Function, elem::Symbol, args...; attrs...) :: HTMLString
