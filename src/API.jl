@@ -110,7 +110,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
 );
 
 
-function attributes(kwargs::Union{Vector{X}, Base.Pairs, Dict},
+function attributes(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict},
                     mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {X}
 
   attrs = Dict()
@@ -134,7 +134,7 @@ function attributes(kwargs::Union{Vector{X}, Base.Pairs, Dict},
   NamedTuple(attrs)
 end
 
-function kw(kwargs::Union{Vector{X}, Base.Pairs, Dict}; 
+function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict}; 
   attributesmappings::Dict{String,String} = Dict{String,String}(),
   mergemappings::Bool = true) where X
   
