@@ -110,13 +110,13 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
 );
 
 
-function attributes(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict},
-                    mappings::Dict{String,String} = Dict{String,String}())::NamedTuple where {X}
+function attributes(kwargs::Union{Vector{<:Pair}, Base.Iterators.Pairs, Dict},
+                    mappings::Dict{String,String} = Dict{String,String}())::NamedTuple
 
-  attrs = Dict()
+  attrs = Stipple.OptDict()
   mapped = false
 
-  for (k,v) in Dict(kwargs)
+  for (k,v) in kwargs
     v === nothing && continue
     mapped = false
 
@@ -134,11 +134,11 @@ function attributes(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict},
   NamedTuple(attrs)
 end
 
-function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict}; 
-  attributesmappings::Dict{String,String} = Dict{String,String}(),
-  mergemappings::Bool = true) where X
+function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict}, 
+  attributesmappings::Dict{String,String} = Dict{String,String}();
+  merge::Bool = true) where X
   
-  attributes(kwargs, mergemappings ? merge(ATTRIBUTES_MAPPINGS, attributesmappings) : attributesmappings)
+  attributes(kwargs, merge ? ( isempty(attributesmappings) ? ATTRIBUTES_MAPPINGS : Base.merge(ATTRIBUTES_MAPPINGS, attributesmappings) ) : attributesmappings)
 end
 
 macro kw(kwargs)
@@ -161,18 +161,17 @@ function xelem(elem::Symbol, args...;
               attributesmappings::Dict{String, String} = Dict{String, String}(),
               mergemappings = true,
               kwargs...)
-  q__elem(elem, args...; attributes([kwargs...], mergemappings ? merge(ATTRIBUTES_MAPPINGS, attributesmappings) : attributesmappings)...)
+  q__elem(elem, args...; kw(kwargs, attributesmappings, merge = mergemappings)...)
 end
 
 function quasar(elem::Symbol, args...; kwargs...)
-  xelem(elem, :q, args...; kwargs...)
+  xelem(Symbol("q-$elem"), args...; kwargs...)
 end
 
 function vue(elem::Symbol, args...; kwargs...)
-  xelem(elem, :vue, args...; kwargs...)
+  xelem(Symbol("q-$elem"), args...; kwargs...)
 end
 
-xelem(elem::Symbol, prefix::Symbol, args...; kwargs...) = xelem(Symbol("$prefix-$elem"), args...; kwargs...)
 xelem_pure(elem::Symbol, args...; kwargs...) = xelem(elem, args...; kwargs...)
 quasar_pure(elem::Symbol, args...; kwargs...) = quasar(elem, args...; kwargs...)
 vue_pure(elem::Symbol, args...; kwargs...) = vue(elem, args...; kwargs...)
