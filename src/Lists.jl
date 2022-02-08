@@ -16,18 +16,18 @@ end
 
 
 function item(args...; kwargs...)
-  q__item(args...; @kw(kwargs)...)
+  q__item(args...; kw(kwargs)...)
 end
 
 
 function item_section(args...; kwargs...)
-  q__item__section(args...; @kw(kwargs)...)
+  q__item__section(args...; kw(kwargs)...)
 end
 const itemsection = item_section
 
 
 function item_label(args...; kwargs...)
-  q__item__label(args...; @kw(kwargs)...)
+  q__item__label(args...; kw(kwargs)...)
 end
 const itemlabel = item_label
 

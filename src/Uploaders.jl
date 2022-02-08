@@ -8,7 +8,7 @@ export uploader
 register_normal_element("q__uploader", context = @__MODULE__)
 
 function uploader(args...; kwargs...)
-  q__uploader(args...; kwargs...)
+  q__uploader(args...; kw(kwargs)...)
 end
 
 end

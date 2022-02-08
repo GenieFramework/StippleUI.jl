@@ -12,12 +12,7 @@ function innerloader(label::String = "",
                           args...;
                           kwargs...)
 
-  q__inner__loading(  args...;
-            attributes(
-                      [ Symbol(":state") => state,
-                        :label => label,
-                        kwargs...
-                      ], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__inner__loading(  args...; state = state, label = label, kw(kwargs)...)
 end
 
 end

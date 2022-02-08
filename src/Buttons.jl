@@ -15,7 +15,8 @@ function btn( label::String = "",
               kwargs...)
   q__btn([isa(content, Function) ? content() : join(content)],
           args...;
-          attributes([:label => label, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+          kw(kwargs)...
+  )
 end
 
 function btn( content::Union{Function,Vector},
@@ -50,12 +51,12 @@ Base.string(bt::Btn) = string(bt.label, bt.args...; bt.content, bt.kwargs...)
 
 
 function btngroup(args...; kwargs...)
-  q__btn__group(args...; kwargs...)
+  q__btn__group(args...; kw(kwargs)...)
 end
 
 
 function btndropdown(args...; kwargs...)
-  q__btn__dropdown(args...; kwargs...)
+  q__btn__dropdown(args...; kw(kwargs)...)
 end
 
 

@@ -11,7 +11,7 @@ function radio( label::AbstractString = "",
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
                 kwargs...)
-  q__radio(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__radio(args...; kw([:label => label, :fieldname => fieldname, kwargs...])...)
 end
 
 end

@@ -16,7 +16,7 @@ function spinner(spinner_type::Union{String,Symbol} = "",
                   args...;
                   kwargs...)
 
-  getfield(@__MODULE__, Symbol("q__spinner$(isempty(string(spinner_type)) ? "" : "__")$spinner_type"))(args...; kwargs...)
+  getfield(@__MODULE__, Symbol("q__spinner$(isempty(string(spinner_type)) ? "" : "__")$spinner_type"))(args...; kw(kwargs)...)
 end
 
 end

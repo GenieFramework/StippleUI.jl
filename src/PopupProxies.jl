@@ -22,11 +22,8 @@ function popup_proxy(
 
   q__popup__proxy([isa(content, Function) ? content() : join(content)],
                     args...;
-                    attributes(
-                              [
-                                :fieldname => fieldname,
-                                kwargs...
-                              ], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+                    kw([:fieldname => fieldname, kwargs...])...
+  )
 end
 
 popup_proxy(content::Union{Vector,Function},

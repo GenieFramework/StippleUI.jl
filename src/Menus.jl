@@ -13,7 +13,7 @@ function menu(
               content::Union{String,Vector} = "",
               kwargs...)
 
-  q__menu(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...) do
+  q__menu(args...; kw([:fieldname => fieldname, kwargs...])...) do
     join(content)
   end
 end

@@ -8,7 +8,7 @@ export drawer
 register_normal_element("q__drawer", context = @__MODULE__)
 
 function drawer(args...; kwargs...)
-  q__drawer(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__drawer(args...; kw(kwargs)...)
 end
 
 end

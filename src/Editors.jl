@@ -22,7 +22,7 @@ Some optional arguments are:
     spellcheck: "true/false"
 """
 function editor(fieldname::Symbol, args...; kwargs...)
-  q__editor(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__editor(args...; kw([:fieldname => fieldname, kwargs...])...)
 end
 
 end

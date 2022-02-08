@@ -8,7 +8,7 @@ export space
 register_normal_element("q__space", context = @__MODULE__)
 
 function space(args...; kwargs...)
-  q__space(args...; kwargs...)
+  q__space(args...; kw(kwargs)...)
 end
 
 end

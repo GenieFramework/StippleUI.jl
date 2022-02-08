@@ -20,10 +20,8 @@ textcolor::String = "teal-10"
 function badge( fieldname::Union{Symbol,String,Nothing} = nothing,
                 args...; kwargs...) where {T<:Stipple.ReactiveModel}
   q__badge(args...;
-          attributes(
-            [(isa(fieldname, String) ? :label : :fieldname) => fieldname, kwargs...],
-            StippleUI.API.ATTRIBUTES_MAPPINGS
-          )...)
+          kw( [(isa(fieldname, String) ? :label : :fieldname) => fieldname, kwargs...] )...
+  )
 end
 
 mutable struct Badge
