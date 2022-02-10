@@ -12,7 +12,7 @@ function toggle(label::String = "",
                 args...;
                 kwargs...)
 
-  q__toggle(args...; attributes([:label => label, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__toggle(args...; kw([:label => label, :fieldname => fieldname, kwargs...])...)
 end
 
 end

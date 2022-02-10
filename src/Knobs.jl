@@ -20,14 +20,13 @@ function knob(
                 args...;
                 kwargs...)
 
-  q__knob(  args...;
-            attributes(
-                      [ Symbol(":min") => first(range),
-                        Symbol(":max") => last(range),
-                        Symbol(":step") => step(range),
-                        :fieldname => fieldname,
-                        kwargs...
-                      ], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__knob(  args...; kw([ 
+            Symbol(":min") => first(range),
+            Symbol(":max") => last(range),
+            Symbol(":step") => step(range),
+            :fieldname => fieldname,
+            kwargs...
+  ])...)
 end
 
 end

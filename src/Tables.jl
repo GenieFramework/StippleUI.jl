@@ -103,9 +103,9 @@ function table( fieldname::Symbol,
                                     columnskey::String = "columns_$fieldname",
                                     kwargs...) :: String
 
-  q__table(args...; attributes(
+  q__table(args...; kw(
     [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
-    :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+    :fieldname => fieldname, kwargs...])...)
 end
 
 #===#

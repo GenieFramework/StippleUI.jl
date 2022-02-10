@@ -11,8 +11,7 @@ function checkbox(label::String = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...; kwargs...)
 
-  q__checkbox(args...; attributes([:label => label, :fieldname => fieldname, kwargs...],
-                                            StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__checkbox(args...; kw([:label => label, :fieldname => fieldname, kwargs...])...)
 end
 
 end

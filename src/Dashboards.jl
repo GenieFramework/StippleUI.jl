@@ -8,7 +8,7 @@ register_normal_element("st__dashboard", context = @__MODULE__)
 export dashboard
 
 function dashboard( args...; kwargs...)
-  st__dashboard(args...; kwargs...)
+  st__dashboard(args...; kw(kwargs)...)
 end
 
 

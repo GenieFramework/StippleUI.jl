@@ -15,10 +15,7 @@ function textfield( label::String = "",
                     kwargs...)
   q__input([isa(content, Function) ? content() : join(content)],
             args...;
-            attributes([:label => label,
-                        :fieldname => fieldname,
-                        kwargs...],
-                        StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+            kw([:label => label, :fieldname => fieldname, kwargs...])...)
 end
 
 textfield(content::Union{Vector,Function},
@@ -34,10 +31,10 @@ function numberfield( label::String = "",
                       kwargs...)
   q__input( [isa(content, Function) ? content() : join(content)],
             args...;
-            attributes([:label => label,
-                        :fieldname => fieldname, kwargs...],
-                        merge(StippleUI.API.ATTRIBUTES_MAPPINGS, Dict("fieldname" => "v-model.number"))
-                      )...)
+            kw(
+              [:label => label, :fieldname => fieldname, kwargs...],
+              Dict("fieldname" => "v-model.number"))...
+            )
 end
 
 function textarea(label::String = "",
@@ -54,18 +51,12 @@ function filefield( label::String = "",
                     kwargs...)
 
   q__file(args...;
-          attributes(
-                      [:label => label, :fieldname => fieldname, kwargs...],
-                      Dict("fieldname" => "v-model",
-                            "itemaligned" => "item-aligned", "stacklabel" => "stack-label", "bottomslots" => "bottom-slots",
-                            "hidebottomspace" => "hide-bottom-space", "hidehint" => "hide-hint", "displayvalue" => "display-value",
-                            "reactiverules" => "reactive-rules", "lazyrules" => "lazy-rules", "rules" => ":rules",
-                            "counterlabel" => "counter-label", "maxfiles" => "max-files", "maxtotalsize" => "max-total-size", "maxfilesize" => "max-file-size",
-                            "errormessage" => "error-message", "noerroricon" => "no-error-icon", "clearicon" => "clear-icon",
-                            "inputstyle" => "input-style", "inputclass" => "input-class", "bgcolor" => "bg-color",
-                            "labelslot" => "label-slot", "labelcolor" => "label-color"
-                            )
-                    )...)
+          kw(
+            [:label => label, :fieldname => fieldname, kwargs...],
+            Dict("maxfiles" => "max-files", "maxfilesize" => "max-file-size",
+                 "counterlabel" => "counter-label", "maxtotalsize" => "max-total-size"
+            )
+          )...)
 end
 
 end

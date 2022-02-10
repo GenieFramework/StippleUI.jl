@@ -8,7 +8,7 @@ export scrollarea
 register_normal_element("q__scroll__area", context = @__MODULE__)
 
 function scrollarea(args...; kwargs...)
-  q__scroll__area(args...; kwargs...)
+  q__scroll__area(args...; kw(kwargs)...)
 end
 
 end

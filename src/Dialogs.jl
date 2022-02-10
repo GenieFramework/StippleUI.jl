@@ -8,7 +8,7 @@ export dialog
 register_normal_element("q__dialog", context = @__MODULE__)
 
 function dialog(args...; kwargs...)
-  q__dialog(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__dialog(args...; kw(kwargs)...)
 end
 
 end

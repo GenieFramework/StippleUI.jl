@@ -11,17 +11,17 @@ register_normal_element("q__card__section", context = @__MODULE__)
 register_normal_element("q__card__actions", context = @__MODULE__)
 
 function card(args...; kwargs...)
-  q__card(args...; kwargs...)
+  q__card(args...; kw(kwargs)...)
 end
 
 function card_section(args...; kwargs...)
-  q__card__section(args...; kwargs...)
+  q__card__section(args...; kw(kwargs)...)
 end
 
 const cardsection = card_section
 
 function card_actions(args...; kwargs...)
-  q__card__actions(args...; kwargs...)
+  q__card__actions(args...; kw(kwargs)...)
 end
 
 const cardactions = card_actions

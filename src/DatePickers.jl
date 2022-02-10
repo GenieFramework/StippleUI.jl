@@ -46,14 +46,10 @@ function datepicker(
                     mask::String = "YYYY-MM-DD",
                     content::Union{String,Vector,Function} = "",
                     kwargs...)
-
   q__date([isa(content, Function) ? content() : join(content)],
           args...;
-          attributes(
-                [ :fieldname => fieldname,
-                  :mask => mask,
-                  kwargs...
-                ], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+          kw([:fieldname => fieldname, :mask => mask, kwargs...])...
+  )
 end
 
 datepicker( content::Union{Vector,Function},

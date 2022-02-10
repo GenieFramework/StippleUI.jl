@@ -8,7 +8,7 @@ export chip
 register_normal_element("q__chip", context = @__MODULE__)
 
 function chip(args...; kwargs...)
-  q__chip(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__chip(args...; kw(kwargs)...)
 end
 
 end

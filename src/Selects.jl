@@ -10,8 +10,8 @@ function select(fieldname::Symbol,
                 options::Symbol,
                 kwargs...)
 
-  q__select(args...; attributes(
-    [Symbol(":options") => options, :fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__select(args...; kw(
+    [Symbol(":options") => options, :fieldname => fieldname, kwargs...])...)
 end
 
 end

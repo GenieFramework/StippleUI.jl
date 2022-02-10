@@ -94,7 +94,6 @@ import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
 export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 
-@reexport using .PopupProxies
 
 @reexport using .Avatars
 @reexport using .Badges
@@ -117,11 +116,13 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .ImageViews
 @reexport using .InnerLoaders
 @reexport using .Intersections
+          using .Layouts
 @reexport using .Knobs
 @reexport using .Lists
 @reexport using .Menus
 @reexport using .Radios
 @reexport using .Ranges
+@reexport using .PopupProxies
 @reexport using .ScrollAreas
 @reexport using .Selects
 @reexport using .Separators
@@ -130,6 +131,8 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Tables
 @reexport using .Toggles
 @reexport using .Uploaders
+
+export page_container # from Layouts
 
 #===#
 

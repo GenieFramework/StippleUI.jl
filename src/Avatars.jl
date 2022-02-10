@@ -9,7 +9,7 @@ register_normal_element("q__avatar", context = @__MODULE__)
 
 
 function avatar(args...; kwargs...)
-  q__avatar(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__avatar(args...; kw(kwargs)...)
 end
 
 

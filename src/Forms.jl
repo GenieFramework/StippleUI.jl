@@ -8,7 +8,7 @@ export form
 register_normal_element("q__form", context = @__MODULE__)
 
 function form(args...; noresetfocus::Bool = false, kwargs...)
-  q__form(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__form(args...; kw(kwargs)...)
 end
 
 end

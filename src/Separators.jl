@@ -8,7 +8,7 @@ export separator
 register_normal_element("q__separator", context = @__MODULE__)
 
 function separator(args...; kwargs...)
-  q__separator(args...; kwargs...)
+  q__separator(args...; kw(kwargs)...)
 end
 
 end

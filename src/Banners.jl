@@ -13,11 +13,11 @@ function banner(content::String = "",
                 icon::Union{String,Nothing} = nothing,
                 kwargs...)
 
-  q__banner(args...; kwargs...) do
+  q__banner(args...; kw(kwargs)...) do
     string(
-      (icon !== nothing ? Genie.Rederer.Html.template(()->icon, Symbol("v-slot:avatar")) : ""),
+      (icon !== nothing ? Genie.Renderer.Html.template(()->icon, Symbol("v-slot:avatar")) : ""),
       content,
-      (! isempty(buttons) ? Genie.Rederer.Html.template(()->join(buttons, "\n"), Symbol("v-slot:action")) : "")
+      (! isempty(buttons) ? Genie.Renderer.Html.template(()->join(buttons, "\n"), Symbol("v-slot:action")) : "")
     )
   end
 end
