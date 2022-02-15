@@ -110,7 +110,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
 );
 
 
-function attributes(kwargs::Union{Vector{<:Pair}, Base.Pairs, Dict},
+function attributes(kwargs::Union{Vector{<:Pair}, Base.Iterators.Pairs, Dict},
                     mappings::Dict{String,String} = Dict{String,String}())::NamedTuple
 
   attrs = Stipple.OptDict()
