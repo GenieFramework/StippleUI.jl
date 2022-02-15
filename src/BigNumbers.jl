@@ -25,7 +25,7 @@ Renders a Big Number UI element.
 function bignumber( label::Union{String,Symbol} = "",
                     number::Union{Symbol,Number,Nothing,String} = nothing,
                     args...; kwargs...)
-  st__big__number(args...; title = label, number = number, kw(kwargs)...)
+  st__big__number(args...; kw([:title => label, :number => number, kwargs...])...)
 end
 
 end
