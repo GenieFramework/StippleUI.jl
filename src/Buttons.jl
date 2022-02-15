@@ -15,7 +15,7 @@ function btn( label::String = "",
               kwargs...)
   q__btn([isa(content, Function) ? content() : join(content)],
           args...;
-          kw(kwargs)...
+          label = label, kw(kwargs)...
   )
 end
 
