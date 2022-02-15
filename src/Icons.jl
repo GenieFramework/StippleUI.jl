@@ -12,7 +12,7 @@ function icon(name::Union{String,Symbol},
               content::Union{String,Vector,Function} = "",
               kwargs...)
 
-  q__icon([isa(content, Function) ? content() : join(content)], args...; name = name, kw(kwargs)...)
+  q__icon([isa(content, Function) ? content() : join(content)], args...; kw([:name => name, kwargs...])...)
 end
 
 icon( content::Union{Vector,Function},
