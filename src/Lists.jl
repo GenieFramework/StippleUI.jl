@@ -31,4 +31,20 @@ function item_label(args...; kwargs...)
 end
 const itemlabel = item_label
 
+
+mutable struct List
+  args
+  kwargs
+end
+List(args...; kwargs...) = List(args, kwargs)
+Base.string(l::List) = list(l.args...; l.kwargs...)
+
+
+mutable struct Item
+  args
+  kwargs
+end
+Item(args...; kwargs...) = Item(args, kwargs)
+Base.string(i::Item) = item(i.args...; i.kwargs...)
+
 end

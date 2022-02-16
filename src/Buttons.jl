@@ -47,7 +47,7 @@ mutable struct Btn
       kwargs...) = new(fieldname, args, mask, kwargs)
 end
 
-Base.string(bt::Btn) = string(bt.label, bt.args...; bt.content, bt.kwargs...)
+Base.string(bt::Btn) = btn(bt.label, bt.args...; bt.content, bt.kwargs...)
 
 
 function btngroup(args...; kwargs...)
