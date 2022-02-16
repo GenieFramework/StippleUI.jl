@@ -85,6 +85,7 @@ include("Spaces.jl")
 include("Spinners.jl")
 include("Tables.jl")
 include("Toggles.jl")
+include("Tooltips.jl")
 include("Uploaders.jl")
 
 
@@ -130,6 +131,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Spinners
 @reexport using .Tables
 @reexport using .Toggles
+@reexport using .Tooltips
 @reexport using .Uploaders
 
 export page_container # from Layouts
