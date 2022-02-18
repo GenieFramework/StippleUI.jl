@@ -17,14 +17,26 @@ mutable struct List
   args
   kwargs
 end
+
 List(args...; kwargs...) = List(args, kwargs)
+
 Base.string(l::List) = list(l.args...; l.kwargs...)
 
 mutable struct Item
   args
   kwargs
 end
+
 Item(args...; kwargs...) = Item(args, kwargs)
+
+function Item(i::Item, args...; kwargs...)
+  ix = Item()
+  ix.args = (i.args..., args...)
+  ix.kwargs = (i.kwargs..., kwargs...)
+
+  ix
+end
+
 Base.string(i::Item) = item(i.args...; i.kwargs...)
 
 
@@ -38,7 +50,7 @@ end
 function list(data::Vector{T}, i::Item, args...; kwargs...) where {T}
   content = []
   for d in data
-    push!(content, Item([d]) |> string)
+    push!(content, Item(i, [d]) |> string)
   end
 
   list(join(content), args...; kwargs...)
@@ -47,7 +59,7 @@ end
 # client side iteration
 function list(binding::Symbol, i::Item, args...; kwargs...)
   list(
-    Item("{{__b__}}", @recur("__b__ in $binding"), key! = "__b__")
+    Item(i, ["{{__b__}}"], @recur("__b__ in $binding"), key! = "__b__")
   )
 end
 
