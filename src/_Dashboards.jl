@@ -1,4 +1,4 @@
-module Dashboards
+module _Dashboards # we need to put _ cause otherwise it crashes with apps modules -- it's a very common name
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
