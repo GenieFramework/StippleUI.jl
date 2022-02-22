@@ -20,7 +20,7 @@ function ui(button_model)
     class = "q-pa-md q-gutter-sm",
     [
       btn("On Left", color = "primary", icon = "mail", @click("press_btn = true")),
-      btn("Go to Hello World", color = "red", href = "/hello", icon = "map", iconright = "send")
+      btn("Go to Hello World", color = "red", type = "a", href = "hello", icon = "map", iconright = "send")
     ]
   )
 end

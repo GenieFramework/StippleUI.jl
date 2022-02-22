@@ -1,4 +1,8 @@
 [deps]
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Playwright = "246d5a2c-e8ad-4f7d-a897-5346511128f4"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
+TestSetExtensions = "98d24dd4-01ad-11ea-1b02-c9a08f80db04"
