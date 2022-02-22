@@ -12,9 +12,7 @@ function ui(checkbox_model)
     checkbox_model,
     class = "container",
     [
-      checkbox(label = "Apples", fieldname = :valone, dense = true, color="teal"),
-      checkbox(label = "Bananas", fieldname = :valtwo, dense = true, color="red"),
-      checkbox(label = "Mangos", fieldname = :valthree, size="xl", dense = true),
+      checkbox(label = "Apples", fieldname = :valone, dense = true, color="teal")
     ],
   )
 end
