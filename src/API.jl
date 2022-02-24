@@ -105,6 +105,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "unmaskedvalue" => "unmasked-value",
   "usechips" => "use-chips",
   "useinput" => "use-input",
+  "vclosepopup" => "v-close-popup",
   "vripple" => "v-ripple",
   "yearsinmonthview" => "years-in-month-view"
 );
