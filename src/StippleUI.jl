@@ -59,7 +59,6 @@ include("Buttons.jl")
 include("Cards.jl")
 include("Checkboxes.jl")
 include("Chips.jl")
-include("_Dashboards.jl")
 include("DatePickers.jl")
 include("Dialogs.jl")
 include("Drawers.jl")
@@ -104,7 +103,6 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Cards
 @reexport using .Checkboxes
 @reexport using .Chips
-@reexport using ._Dashboards
 @reexport using .DatePickers
 @reexport using .Dialogs
 @reexport using .Drawers
