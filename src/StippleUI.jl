@@ -9,7 +9,7 @@ const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 #===#
 
-function theme(; twbpatch::Bool = false) :: String
+function theme(; twbpatch::Bool = false) :: Vector{String}
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")) do
       Genie.Renderer.WebRenderable(
@@ -26,15 +26,15 @@ function theme(; twbpatch::Bool = false) :: String
     end
   end
 
-  string(
+  [
     Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")),
     (twbpatch ? Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch")) : "")
-  )
+  ]
 end
 
 #===#
 
-function deps() :: String
+function deps() :: Vector{String}
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min")) do
       Genie.Renderer.WebRenderable(
@@ -43,7 +43,9 @@ function deps() :: String
     end
   end
 
-  Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min"))")
+  [
+    Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min"))")
+  ]
 end
 
 #===#
