@@ -1,4 +1,8 @@
+module Buttons
+
 using Stipple, StippleUI
+
+export ButtonModel
 
 @reactive! mutable struct ButtonModel <: ReactiveModel
   press_btn::R{Bool} = false
@@ -46,12 +50,19 @@ function ui(button_model)
   )
 end
 
-route("/") do
-  init(ButtonModel) |> handlers |> ui |> html
+function factory()
+  buttonmodel = ButtonModel |> init |> handlers |> ui
+  buttonmodel
 end
 
-route("/hello") do
-  "Hello World"
-end
+# route("/") do
+#   init(ButtonModel) |> handlers |> ui |> html
+# end
 
-up()
+# route("/hello") do
+#   "Hello World"
+# end
+
+# up(9002, async = false)
+
+end

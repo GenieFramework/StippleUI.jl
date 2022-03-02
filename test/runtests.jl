@@ -1,12 +1,28 @@
-cd(@__DIR__)
+using SafeTestsets
 
-using Pkg
+@safetestset "StippleUI tests" begin
+  @safetestset "Button Tests" begin
+    using Stipple, StippleUI
+    using HTTP
 
-using Stipple, StippleUI
-using Test, TestSetExtensions, SafeTestsets, Logging
+    include("components/Buttons.jl")
 
-Logging.global_logger(NullLogger())
+    route("/") do
+      html(Buttons.factory())
+    end
 
-@testset ExtendedTestSet "StippleUI tests" begin
-  @includetests ARGS #[(endswith(t, ".jl") && t[1:end-3]) for t in ARGS]
+    route("/hello") do
+      "Hello World!"
+    end
+
+    up()
+
+    # t2 = `julia --project -e 'include("components/Buttons.jl")'` |> run
+    #`open "http://localhost:8000/"` |> run
+    HTTP.get("http://127.0.0.1:8000/")
+    HTTP.get("http://127.0.0.1:8000/hello")
+
+    # include("tests_buttons.jl")
+    t1 = `julia --project -e 'include("tests_buttons.jl")'` |> run
+  end
 end
