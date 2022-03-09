@@ -25,6 +25,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "emitimmd" => "emit-immediately",
   "errormessage" => "error-message",
   "eventcolor" => "event-color",
+  "expandicontoggle" => "expand-icon-toggle",
   "expandseparator" => "expand-separator",
   "falsevalue" => "false-value",
   "fieldname" => "v-model",
