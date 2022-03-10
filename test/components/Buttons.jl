@@ -9,6 +9,7 @@ export ButtonModel
   first_item::R{Bool} = false
   second_item::R{Bool} = false
   third_item::R{Bool} = false
+  btnConnect::R{Bool} = false
 end
 
 function handlers(button_model)
@@ -28,6 +29,10 @@ function handlers(button_model)
     @info "Netherlands item selected"
   end
 
+  onbutton(button_model.btnConnect) do
+    @info "Connecting to server"
+  end
+
   button_model
 end
 
@@ -45,7 +50,11 @@ function ui(button_model)
           item("USA", clickable = true, vclosepopup = true, @click("second_item = true")),
           item("Netherlands", clickable = true, vclosepopup = true, @click("third_item = true"))
         ]),
-      ])
+      ]),
+      btn("Connect to server!", color="green", textcolor="black", @click("btnConnect=!btnConnect"), [
+          tooltip(contentclass="bg-indigo", contentstyle="font-size: 16px", 
+          style="offset: 10px 10px",  "Ports bounded to sockets!")]
+      )
     ]
   )
 end

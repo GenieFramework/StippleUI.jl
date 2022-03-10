@@ -14,7 +14,7 @@ register_void_element("q__knob", context = @__MODULE__)
 
 Renders a knob input element.
 """
-function knob(
+function knob(  val::Int,
                 range::AbstractRange{T} where T <: Real,
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
@@ -24,6 +24,7 @@ function knob(
             Symbol(":min") => first(range),
             Symbol(":max") => last(range),
             Symbol(":step") => step(range),
+            Symbol(":thickness") => step(val),
             :fieldname => fieldname,
             kwargs...
   ])...)
