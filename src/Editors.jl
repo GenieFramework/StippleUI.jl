@@ -37,14 +37,22 @@ julia> StippleUI.form( autocorrect="off", autocapitalize="off", autocomplete="of
 # Arguments
 ----------
 
-* `readonly::Bool` - Sets editor in readonly mode.
-* `disable::Bool` - Sets editor in disable mode.
-* `minheight::String` - CSS unit for minimum height of the input area.
-* `maxheight::String` - CSS unit for maximum height of the input area.
-* `toolbar::Vector` - Vector of Vectors of Strings with toolbar commands
-* `toolbartextcolor::String` - Text color from the [Color Palette](https://quasar.dev/style/color-palette) of toolbar commands.
-* `toolbartogglecolor::String` - Color from the [Color Palette](https://quasar.dev/style/color-palette) of toolbar commands when in “active” state
-* `toolbarbg::String` - Toolbar background color from the [Color Palette](https://quasar.dev/style/color-palette)
+1. Behaviour
+      * `fullscreen::Bool` - Fullscreen mode (Note".sync" modifier required!) Example. `:fullscreen.sync="isFullscreen"`
+      * `noroutefullscreenexit::Bool` - Changing route app won't exit fullscreen
+      * `paragraphtag::String` - Paragraph tag to be used Example. `div`, `p`
+2. Content
+      * 
+3. Label
+      * 
+4. Model
+      * 
+5. State
+      * 
+6. Style
+      * 
+7. Toolbar
+      *
 """
 function editor(fieldname::Symbol, args...; kwargs...)
   q__editor(args...; kw([:fieldname => fieldname, kwargs...])...)
