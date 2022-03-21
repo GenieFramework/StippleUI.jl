@@ -78,6 +78,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "markers" => ":markers",
   "maxvalues" => "max-values",
   "minheight" => "min-height",
+  "max" => ":max",
   "maxheight" => "max-height",
   "multiline" => "multi-line",
   "nativecontextmenu" => "native-context-menu",
