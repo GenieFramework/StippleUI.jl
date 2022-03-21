@@ -12,6 +12,8 @@ const ID = "__id"
 
 #===#
 
+struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
+
 Base.@kwdef mutable struct Column
   name::String
   required::Bool = false
@@ -40,6 +42,7 @@ Base.@kwdef mutable struct DataTableOptions
   addid::Bool = false
   idcolumn::String = "ID"
   columns::Union{Vector{Column},Nothing} = nothing
+  columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}} = Dict()
 end
 
 Base.@kwdef mutable struct DataTable{T<:DataFrames.DataFrame}
@@ -57,14 +60,26 @@ function active_columns(t::T)::Vector{Column} where {T<:DataTable}
   t.opts.columns !== nothing ? t.opts.columns : [Column(string(name)) for name in DataFrames.names(t.data)]
 end
 
-function columns(t::T)::Vector{Column} where {T<:DataTable}
+function columns(t::T)::Vector{<:Union{Column, Dict}} where {T<:DataTable}
   columns = active_columns(t) |> copy
 
   if t.opts.addid
     pushfirst!(columns, Column(t.opts.idcolumn, true, t.opts.idcolumn, :right, t.opts.idcolumn, true))
   end
 
-  columns
+  if isempty(t.opts.columnspecs)
+    columns
+  else
+    coldicts = Dict{Symbol, Any}[]
+    for col in columns
+      coldict = struct2dict(col)
+      for (k, v) in t.opts.columnspecs
+        occursin(k isa String ? Regex("^$k\$") : k, col.name) && merge!(coldict, v)
+      end
+      push!(coldicts, coldict)
+    end
+    coldicts
+  end
 end
 
 function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}

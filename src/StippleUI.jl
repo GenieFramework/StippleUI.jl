@@ -79,6 +79,7 @@ include("Lists.jl")
 include("Menus.jl")
 include("Radios.jl")
 include("Ranges.jl")
+include("Ratings.jl")
 include("ScrollAreas.jl")
 include("Selects.jl")
 include("Separators.jl")
@@ -123,6 +124,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Menus
 @reexport using .Radios
 @reexport using .Ranges
+@reexport using .Ratings
 @reexport using .PopupProxies
 @reexport using .ScrollAreas
 @reexport using .Selects
