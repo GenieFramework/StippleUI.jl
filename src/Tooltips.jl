@@ -11,4 +11,8 @@ function tooltip(args...; kwargs...)
   q__tooltip(args...; kw(kwargs)...)
 end
 
+function tooltip(fieldname::Symbol, args...; kwargs...)
+  q__tooltip(args...; kw([:fieldname => fieldname, kwargs...])...)
+end
+
 end
