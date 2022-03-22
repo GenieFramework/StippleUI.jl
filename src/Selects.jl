@@ -76,9 +76,48 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
       * `emitvalue::Bool` - Update model with the value of the selected option instead of the whole option
 5. Options
       * `options::Vector` - Available options that the user can select from. For best performance freeze the list of options ex. `options=[ 'BMW', 'Samsung Phone' ]`
-      * `optionvalue::Function | String`   # WIP -----------------------------
+      * `optionvalue::String` - Property of option which holds the 'value'; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optionvalue=modelNumber` `optionvalue="(item) => item === null ? null : item.modelNumber"`
+      * `optionlabel::String` - Property of option which holds the 'label'; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optionlabel=itemName` `optionlabel="(item) => item === null ? null : item.itemName"`
+      * `optiondisable::String` - Property of option which tells it's disabled; The value of the property must be a Boolean; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optiondisable=cannotSelect` `optiondisable="(item) => item === null ? null : item.cannotSelect"`
+      * `optionsdense::Bool` - Dense mode for options list; occupies less space
+      * `optionsdark::Bool` - Options menu will be colored with a dark color
+      * `optionsselectedclass::String` - CSS class name for options that are active/selected; Set it to an empty string to stop applying the default (which is text-* where * is the 'color' prop value) ex. `text-orange`
+      * `optionssanitize::Bool` - Force use of textContent instead of innerHTML to render options; Use it when the options might be unsafe (from user input); Does NOT apply when using 'option' slot!
+      * `optionscover::Bool` - Expanded menu will cover the component (will not work along with `useinput` attribute for obvious reasons)
+      * `menushrink::Bool` - Allow the options list to be narrower than the field (only in menu mode)
+      * `mapoptions::Bool` - Try to map labels of model from `options` Vector; has a small performance penalty; If you are using emit-value you will probably need to use map-options to display the label text in the select field rather than the value; Refer to the 'Affecting model' section above
 6. Position
-      * `menu-anchor`
+      * `menuanchor::String` - Two values setting the starting position or anchor point of the options list relative to the field (only in menu mode) ex. `top left` `top middle` `top right` `top start` `top end` `center left` `center middle` `center right` `center start` `center end` `bottom left` `bottom middle` `bottom right` `bottom start` `bottom end`
+      * `menuself::String` - Two values setting the options list's own position relative to its target (only in menu mode) ex. `top left` etc
+      * `menuoffset::Vector` - An array of two numbers to offset the options list horizontally and vertically in pixels (only in menu mode) ex. `[8, 8]`
+7. Selection
+      * `multiple::Bool` - Allow multiple selection; Model must be Array
+      * `displayvalue::Union{Int, String}` - Override default selection string, if not using `selected` slot/scoped slot and if not using `usechips` attribute
+      * `displayvaluesanitize::Bool` - Force use of textContent instead of innerHTML to render selected option(s); Use it when the selected option(s) might be unsafe (from user input); Does NOT apply when using `selected` or `selecteditem` slots!
+      * `hideselected::Bool` - Hides selection; Use the underlying input tag to hold the label (instead of showing it to the right of the input) of the selected option; Only works for non `multiple` Selects
+      * `maxvalues::Union{Int, String}` - Allow a maximum number of selections that the user can do ex. `5`
+      * `usechips::Bool` - Use `chip` component to show what is currently selected
+8. State
+      * `disable::Bool` - Put component in disabled mode
+      * `readonly::Bool` - Put component in readonly mode
+9. Style
+      * `labelcolor::String` - Color name for the label from the [Color Palette](https://quasar.dev/style/color-palette); Overrides the `color` prop; The difference from `color` prop is that the label will always have this color, even when field is not focused ex. `primary` `teal-10`
+      * `color::String` - Color name for component from the [Color Palette](https://quasar.dev/style/color-palette)
+      * `bgcolor::String` - Background color name for component from the [Color Palette](https://quasar.dev/style/color-palette)
+      * `dark::Bool` - Notify the component that the background is a dark color
+      * `filled::Bool` - Use `filled` design for the field
+      * `outlined::Bool` - Use `outlined` design for the field
+      * `borderless::Bool` - Use `borderless` design for the field
+      * `standout::Union{Bool, String}` - Use 'standout' design for the field; Specifies classes to be applied when focused (overriding default ones) ex. `standout` `standout="bg-primary text-white"`
+      * `hidebottomspace::Bool` - Do not reserve space for hint/error/counter anymore when these are not used; As a result, it also disables the animation for those; It also allows the hint/error area to stretch vertically based on its content
+      * `rounded::Bool` - Applies a small standard border-radius for a squared shape of the component
+      * `square::Bool` - Remove border-radius so borders are squared; Overrides `rounded` prop/attribute
+      * `dense::Bool` - Dense mode; occupies less space
+      * `itemaligned::Bool` - Match inner content alignment to that of `item` component
+      * `popupcontentclass::String` - Class definitions to be attributed to the popup content ex. `my-special-class`
+      * `popupcontentstyle::Union{Vector, String, Dict}` - Style definitions to be attributed to the popup content ex. `background-color: #ff0000` `popupcontentstyle!="{ backgroundColor: '#ff0000' }"`
+      * `inputclass::Union{Vector, String, Dict}` - Class definitions to be attributed to the underlying input tag ex. `my-special-class` `inputclass!="{ 'my-special-class': <condition> }"`
+      * `inputstyle::Union{Vector, String, Dict}` - Style definitions to be attributed to the underlying input tag ex. `background-color: #ff0000` `inputstyle!="{ backgroundColor: '#ff0000' }"`
 """
 function select(fieldname::Symbol,
                 args...;
