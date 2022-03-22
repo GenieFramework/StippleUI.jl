@@ -155,6 +155,12 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "useinput" => "use-input",
   "vclosepopup" => "v-close-popup",
   "virtualscrollhorizontal" => "virtual-scroll-horizontal",
+  "virtualscrollitemsize" => "virtual-scroll-item-size",
+  "virtualscrollsliceratioafter" => "virtual-scroll-slice-ratio-after",
+  "virtualscrollsliceratiobefore" => "virtual-scroll-slice-ratio-before",
+  "virtualscrollslicesize" => "virtual-scroll-slice-size",
+  "virtualscrollstickysizestart" => "virtual-scroll-sticky-size-start",
+  "virtualscrollstickysizeend" => "virtual-scroll-sticky-size-end",
   "vripple" => "v-ripple",
   "yearsinmonthview" => "years-in-month-view"
 );

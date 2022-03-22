@@ -118,6 +118,14 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
       * `popupcontentstyle::Union{Vector, String, Dict}` - Style definitions to be attributed to the popup content ex. `background-color: #ff0000` `popupcontentstyle!="{ backgroundColor: '#ff0000' }"`
       * `inputclass::Union{Vector, String, Dict}` - Class definitions to be attributed to the underlying input tag ex. `my-special-class` `inputclass!="{ 'my-special-class': <condition> }"`
       * `inputstyle::Union{Vector, String, Dict}` - Style definitions to be attributed to the underlying input tag ex. `background-color: #ff0000` `inputstyle!="{ backgroundColor: '#ff0000' }"`
+10. Virtual-scroll
+      * `virtualscrollslicesize::Union{Int, String}` - Minimum number of items to render in the virtual list ex. `virtualscrollslicesize="60"` `30`
+      * `virtualscrollsliceratiobefore::Union{Int, String}` - Ratio of number of items in visible zone to render before it ex. `virtualscrollsliceratiobefore="30"` `30`
+      * `virtualscrollsliceratioafter::Union{Int, String}` - Ratio of number of items in visible zone to render after it ex. `virtualscrollsliceratioafter="0.3"`
+      * `virtualscrollitemsize::Union{Int, String}` - Default size in pixels (height if vertical, width if horizontal) of an item; This value is used for rendering the initial list; Try to use a value close to the minimum size of an item  ex. `virtualscrollitemsize="48"`
+      * `virtualscrollstickysizestart::Union{Int, String}` - Size in pixels (height if vertical, width if horizontal) of the sticky part (if using one) at the start of the list; A correct value will improve scroll precision ex. `0` `virtualscrollstickysizestart="23`
+      * `virtualscrollstickysizeend::Union{Int, String}` - Size in pixels (height if vertical, width if horizontal) of the sticky part (if using one) at the end of the list; A correct value will improve scroll precision ex. `0`
+      * `tablecolspan::Union{Int, String}` - The number of columns in the table (you need this if you use table-layout: fixed) ex. `tablecolspan="3"`
 """
 function select(fieldname::Symbol,
                 args...;
