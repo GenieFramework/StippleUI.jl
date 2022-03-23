@@ -90,7 +90,7 @@ Usage for formating columns
 julia> import Stipple.opts
 julia> df = DataFrame(a = sin.(-π:π/10:π), b = cos.(-π:π/10:π), c = string.(rand(21)))
 julia> dt = DataTable(df)
-julia> dt.opts.columnspecs[r"^(a|b)$"] = opts(format = jsfunction(raw"(val, row) => `${100*val.toFixed(3)}%`"))
+julia> dt.opts.columnspecs[r"^(a|b)\$"] = opts(format = jsfunction(raw"(val, row) => `\${100*val.toFixed(3)}%`"))
 julia> model.table[] = dt 
 ```
 """
@@ -107,8 +107,18 @@ Base.@kwdef mutable struct DataTable{T<:DataFrames.DataFrame}
   opts::DataTableOptions = DataTableOptions()
 end
 
+
 """
-    DataTable(data::T, opts::DataTableOptions = DataTableOptions())
+    DataTable(data::T<:DataFrames.DataFrame, opts::DataTableOptions)
+    
+----------
+# Examples
+----------
+
+```julia-repl
+julia> df = DataFrame(a = sin.(-π:π/10:π), b = cos.(-π:π/10:π), c = string.(rand(21)))
+julia> dt = DataTable(df)
+```
 """
 function DataTable(data::T) where {T<:DataFrames.DataFrame}
   DataTable(data, DataTableOptions())
@@ -120,6 +130,13 @@ function active_columns(t::T)::Vector{Column} where {T<:DataTable}
   t.opts.columns !== nothing ? t.opts.columns : [Column(string(name)) for name in DataFrames.names(t.data)]
 end
 
+"""
+    columns(t::T)::Vector{Column} where {T<:DataTable}
+
+```julia-repl
+julia> columns = [Column("x1"), Column("x2", align = :right)]
+```
+"""
 function columns(t::T)::Vector{<:Union{Column, Dict}} where {T<:DataTable}
   columns = active_columns(t) |> copy
 
@@ -170,6 +187,29 @@ function data(t::T, fieldname::Symbol; datakey = "data_$fieldname", columnskey =
   )
 end
 
+"""
+    table(fieldnmae::Symbol, args...; kwargs...)
+
+
+----------
+# Examples
+----------
+
+### Model
+
+```julia-repl
+julia> @reactive mutable struct TableModel <: ReactiveModel
+          data::R{DataTable} = DataTable(DataFrame(rand(100000,2), ["x1", "x2"]), DataTableOptions(columns = [Column("x1"), Column("x2", align = :right)]))
+          data_pagination::DataTablePagination = DataTablePagination(rows_per_page=50)
+       end
+```
+
+### View
+```julia-repl
+julia> table(title="Random numbers", :data; pagination=:data_pagination, style="height: 350px;") 
+```
+
+"""
 function table( fieldname::Symbol,
                                     args...;
                                     rowkey::String = ID,
