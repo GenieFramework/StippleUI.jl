@@ -61,12 +61,12 @@ julia> range(18:1:90,
 3. General
       * `tabindex::Union{Int, String}` - Tabindex HTML attribute value ex. `0` `100`
 4. Labels
-      * `leftlabelcolor::String` - Color name for left label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `leftlabeltextcolor::String` - Color name for left label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `rightlabelcolor::String` - Color name for right label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `rightlabeltextcolor::String` - Color name for right label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `leftlabelvalue::Union{String, Int}` - Override default label for min value ex. `leftlabelvalue="model.min + 'px'"`
-      * `rightlabelvalue::Union{String, Int}` - Override default label for max value ex. `rightlabelvalue="model.max + 'px'"`
+      * `labelcolorleft::String` - Color name for left label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labeltextcolorleft::String` - Color name for left label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labelcolorright::String` - Color name for right label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labeltextcolorright::String` - Color name for right label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labelvalueleft::Union{String, Int}` - Override default label for min value ex. `labelvalueleft="model.min + 'px'"`
+      * `labelvalueright::Union{String, Int}` - Override default label for max value ex. `labelvalueright="model.max + 'px'"`
 5. Model
       * `range::AbstractRange{T}` - The range of values to select from min:step:max
 6. State
@@ -126,12 +126,12 @@ julia> slider(1:5:100)
 3. General
       * `tabindex::Union{Int, String}` - Tabindex HTML attribute value ex. `0` `100`
 4. Labels
-      * `leftlabelcolor::String` - Color name for left label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `leftlabeltextcolor::String` - Color name for left label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `rightlabelcolor::String` - Color name for right label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `rightlabeltextcolor::String` - Color name for right label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `leftlabelvalue::Union{String, Int}` - Override default label for min value ex. `leftlabelvalue="model.min + 'px'"`
-      * `rightlabelvalue::Union{String, Int}` - Override default label for max value ex. `rightlabelvalue="model.max + 'px'"`
+      * `labelcolorleft::String` - Color name for left label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labeltextcolorleft::String` - Color name for left label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labelcolorright::String` - Color name for right label background from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labeltextcolorright::String` - Color name for right label text from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `labelvalueleft::Union{String, Int}` - Override default label for min value ex. `labelvalueleft="model.min + 'px'"`
+      * `labelvalueright::Union{String, Int}` - Override default label for max value ex. `labelvalueright="model.max + 'px'"`
 5. Model
       * `range::AbstractRange{T}` - The range of values to select from min:step:max
 6. State
