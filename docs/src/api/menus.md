@@ -2,9 +2,6 @@
 CurrentModule = Menus
 ```
 
-```@contents
-```
-
 ```@docs
 menu
 ```

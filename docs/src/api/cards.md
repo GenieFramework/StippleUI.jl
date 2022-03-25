@@ -2,9 +2,6 @@
 CurrentModule = Cards
 ```
 
-```@contents
-```
-
 ```@docs
 card
 card_section

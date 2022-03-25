@@ -2,9 +2,6 @@
 CurrentModule = Spaces
 ```
 
-```@contents
-```
-
 ```@docs
 space
 ```

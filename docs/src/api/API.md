@@ -2,9 +2,6 @@
 CurrentModule = API
 ```
 
-```@contents
-```
-
 ```@docs
 ATTRIBUTES_MAPPINGS
 attributes

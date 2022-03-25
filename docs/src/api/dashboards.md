@@ -2,9 +2,6 @@
 CurrentModule = Dashboards
 ```
 
-```@contents
-```
-
 ```@docs
 dashboard
 ```

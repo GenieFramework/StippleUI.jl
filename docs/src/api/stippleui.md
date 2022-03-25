@@ -2,9 +2,6 @@
 CurrentModule = StippleUI
 ```
 
-```@contents
-```
-
 ```@docs
 theme
 deps

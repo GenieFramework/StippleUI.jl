@@ -36,6 +36,7 @@ makedocs(
           "PopupProxies" => "api/popupproxies.md",
           "Radios" => "api/radios.md",
           "Ranges" => "api/ranges.md",
+          "Ratings" => "api/ratings.md",
           "ScrollAreas" => "api/scrollareas.md",
           "Selects" => "api/selects.md",
           "Separators" => "api/separators.md",
