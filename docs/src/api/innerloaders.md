@@ -2,9 +2,6 @@
 CurrentModule = InnerLoaders
 ```
 
-```@contents
-```
-
 ```@docs
 innerloader
 ```

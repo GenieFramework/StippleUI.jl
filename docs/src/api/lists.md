@@ -2,9 +2,6 @@
 CurrentModule = Lists
 ```
 
-```@contents
-```
-
 ```@docs
 list
 item

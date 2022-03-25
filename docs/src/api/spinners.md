@@ -2,9 +2,6 @@
 CurrentModule = Spinners
 ```
 
-```@contents
-```
-
 ```@docs
 spinner
 ```

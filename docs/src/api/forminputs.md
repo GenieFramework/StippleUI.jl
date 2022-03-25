@@ -2,9 +2,6 @@
 CurrentModule = FormInputs
 ```
 
-```@contents
-```
-
 ```@docs
 textfield
 numberfield

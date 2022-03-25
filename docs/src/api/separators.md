@@ -2,9 +2,6 @@
 CurrentModule = Separators
 ```
 
-```@contents
-```
-
 ```@docs
 separator
 ```

@@ -2,9 +2,6 @@
 CurrentModule = Icons
 ```
 
-```@contents
-```
-
 ```@docs
 icon
 ```

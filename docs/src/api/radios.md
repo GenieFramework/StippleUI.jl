@@ -2,9 +2,6 @@
 CurrentModule = Radios
 ```
 
-```@contents
-```
-
 ```@docs
 radio
 ```

@@ -2,9 +2,6 @@
 CurrentModule = Tables
 ```
 
-```@contents
-```
-
 ```@docs
 Column
 DataTablePagination

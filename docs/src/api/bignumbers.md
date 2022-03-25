@@ -2,9 +2,6 @@
 CurrentModule = BigNumbers
 ```
 
-```@contents
-```
-
 ```@docs
 bignumber
 ```
