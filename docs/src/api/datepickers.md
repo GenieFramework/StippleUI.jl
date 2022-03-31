@@ -2,9 +2,6 @@
 CurrentModule = DatePickers
 ```
 
-```@contents
-```
-
 ```@docs
 DateRange
 datepicker

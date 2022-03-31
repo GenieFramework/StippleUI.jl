@@ -2,9 +2,6 @@
 CurrentModule = Selects
 ```
 
-```@contents
-```
-
 ```@docs
 select
 ```

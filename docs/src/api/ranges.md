@@ -2,9 +2,6 @@
 CurrentModule = Ranges
 ```
 
-```@contents
-```
-
 ```@docs
 RangeData
 Base.range

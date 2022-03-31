@@ -2,9 +2,6 @@
 CurrentModule = Editors
 ```
 
-```@contents
-```
-
 ```@docs
 editor
 ```

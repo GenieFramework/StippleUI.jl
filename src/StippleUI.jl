@@ -9,7 +9,7 @@ const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 #===#
 
-function theme(; twbpatch::Bool = false) :: String
+function theme(; twbpatch::Bool = false) :: Vector{String}
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")) do
       Genie.Renderer.WebRenderable(
@@ -26,15 +26,15 @@ function theme(; twbpatch::Bool = false) :: String
     end
   end
 
-  string(
+  [
     Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")),
     (twbpatch ? Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch")) : "")
-  )
+  ]
 end
 
 #===#
 
-function deps() :: String
+function deps() :: Vector{String}
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min")) do
       Genie.Renderer.WebRenderable(
@@ -43,7 +43,9 @@ function deps() :: String
     end
   end
 
-  Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min"))")
+  [
+    Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min"))")
+  ]
 end
 
 #===#
@@ -59,7 +61,6 @@ include("Buttons.jl")
 include("Cards.jl")
 include("Checkboxes.jl")
 include("Chips.jl")
-include("Dashboards.jl")
 include("DatePickers.jl")
 include("Dialogs.jl")
 include("Drawers.jl")
@@ -76,8 +77,10 @@ include("Knobs.jl")
 include("Layouts.jl")
 include("Lists.jl")
 include("Menus.jl")
+include("Notifications.jl")
 include("Radios.jl")
 include("Ranges.jl")
+include("Ratings.jl")
 include("ScrollAreas.jl")
 include("Selects.jl")
 include("Separators.jl")
@@ -104,7 +107,6 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Cards
 @reexport using .Checkboxes
 @reexport using .Chips
-@reexport using .Dashboards
 @reexport using .DatePickers
 @reexport using .Dialogs
 @reexport using .Drawers
@@ -123,6 +125,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Menus
 @reexport using .Radios
 @reexport using .Ranges
+@reexport using .Ratings
 @reexport using .PopupProxies
 @reexport using .ScrollAreas
 @reexport using .Selects

@@ -2,9 +2,6 @@
 CurrentModule = Chips
 ```
 
-```@contents
-```
-
 ```@docs
 chip
 ```

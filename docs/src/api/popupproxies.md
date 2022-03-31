@@ -2,9 +2,6 @@
 CurrentModule = PopupProxies
 ```
 
-```@contents
-```
-
 ```@docs
 popup_proxy
 PopupProxy

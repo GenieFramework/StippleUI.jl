@@ -2,9 +2,6 @@
 CurrentModule = Buttons
 ```
 
-```@contents
-```
-
 ```@docs
 btn
 Btn
