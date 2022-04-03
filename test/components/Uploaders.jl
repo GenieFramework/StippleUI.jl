@@ -2,12 +2,12 @@ module Uploaders
 
 using Stipple, StippleUI
 
-@reactive mutable struct Model <: ReactiveModel
+@reactive mutable struct UploaderModel <: ReactiveModel
 end
 
-function ui(model)
+function ui(uploader_model)
   page(
-    form_model,
+    uploader_model,
     title = "Form Components",
     class = "q-pa-md",
     [
@@ -17,6 +17,10 @@ function ui(model)
     ])
 end
 
+function factory()
+  uploader_model = UploaderModel |> init
+  uploader_model
+end
 
 
 end
