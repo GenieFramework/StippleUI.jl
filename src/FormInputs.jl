@@ -56,7 +56,7 @@ julia> textfield("What's your name *", :name, name = "name", @iif(:warin), :fill
        * `stacklabel::Bool` - Label will be always shown above the field regardless of field content (if any)
        * `hint::String` - Helper (hint) text which gets placed below your wrapped form component ex. `Fill in between 3 and 12 characters`
        * `hidehint::Bool` - Hide the helper (hint) text when field doesn't have focus
-       * `prefix::String` - Prefix ex. `$`
+       * `prefix::String` - Prefix ex. `\$`
        * `suffix::String` - Suffix ex. `@gmail.com`
        * `loading::Bool` - Signals the user a process is in progress by displaying a spinner; Spinner can be customized by using the 'loading' slot.
        * `clearable::Bool` - Appends clearable icon when a value (not undefined or null) is set; When clicked, model becomes null
