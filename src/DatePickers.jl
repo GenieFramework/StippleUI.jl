@@ -1,12 +1,3 @@
-"""
-`DatePicker` provides UI elements for picking a date, multiple dates, a range of dates,
-  or multiple dates ranges. The `DatePicker` module automatically exports `Dates`.
-
-## Example
-```julia
-
-```
-"""
 module DatePickers
 
 using Genie, Stipple, StippleUI, StippleUI.API

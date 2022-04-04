@@ -11,7 +11,8 @@ register_normal_element("q__card__section", context = @__MODULE__)
 register_normal_element("q__card__actions", context = @__MODULE__)
 
 """
-    card()
+      card(args...; kwargs...)
+
 `Card` component is a great way to display important pieces of grouped content. The `Card` component is intentionally lightweight and essentially a containing element that is capable of “hosting” any other component that is appropriate.
 
 -----------
@@ -40,10 +41,13 @@ julia> card(class="my-card", [
 -----------
 # Arguments
 -----------
-* `dark::Bool` - Notify the component that the background is a dark color
-* `square::Bool` - Removes border-radius so borders are squared
-* `flat::Bool` - Applies a 'flat' design (no default shadow)
-* `bordered::Bool` - Applies a default border to the component
+1. Content
+       * `tag::String` - HTML tag to render default `div` ex. `div` `form`
+2. Style
+       * `dark::Bool` - Notify the component that the background is a dark color
+       * `square::Bool` - Removes border-radius so borders are squared
+       * `flat::Bool` - Applies a 'flat' design (no default shadow)
+       * `bordered::Bool` - Applies a default border to the component
 
 """
 function card(args...; kwargs...)
@@ -51,7 +55,7 @@ function card(args...; kwargs...)
 end
 
 """
-    card_section()
+      card_section(args...; kwargs...)
 ----------
 # Examples
 ----------
