@@ -37,7 +37,7 @@ julia> checkbox(label = "Apples", fieldname = :valone, dense = true, size = "xl"
 1. Behaviour
       * `name::String` - Used to specify the name of the control; Useful if dealing with forms submitted directly to a URL
       * `indeterminatevalue::Union{String, Float64, Int, Bool}` - What model value should be considered as 'indeterminate'?
-      * `toggleorder::String` - Determines toggle order of the two states ('t' stands for state of true, 'f' for state of false); If 'toggle-indeterminate' is true, then the order is: indet -> first state -> second state -> indet (and repeat), otherwise: indet -> first state -> second state -> first state -> second state -> ... ex. `tf` `ft`
+      * `toggleorder::String` - Determines toggle order of the two states ('t' stands for state of true, 'f' for state of false); If 'toggle-indeterminate' is true, then the order is: indet -> first state -> second state -> indet (and repeat), otherwise: indet -> first state -> second state -> first state -> second state -> ... ex. `"tf"` `"ft"`
       * `toggleindeterminate::Bool` - When user clicks/taps on the component, should we toggle through the indeterminate state too?
       * `keepcolor::Bool` - Should the color (if specified any) be kept when the component is unticked/ off?
 2. General
@@ -53,8 +53,8 @@ julia> checkbox(label = "Apples", fieldname = :valone, dense = true, size = "xl"
 5. State
       * `disable::Bool` - Put component in disabled mode
 6. Style
-      * `size::String`- Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl) ex. `16px` `2rem` `xs` `md`
-      * `color::String` - Color name for component from the [Color Palette](https://quasar.dev/style/color-palette) eg. `primary` `teal-10`
+      * `size::String`- Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl) ex. `"16px"` `"2rem"` `"xs"` `"md"`
+      * `color::String` - Color name for component from the [Color Palette](https://quasar.dev/style/color-palette) eg. `"primary"` `"teal-10"`
       * `dark::Bool` - Notify the component that the background is a dark color
       * `dense::Bool` - Dense mode; occupies less space
 """

@@ -49,8 +49,8 @@ julia> Html.div(class="q-pa-md q-gutter-sm", [
       * `noesc::Bool` - User cannot dismiss Dialog by hitting ESC key; No need to set it if 'persistent' property is also set
       * `nobackdrop::Bool` - User cannot dismiss Dialog by clicking outside of it; No need to set it if 'persistent' property is also set
       * `autoclose::Bool` - Any click/tap inside of the dialog will close it
-      * `transitionshow::String` - One of the [embedded transitions](https://v1.quasar.dev/options/transitions) eg. `fade`, `slide-down`
-      * `transitionhide::String` - One of the [embedded transitions](https://v1.quasar.dev/options/transitions) eg. `fade`, `slide-down`
+      * `transitionshow::String` - One of the [embedded transitions](https://v1.quasar.dev/options/transitions) eg. `"fade"`, `"slide-down"`
+      * `transitionhide::String` - One of the [embedded transitions](https://v1.quasar.dev/options/transitions) eg. `"fade"`, `"slide-down"`
       * `norefocus::Bool` - (Accessibility) When Dialog gets hidden, do not refocus on the DOM element that previously had focus
       * `nofocus::Bool` - (Accessibility) When Dialog gets shown, do not switch focus on it
 2. Content
@@ -58,10 +58,10 @@ julia> Html.div(class="q-pa-md q-gutter-sm", [
       * `maximized::Bool` - Put Dialog into maximized mode
       * `fullwidth::Bool` - Dialog will try to render with same width as the window
       * `fullheight::Bool` - Dialog will try to render with same height as the window
-      * `position::String` - Stick dialog to one of the sides (top, right, bottom or left)
+      * `position::String` - Stick dialog to one of the sides ("top", "right", "bottom" or "left")
 3. Style
-      * `contentclass::Union{Array, String}` - Class definitions to be attributed to the content eg. `my-special-class` `:content-class="{ 'my-special-class': <condition> }"`
-      * `contentstyle::Union{Array, String}` - Style definitions to be attributed to the content eg. `background-color: #ff0000` `:content-style="{ color: '#ff0000' }"`
+      * `contentclass::Union{Array, String}` - Class definitions to be attributed to the content eg. `"my-special-class"` `:content-class="{ 'my-special-class': <condition> }"`
+      * `contentstyle::Union{Array, String}` - Style definitions to be attributed to the content eg. `"background-color: #ff0000"` `:content-style="{ color: '#ff0000' }"`
       * `square::Bool` - Forces content to have squared borders
 """
 function dialog(fieldname::Symbol, args...; kwargs...)
