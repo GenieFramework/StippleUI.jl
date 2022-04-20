@@ -7,9 +7,7 @@ using Stipple.Reexport
 
 const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
-#===#
-
-function theme(; twbpatch::Bool = false) :: Vector{String}
+function deps_routes(; twbpatch::Bool = false) :: Nothing
   if ! Genie.Assets.external_assets(assets_config)
     Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")) do
       Genie.Renderer.WebRenderable(
@@ -26,6 +24,20 @@ function theme(; twbpatch::Bool = false) :: Vector{String}
     end
   end
 
+  if ! Genie.Assets.external_assets(assets_config)
+    Genie.Router.route(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min")) do
+      Genie.Renderer.WebRenderable(
+        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.min")),
+        :javascript) |> Genie.Renderer.respond
+    end
+  end
+
+  nothing
+end
+
+#===#
+
+function theme(; twbpatch::Bool = false) :: Vector{String}
   [
     Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")),
     (twbpatch ? Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch")) : "")
@@ -35,14 +47,6 @@ end
 #===#
 
 function deps() :: Vector{String}
-  if ! Genie.Assets.external_assets(assets_config)
-    Genie.Router.route(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min")) do
-      Genie.Renderer.WebRenderable(
-        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.min")),
-        :javascript) |> Genie.Renderer.respond
-    end
-  end
-
   [
     Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min"))")
   ]
@@ -170,8 +174,9 @@ end
 #===#
 
 function __init__()
+  deps_routes()
   push!(Stipple.Layout.THEMES, theme)
-  Stipple.DEPS[@__MODULE__] = deps
+  Stipple.deps!(@__MODULE__, deps)
 end
 
 end
