@@ -8,7 +8,7 @@ export checkbox
 register_normal_element("q__checkbox", context = @__MODULE__)
 
 """
-    checkbox(label, fieldname, args...; kwargs...)
+      checkbox(label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
     
 The `checkbox` component is another basic element for user input. You can use this to supply a way for the user to toggle an option.
 
