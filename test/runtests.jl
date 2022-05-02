@@ -37,6 +37,6 @@ using SafeTestsets, Test
     x = "Hello"
 
     # include("tests_buttons.jl")
-    t1 = `julia16 --project -e 'using Pkg; include("tests_buttons.jl")' $x` |> run
+    t1 = `julia --project -e 'using Pkg; include("tests_buttons.jl")' $x` |> run
   end
 end
