@@ -3,7 +3,7 @@ module API
 using Stipple, StippleUI, Colors
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export attributes, quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors, kw, @kw
+export quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors, kw, @kw
 
 const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "autoclose" => "auto-close",
@@ -181,40 +181,15 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "yearsinmonthview" => "years-in-month-view"
 );
 
-
-function attributes(kwargs::Union{Vector{<:Pair}, Base.Iterators.Pairs, Dict},
-                    mappings::Dict{String,String} = Dict{String,String}())::NamedTuple
-
-  attrs = Stipple.OptDict()
-  mapped = false
-
-  for (k,v) in kwargs
-    v === nothing && continue
-    mapped = false
-
-    if haskey(mappings, string(k))
-      k = mappings[string(k)]
-    end
-
-    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") &&
-      ! ( startswith(string(k), "v-") || startswith(string(k), "v" * Genie.config.html_parser_char_dash) ) ? ":" : ""), "$k") |> Symbol
-    attr_val = isa(v, Symbol) && ! startswith(string(k), ":") ? Stipple.julia_to_vue(v) : v
-
-    attrs[attr_key] = attr_val
-  end
-
-  NamedTuple(attrs)
-end
-
-function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict}, 
+function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict},
   attributesmappings::Dict{String,String} = Dict{String,String}();
   merge::Bool = true) where X
-  
-  attributes(kwargs, merge ? ( isempty(attributesmappings) ? ATTRIBUTES_MAPPINGS : Base.merge(ATTRIBUTES_MAPPINGS, attributesmappings) ) : attributesmappings)
+
+  Stipple.attributes(kwargs, merge ? ( isempty(attributesmappings) ? ATTRIBUTES_MAPPINGS : Base.merge(ATTRIBUTES_MAPPINGS, attributesmappings) ) : attributesmappings)
 end
 
 macro kw(kwargs)
-  :( attributes($(esc(kwargs)), ATTRIBUTES_MAPPINGS) )
+  :( Stipple.attributes($(esc(kwargs)), ATTRIBUTES_MAPPINGS) )
 end
 
 function q__elem(f::Function, elem::Symbol, args...; attrs...) :: HTMLString
