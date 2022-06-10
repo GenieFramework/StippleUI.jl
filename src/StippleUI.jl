@@ -5,7 +5,7 @@ import Stipple
 
 using Stipple.Reexport
 
-assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
+const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 function deps_routes(; twbpatch::Bool = false) :: Nothing
   if ! Genie.Assets.external_assets(assets_config)
