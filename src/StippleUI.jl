@@ -174,10 +174,9 @@ end
 #===#
 
 function __init__()
+  deps_routes()
   push!(Stipple.Layout.THEMES, theme)
   Stipple.deps!(@__MODULE__, deps)
 end
-
-deps_routes()
 
 end
