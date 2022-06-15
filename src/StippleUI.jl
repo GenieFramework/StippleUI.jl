@@ -94,6 +94,7 @@ include("Tables.jl")
 include("Toggles.jl")
 include("Tooltips.jl")
 include("Uploaders.jl")
+include("Videos.jl")
 
 
 #===#
@@ -140,6 +141,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Toggles
 @reexport using .Tooltips
 @reexport using .Uploaders
+@reexport using .Videos
 
 export page_container # from Layouts
 
