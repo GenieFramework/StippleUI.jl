@@ -19,7 +19,7 @@ function ui(video_model)
     title = "Video Components",
     class = "q-pa-md",
     [
-      video(ratio=:v_ratio, src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=0")
+      video(ratio! =:v_ratio, src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=0")
     ]
   )
 end
