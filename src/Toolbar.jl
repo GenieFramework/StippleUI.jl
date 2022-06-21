@@ -19,15 +19,18 @@ register_normal_element("q__toolbar__title", context = @__MODULE__)
 
 ### View
 ```julia-repl
-julia> 
+julia> toolbar(class="text-primary", [
+          btn(flat=true, round=true, dense=true, icon="menu"),
+          toolbartitle("Toolbar"),
+          btn(flat=true, round=true, dense=true, icon="more_vert")
+       ])
 ```
 
 ----------
 # Arguments
 ----------
 
-1. Behaviour
-      * 
+* `inset::Bool` - Apply an inset to content (useful for subsequent toolbars)
 """
 function toolbar(args...; kwargs...)
   q__toolbar(args...; kw(kwargs)...)
@@ -42,7 +45,7 @@ end
 
 ### View
 ```julia-repl
-julia> 
+julia> toolbartitle("Menu")
 ```
 
 ----------
