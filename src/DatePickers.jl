@@ -14,14 +14,14 @@ register_normal_element("q__date", context = @__MODULE__)
 """
     DateRange
 
-Represents a date interval, between `start` and `stop`, with a 1 day step.
+Represents a date interval, between `from` and `to`, with a 1 day step.
 """
 Base.@kwdef mutable struct DateRange
-  start::Date = today()
-  stop::Date = today()
+  from::Date = today()
+  to::Date = today()
 end
 
-DateRange(dr::StepRange{Date,Day}) = DateRange(dr.start, dr.stop)
+DateRange(dr::StepRange{Date,Day}) = DateRange(dr.from, dr.to)
 
 """
     datepicker()
@@ -133,11 +133,11 @@ function Base.parse(::Type{Date}, d::String) :: Date
 end
 
 function Stipple.render(dr::DateRange, _::Union{Symbol,Nothing} = nothing)
-  Dict(:from => dr.start, :to => dr.stop)
+  Dict(:from => dr.from, :to => dr.to)
 end
 
 function Stipple.render(vdr::Vector{DateRange}, _::Union{Symbol,Nothing} = nothing)
-  [ Dict(:from => dr.start, :to => dr.stop) for dr in vdr ]
+  [ Dict(:from => dr.from, :to => dr.to) for dr in vdr ]
 end
 
 function Base.parse(::Type{DateRange}, d::Dict{String,Any})
