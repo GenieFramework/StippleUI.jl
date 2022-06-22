@@ -4,15 +4,22 @@ import DataFrames
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
-export Column, DataTablePagination, DataTableOptions, DataTable, rowselection, selectrows!
+export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
-
-#===#
+const DataTableSelection = Vector{Dict{String, Any}} 
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
+
+Base.@kwdef struct DataTableWithSelection
+  var""::R{DataTable} = DataTable(DataFrames.DataFrame())
+  _pagination::R{DataTablePagination} = DataTablePagination()
+  _selection::R{DataTableSelection} = DataTableSelection()
+end
+
+#===#
 
 Base.@kwdef mutable struct Column
   name::String
@@ -353,13 +360,13 @@ selectrows!(model, :table, :selection, "b", r"hello|World")
 selectrows!(model, :table, "b", r"hello|World") # assumes the existence of a field `:table_selection`
 ```
 """
-function selectrows!(dt::R{<:DataTable}, dt_selection::R{<:Vector{<:AbstractDict{String}}}, args...)
+function selectrows!(dt::R{<:DataTable}, dt_selection::R, args...)
   dt_selection[] = rowselection(Stipple.Observables.to_value(dt), args...)
 end
 
 function selectrows!(model::ReactiveModel, tablefield::Symbol, selectionfield::Symbol, args...)
   getfield(model, selectionfield)[] =
-      rowselection(Stipple.Observables.to_value(getfield(model, tablefield)), args...)
+    rowselection(Stipple.Observables.to_value(getfield(model, tablefield)), args...)
 end
 
 selectrows!(model::ReactiveModel, tablefield::Symbol, args...) = selectrows!(model, tablefield, Symbol(tablefield, "_selection"), args...)
