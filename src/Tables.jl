@@ -4,15 +4,16 @@ import DataFrames
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
-export Column, DataTablePagination, DataTableOptions, DataTable
+export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
-
-#===#
+const DataTableSelection = Vector{Dict{String, Any}} 
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
+
+#===#
 
 Base.@kwdef mutable struct Column
   name::String
@@ -261,5 +262,121 @@ end
 function Base.parse(::Type{DataTable{DataFrames.DataFrame}}, ::Dict{String,Any})
   # error("Not implemented") # todo implement parser
 end
+
+
+Base.@kwdef struct DataTableWithSelection
+  var""::R{DataTable} = DataTable(DataFrames.DataFrame())
+  _pagination::R{DataTablePagination} = DataTablePagination()
+  _selection::R{DataTableSelection} = DataTableSelection()
+end
+
+Base.getindex(dt::DataTable, args...) = DataTable(dt.data[args...], dt.opts)
+
+Base.getindex(dt::DataTable, row::Int, col) = DataTable(dt.data[[row], col], dt.opts)
+Base.getindex(dt::DataTable, row, col::Int) = DataTable(dt.data[row, col::Int], dt.opts)
+Base.getindex(dt::DataTable, row::Int, col::Int) = DataTable(dt.data[[row], [col]], dt.opts)
+
+
+"""
+    rowselection(dt::DataTable, rows, cols = Colon(), idcolumn = dt.opts.addid ? dt.opts.idcolumn : "__id")
+
+Build a table selection based on row numbers.
+
+Standard behavior of Quasar is to include all columns in the selection.
+
+For large tables it might be sufficient to include only the index, when no other use of the selection value is made.
+This is achieved by setting `cols` to `nothing`
+
+```
+rowselection(dt, 3)
+rowselection(dt, 2:5)
+rowselection(dt, [2, 4, 7])
+rowselection(dt, :, nothing)
+```
+
+"""
+function rowselection(dt::DataTable, rows, cols = Colon(), idcolumn = dt.opts.addid ? dt.opts.idcolumn : "__id")
+  if isnothing(cols)
+      [Dict{String, Any}(union([idcolumn, "__id"]) .=> row) for row in (rows == Colon() ? (1:nrow(dt.data)) : rows)]
+  else
+      dd = Stipple.render(dt[rows, cols], :dt)["data_dt"]
+      setindex!.(dd, rows, "__id")
+      dt.opts.addid && setindex!.(dd, rows, dt.opts.idcolumn)
+      dd |> Vector{Dict{String, Any}}
+  end
+end
+
+"""
+    rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, values, cols = Colon())
+
+Build a table selection based on an index and a value / list of values.
+```
+rowselection(dt, "a", [1, 3])
+rowselection(dt, "a", 2:9)
+```
+"""
+function rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, values, cols = Colon())
+    vals = values isa AbstractString ? [values] : [values...]
+    rows = findall(x -> x ∈ vals, dt.data[:, idcolumn])
+    rowselection(dt, rows, cols)
+end
+
+"""
+    rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, f::Function, cols = Colon())
+
+Build a table selection based on a function.
+```
+rowselection(dt, "a", iseven)
+rowselection(dt, "a", x -> x > 3)
+```
+"""
+function rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, f::Function, cols = Colon())
+    rows = findall(f, dt.data[:, idcolumn])
+    rowselection(dt, rows, cols)
+end
+
+
+"""
+    rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, regex::Regex, cols = Colon())
+
+Build a table selection based on a Regex.
+```
+rowselection(t, "b", r"hello|World")
+```
+"""
+function rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, regex::Regex, cols = Colon())
+    rows = findall(x -> occursin(regex, x), dt.data[:, idcolumn])
+    rowselection(dt, rows, cols)
+end
+
+"""
+    selectrows!(model::ReactiveModel, tablefield::Symbol, selectionfield::Symbol = Symbol(tablefield, "_selection"), args...)
+    selectrows!(dt::R{<:DataTable}, dt_selection::R, args...)
+
+Select table rows of a model based on selection criteria. More information on selection syntax can be found in `rowselection`
+
+```
+@reactive! mutable struct TableDemo <: ReactiveModel
+    @mixin table::TableWithPaginationSelection
+end
+
+model = init(TableDemo)
+model.table[] = DataTable(DataFrame(a = [1, 2, 4, 6, 8, 10], b = ["Hello", "world", ",", "hello", "sun", "!"]))
+
+selectrows!(model, :table, [1, 2, 6]) # assumes the existence of a field `:table_selection`
+selectrows!(model.table, model.table_selection, "b", r"hello|World"i)
+selectrows!(model, :table, :table_selection, "a", iseven)
+```
+"""
+function selectrows!(dt::R{<:DataTable}, dt_selection::R, args...)
+  dt_selection[] = rowselection(Stipple.Observables.to_value(dt), args...)
+end
+
+function selectrows!(model::ReactiveModel, tablefield::Symbol, selectionfield::Symbol, args...)
+  getfield(model, selectionfield)[] =
+    rowselection(Stipple.Observables.to_value(getfield(model, tablefield)), args...)
+end
+
+selectrows!(model::ReactiveModel, tablefield::Symbol, args...) = selectrows!(model, tablefield, Symbol(tablefield, "_selection"), args...)
 
 end
