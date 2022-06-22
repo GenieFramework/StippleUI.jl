@@ -13,12 +13,6 @@ const DataTableSelection = Vector{Dict{String, Any}}
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
-Base.@kwdef struct DataTableWithSelection
-  var""::R{DataTable} = DataTable(DataFrames.DataFrame())
-  _pagination::R{DataTablePagination} = DataTablePagination()
-  _selection::R{DataTableSelection} = DataTableSelection()
-end
-
 #===#
 
 Base.@kwdef mutable struct Column
@@ -267,6 +261,13 @@ end
 
 function Base.parse(::Type{DataTable{DataFrames.DataFrame}}, ::Dict{String,Any})
   # error("Not implemented") # todo implement parser
+end
+
+
+Base.@kwdef struct DataTableWithSelection
+  var""::R{DataTable} = DataTable(DataFrames.DataFrame())
+  _pagination::R{DataTablePagination} = DataTablePagination()
+  _selection::R{DataTableSelection} = DataTableSelection()
 end
 
 Base.getindex(dt::DataTable, args...) = DataTable(dt.data[args...], dt.opts)
