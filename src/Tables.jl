@@ -255,14 +255,18 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp
 end
 
-function Base.parse(::Type{DataTable}, ::Dict{String,Any})
-  # todo: add support
+function Stipple.stipple_parse(::Type{DataFrames.DataFrame}, d::Vector)
+  isempty(d) ? DataFrames.DataFrame() : reduce(vcat, DataFrames.DataFrame.(d))
 end
 
-function Base.parse(::Type{DataTable{DataFrames.DataFrame}}, ::Dict{String,Any})
-  # error("Not implemented") # todo implement parser
+function Stipple.convertvalue(target::R{<:DataTable}, d::AbstractDict)
+  df = Stipple.stipple_parse(DataFrames.DataFrame, d["data_table"])
+  DataTable(df[:, names(df) .!== "__id"], target.opts)
 end
 
+function StippleUI.Tables.DataTableOptions(d::AbstractDict)
+  DataTableOptions(d["addid"], d["idcolumn"], d["columns"], d["columnspecs"])
+end
 
 Base.@kwdef struct DataTableWithSelection
   var""::R{DataTable} = DataTable(DataFrames.DataFrame())
