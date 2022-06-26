@@ -42,7 +42,7 @@ julia> card(class="my-card", [
 # Arguments
 -----------
 1. Content
-       * `tag::String` - HTML tag to render default `div` ex. `div` `form`
+       * `tag::String` - HTML tag to render default `"div"` ex. `"div"` `"form"`
 2. Style
        * `dark::Bool` - Notify the component that the background is a dark color
        * `square::Bool` - Removes border-radius so borders are squared
@@ -73,7 +73,7 @@ julia> card(class="text-white", style="background: radial-gradient(circle, #35a2
 # Arguments
 -----------
 
-* `tag::String` - HTML tag to render ex. `div`, `form`
+* `tag::String` - HTML tag to render ex. `"div"`, `"form"`
 * `horizontal::Bool` - Display a horizontal section (will have no padding and can contain other `card_section`)
 """
 function card_section(args...; kwargs...)
@@ -116,7 +116,7 @@ julia> card(class="my-card bg-secondary text-white", [
 # Arguments
 -----------
 
-* `align::String` - Specify how to align the actions (left, center, right, between, around, evenly, stretch)
+* `align::String` - Specify how to align the actions ("left", "center", "right", "between", "around", "evenly", "stretch")
 * `vertical:Bool` - Display actions one below the other
 """
 function card_actions(args...; kwargs...)

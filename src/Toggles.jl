@@ -38,9 +38,9 @@ julia> toggle("Red", color="red", :selection, val="red")
 ----------
 
 1. Behaviour
-      * `name::String` - Used to specify the name of the control; Useful if dealing with forms submitted directly to a URL ex. `car_id`
-      * `indeterminatevalue::Union{Int, Float64, String, Bool}` - What model value should be considered as 'indeterminate'? default value: `null` ex. `0` `not_answered`
-      * `toggleorder::String` - Determines toggle order of the two states ('t' stands for state of true, 'f' for state of false); If 'toggle-indeterminate' is true, then the order is: indet -> first state -> second state -> indet (and repeat), otherwise: indet -> first state -> second state -> first state -> second state -> ... default `tf` ex. `tf` `ft`
+      * `name::String` - Used to specify the name of the control; Useful if dealing with forms submitted directly to a URL ex. `"car_id"`
+      * `indeterminatevalue::Union{Int, Float64, String, Bool}` - What model value should be considered as 'indeterminate'? default value: `null` ex. `0` `"not_answered"`
+      * `toggleorder::String` - Determines toggle order of the two states ('t' stands for state of true, 'f' for state of false); If 'toggle-indeterminate' is true, then the order is: indet -> first state -> second state -> indet (and repeat), otherwise: indet -> first state -> second state -> first state -> second state -> ... default `"tf"` ex. `"tf"` `"ft"`
       * `toggleindeterminate::Bool` - When user clicks/taps on the component, should we toggle through the indeterminate state too?
       * `keepcolor::Bool` - Should the color (if specified any) be kept when the component is unticked/ off?
 2. Content

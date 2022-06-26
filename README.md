@@ -1,4 +1,4 @@
-# StippleUI
+# StippleUI [![Docs](https://img.shields.io/badge/stippleui-docs-greenyellow)](https://www.genieframework.com/docs/)
 
 StippleUI is a library of reactive UI elements for [Stipple.jl](https://github.com/GenieFramework/Stipple.jl).
 

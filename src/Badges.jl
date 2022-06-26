@@ -39,12 +39,12 @@ julia> Html.div("Badge", class="text-h6", [
       * `floating::Bool` - Tell `badge` if it should float to the top right side of the relative positioned parent element or not
       * `transparent::Bool` - Applies a 0.8 opacity; Useful especially for floating `badge`
       * `multiline::Bool` - Content can wrap to multiple lines
-      * `label::Union{String, Int}` - Badge's content as string; overrides default slot if specified ex. `John Doe` `22`
+      * `label::Union{String, Int}` - Badge's content as string; overrides default slot if specified ex. `"John Doe"` `22`
       * `align::String` - Sets vertical-align CSS attribute
       * `outline::Bool` - Use 'outline' design (colored text and borders only)
 2. Style
-      * `color::String` - Color name for component from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
-      * `textcolor::String` - Overrides text color (if needed); Color name from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
+      * `color::String` - Color name for component from the [Color Palette](https://quasar.dev/style/color-palette) ex. `"primary"` `"teal-10"`
+      * `textcolor::String` - Overrides text color (if needed); Color name from the [Color Palette](https://quasar.dev/style/color-palette) ex. `"primary"` `"teal-10"`
       * `rounded::Bool` - Makes a rounded shaped badge
 """
 function badge( fieldname::Union{Symbol,String,Nothing} = nothing,
