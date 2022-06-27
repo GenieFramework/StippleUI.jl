@@ -91,6 +91,7 @@ include("Separators.jl")
 include("Skeletons.jl")
 include("Spaces.jl")
 include("Spinners.jl")
+include("Splitters.jl")
 include("Tables.jl")
 include("TabPanels.jl")
 include("Tabs.jl")
@@ -141,6 +142,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Skeletons
 @reexport using .Spaces
 @reexport using .Spinners
+@reexport using .Splitters
 @reexport using .Tables
 @reexport using .TabPanels
 @reexport using .Tabs
