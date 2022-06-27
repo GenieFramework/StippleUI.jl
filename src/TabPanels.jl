@@ -19,12 +19,34 @@ register_normal_element("q__tab__panels", context = @__MODULE__)
 ### Model
 
 ```julia-repl
-julia> 
+julia> @reactive mutable struct TabPanelModel <: ReactiveModel
+            gpanel::R{String} = "panel"
+       end
 ```
 
 ### View
 ```julia-repl
-julia> 
+julia> Html.div(class="q-pa-md", [
+          Html.div(class="q-gutter-y-md", style="max-width: 350px", [
+             tabpanelgroup(:gpanel, animated=true, swipeable=true, infinite=true,
+                   class="bg-purple text-white shadow-2 rounded-borders", [
+                   tabpanel("Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit.", name="mails", [
+                   Html.div("Mails", class="text-h6")
+             ]),
+            
+             tabpanel("Lorem ipsum dolor sit amet consectetur
+                  adipisicing elit.", name="alarms", [
+                        Html.div("Alarms", class="text-h6")
+             ]),
+
+             tabpanel("Lorem ipsum dolor sit amet consectetur
+                  adipisicing elit.", name="movies", [
+                        Html.div("Movies", class="text-h6")
+                  ]),
+             ])
+          ])
+       ])
 ```
 
 ----------
