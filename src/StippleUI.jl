@@ -97,9 +97,10 @@ include("TabPanels.jl")
 include("Tabs.jl")
 include("Timelines.jl")
 include("Toggles.jl")
-include("Toolbar.jl")
+include("Toolbars.jl")
 include("Tooltips.jl")
 include("Uploaders.jl")
+include("Videos.jl")
 
 
 #===#
@@ -149,9 +150,10 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Tabs
 @reexport using .Timelines
 @reexport using .Toggles
-@reexport using .Toolbar
+@reexport using .Toolbars
 @reexport using .Tooltips
 @reexport using .Uploaders
+@reexport using .Videos
 
 export page_container # from Layouts
 

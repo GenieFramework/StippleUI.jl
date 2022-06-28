@@ -1,4 +1,4 @@
-module Toolbar
+module Toolbars
 
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element

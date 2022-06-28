@@ -11,7 +11,7 @@ makedocs(
         "Home" => "index.md",
         "StippleUI API" => [
           "API" => "api/API.md",
-          "Avatars" => "api/Avatars.md",
+          "Avatars" => "api/avatars.md",
           "Badges" => "api/badges.md",
           "Banners" => "api/banners.md",
           "BigNumbers" => "api/bignumbers.md",
