@@ -9,7 +9,7 @@ export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelect
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
-const DataTableSelection = Vector{Dict{String, Any}} 
+const DataTableSelection = Vector{Dict{String, Any}}
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
@@ -50,13 +50,17 @@ function Column(name::String; args...)
   Column(name = name; args...)
 end
 
+function Column(names::Vector{String}) :: Vector{Column}
+  Column[Column(name) for name in names]
+end
+
 function Base.Symbol(v::Vector{Column}) :: Vector{Symbol}
   [Symbol(c.name) for c in v]
 end
 
 """
     DataTablePagination(sort_by::Symbol, descending::Bool, page::Int, row_per_page::Int)
-    
+
 ----------
 # Examples
 ----------
@@ -74,7 +78,7 @@ end
 
 """
     DataTableOptions(addid::Bool, idcolumn::String, columns::Union{Vector{Column},Nothing}, columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}})
-    
+
 ----------
 # Examples
 ----------
@@ -92,7 +96,7 @@ julia> import Stipple.opts
 julia> df = DataFrame(a = sin.(-π:π/10:π), b = cos.(-π:π/10:π), c = string.(rand(21)))
 julia> dt = DataTable(df)
 julia> dt.opts.columnspecs[r"^(a|b)\$"] = opts(format = jsfunction(raw"(val, row) => `\${100*val.toFixed(3)}%`"))
-julia> model.table[] = dt 
+julia> model.table[] = dt
 ```
 """
 Base.@kwdef mutable struct DataTableOptions
@@ -111,7 +115,7 @@ end
 
 """
     DataTable(data::T<:DataFrames.DataFrame, opts::DataTableOptions)
-    
+
 ----------
 # Examples
 ----------
@@ -207,7 +211,7 @@ julia> @reactive mutable struct TableModel <: ReactiveModel
 
 ### View
 ```julia-repl
-julia> table(title="Random numbers", :data; pagination=:data_pagination, style="height: 350px;") 
+julia> table(title="Random numbers", :data; pagination=:data_pagination, style="height: 350px;")
 ```
 
 """

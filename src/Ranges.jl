@@ -10,8 +10,8 @@ export range, RangeData, slider
 register_normal_element("q__range", context = @__MODULE__)
 register_normal_element("q__slider", context = @__MODULE__)
 
-Base.@kwdef mutable struct RangeData{T}
-  range::UnitRange{T}
+Base.@kwdef mutable struct RangeData{T<:AbstractRange}
+  range::T
 end
 
 """
