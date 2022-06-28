@@ -88,10 +88,16 @@ include("Ratings.jl")
 include("ScrollAreas.jl")
 include("Selects.jl")
 include("Separators.jl")
+include("Skeletons.jl")
 include("Spaces.jl")
 include("Spinners.jl")
+include("Splitters.jl")
 include("Tables.jl")
+include("TabPanels.jl")
+include("Tabs.jl")
+include("Timelines.jl")
 include("Toggles.jl")
+include("Toolbar.jl")
 include("Tooltips.jl")
 include("Uploaders.jl")
 
@@ -134,10 +140,16 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .ScrollAreas
 @reexport using .Selects
 @reexport using .Separators
+@reexport using .Skeletons
 @reexport using .Spaces
 @reexport using .Spinners
+@reexport using .Splitters
 @reexport using .Tables
+@reexport using .TabPanels
+@reexport using .Tabs
+@reexport using .Timelines
 @reexport using .Toggles
+@reexport using .Toolbar
 @reexport using .Tooltips
 @reexport using .Uploaders
 
