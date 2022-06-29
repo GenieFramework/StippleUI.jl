@@ -3,5 +3,5 @@ CurrentModule = Splitters
 ```
 
 ```@docs
-splitters
+splitter
 ```
