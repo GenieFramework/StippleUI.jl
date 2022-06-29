@@ -10,8 +10,12 @@ export range, RangeData, slider
 register_normal_element("q__range", context = @__MODULE__)
 register_normal_element("q__slider", context = @__MODULE__)
 
-Base.@kwdef mutable struct RangeData{T<:AbstractRange}
-  range::T
+# we have to use UnitRange because Quasar does not send back the step so we always
+# end up with a UnitRange from Quasar
+# this means that we need to use UnitRange on the Julia side and do the stepping in Quasar
+# so no StepRange is allowed here
+Base.@kwdef mutable struct RangeData{T}
+  range::UnitRange{T}
 end
 
 """
