@@ -3,5 +3,5 @@ CurrentModule = Tooltips
 ```
 
 ```@docs
-tooltips
+tooltip
 ```
