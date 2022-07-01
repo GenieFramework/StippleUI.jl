@@ -260,7 +260,9 @@ function Stipple.stipple_parse(::Type{DataFrames.DataFrame}, d::Vector)
 end
 
 function Stipple.convertvalue(target::R{<:DataTable}, d::AbstractDict)
-  df = Stipple.stipple_parse(DataFrames.DataFrame, d["data_table"])
+  kk = collect(keys(d))
+  df = Stipple.stipple_parse(DataFrames.DataFrame, d[kk[findfirst(startswith("data_"), kk)]])
+
   DataTable(df[:, names(df) .!== "__id"], target.opts)
 end
 
