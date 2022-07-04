@@ -7,21 +7,9 @@ using Stipple, Stipple.Reexport
 
 import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
-export datepicker, DateRange, DatePicker
+export datepicker, DatePicker
 
 register_normal_element("q__date", context = @__MODULE__)
-
-"""
-    DateRange
-
-Represents a date interval, between `from` and `to`, with a 1 day step.
-"""
-Base.@kwdef mutable struct DateRange
-  from::Date = today()
-  to::Date = today()
-end
-
-DateRange(dr::StepRange{Date,Day}) = DateRange(dr.from, dr.to)
 
 """
     datepicker()
@@ -41,11 +29,11 @@ If the `fieldname` references a `Vector{DateRange}`, both the `multiple` and the
 julia> @reactive mutable struct DatePickers <: ReactiveModel
         date::R{Date} = today() + Day(30)
         dates::R{Vector{Date}} = Date[today()+Day(10), today()+Day(20), today()+Day(30)]
-        daterange::R{DateRange} = DateRange(today(), (today() + Day(3)))
-        dateranges::R{Vector{DateRange}} = [
-          DateRange(today(), (today() + Day(3))),
-          DateRange(today() + Day(7), (today() + Day(10))),
-          DateRange(today() + Day(14), (today() + Day(17))),
+        daterange::R{StepRange{Date,Day}} = today():Day(1):(today() + Day(3)))
+        dateranges::R{Vector{StepRange{Date,Day}}} = [
+          today():Day(1):(today() + Day(3)),
+          (today() + Day(7)):Day(1):(today() + Day(10)),
+          (today() + Day(14)):Day(1):(today() + Day(17)),
         ]
         proxydate::R{Date} = today()
         inputdate::R{Date} = today()
@@ -140,10 +128,16 @@ function Stipple.render(vdr::Vector{DateRange}, _::Union{Symbol,Nothing} = nothi
   [ Dict(:from => dr.from, :to => dr.to) for dr in vdr ]
 end
 
-function Base.parse(::Type{DateRange}, d::Dict{String,Any})
-  DateRange(d["from"], d["to"])
+function Stipple.render(dr::StepRange{Date,Day}, _::Union{Symbol,Nothing} = nothing)
+  Dict(:from => dr.start, :to => dr.stop)
 end
 
-Base.convert(::Type{DateRange}, d::Dict{String,Any}) = parse(DateRange, d)
+function Stipple.render(vdr::Vector{StepRange{Date,Day}}, _::Union{Symbol,Nothing} = nothing)
+  [ Dict(:from => dr.from, :to => dr.to) for dr in vdr ]
+end
+
+function Base.convert(::Type{StepRange{Date,Day}}, value::Dict)
+  Date(value["from"]):Day(1):Date(value["to"])
+end
 
 end
