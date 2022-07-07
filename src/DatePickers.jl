@@ -120,14 +120,6 @@ function Base.parse(::Type{Date}, d::String) :: Date
   Date(d)
 end
 
-function Stipple.render(dr::DateRange, _::Union{Symbol,Nothing} = nothing)
-  Dict(:from => dr.from, :to => dr.to)
-end
-
-function Stipple.render(vdr::Vector{DateRange}, _::Union{Symbol,Nothing} = nothing)
-  [ Dict(:from => dr.from, :to => dr.to) for dr in vdr ]
-end
-
 function Stipple.render(dr::StepRange{Date,Day}, _::Union{Symbol,Nothing} = nothing)
   Dict(:from => dr.start, :to => dr.stop)
 end
