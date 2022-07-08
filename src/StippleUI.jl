@@ -99,6 +99,7 @@ include("Timelines.jl")
 include("Toggles.jl")
 include("Toolbars.jl")
 include("Tooltips.jl")
+include("Trees.jl")
 include("Uploaders.jl")
 include("Videos.jl")
 
@@ -152,6 +153,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .Toggles
 @reexport using .Toolbars
 @reexport using .Tooltips
+@reexport using .Trees
 @reexport using .Uploaders
 @reexport using .Videos
 
