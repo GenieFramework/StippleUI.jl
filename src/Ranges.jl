@@ -69,6 +69,7 @@ julia> range(18:1:90,
       * `labelvalueright::Union{String, Int}` - Override default label for max value ex. `labelvalueright="model.max + 'px'"`
 5. Model
       * `range::AbstractRange{T}` - The range of values to select from min:step:max
+      * `lazy::Bool` - If true, update the value of the model field only upon release of the slider
 6. State
       * `disable::Bool` - Put component in disabled mode
       * `readonly::Bool` - Put component in readonly mode
@@ -86,11 +87,11 @@ function Base.range(
                 lazy = false,
                 kwargs...)
 
-  q__range( "", lazy ? @on(:change," val => { $fieldname } ") : "" , args...; kw([
+  q__range( "", lazy ? @on(:change,"val => { $fieldname = val }") : "" , args...; kw([
               Symbol(":min") => first(range),
               Symbol(":max") => last(range),
               Symbol(":step") => step(range),
-              ( lazy ? () : (:fieldname => fieldname,) )...,
+              (lazy ? :value : :fieldname) => fieldname,
               kwargs...
   ])...)
 end
@@ -134,6 +135,7 @@ julia> slider(1:5:100)
       * `labelvalueright::Union{String, Int}` - Override default label for max value ex. `labelvalueright="model.max + 'px'"`
 5. Model
       * `range::AbstractRange{T}` - The range of values to select from min:step:max
+      * `lazy::Bool` - If true, update the value of the model field only upon release of the slider
 6. State
       * `disable::Bool` - Put component in disabled mode
       * `readonly::Bool` - Put component in readonly mode
@@ -150,11 +152,11 @@ function slider(range::AbstractRange{T} where T <: Real,
                 lazy = false,
                 kwargs...)
 
-  q__slider("", lazy ? @on(:change," val => { $fieldname } ") : "", args...; kw([
+  q__slider("", lazy ? @on(:change,"val => { $fieldname = val }") : "", args...; kw([
               Symbol(":min") => first(range),
               Symbol(":max") => last(range),
               Symbol(":step") => step(range),
-              ( lazy ? () : (:fieldname => fieldname,) )...,
+              (lazy ? :value : :fieldname) => fieldname,
               kwargs...
   ])...)
 end
