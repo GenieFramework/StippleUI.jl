@@ -3,9 +3,10 @@ module TabPanels
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
-export tabpanelgroup, tabpanel
+export tabpanelgroup, tabpanel, tabpanels
 
 register_normal_element("q__tab__panels", context = @__MODULE__)
+register_normal_element("q__tab__panel", context = @__MODULE__)
 
 """
     tabpanelgroup(args...; kwargs...)
@@ -102,8 +103,9 @@ julia>
 3. Style
       * `dark::Bool` - Notify the component that the background is a dark color
 """
-function tabpanel(args; kwargs)
+function tabpanel(args...; kwargs...)
   q__tab__panel(args...; kw(kwargs)...)
 end
+const tabpanels = tabpanelgroup
 
 end
