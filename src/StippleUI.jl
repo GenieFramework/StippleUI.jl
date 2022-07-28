@@ -96,6 +96,7 @@ include("Tables.jl")
 include("TabPanels.jl")
 include("Tabs.jl")
 include("Timelines.jl")
+include("TimePickers.jl")
 include("Toggles.jl")
 include("Toolbars.jl")
 include("Tooltips.jl")
@@ -150,6 +151,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .TabPanels
 @reexport using .Tabs
 @reexport using .Timelines
+@reexport using .TimePickers
 @reexport using .Toggles
 @reexport using .Toolbars
 @reexport using .Tooltips
