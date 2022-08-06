@@ -19,7 +19,7 @@ Stipple supplies a way for you to upload files through the `uploader` component.
 ### View
 
 ```julia-repl
-julia> uploader(label="Upload Image", :auto__upload, :multiple, method="POST", url="/upload", field__name="img")
+julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="POST", url="/upload", field__name="img")
 ```
 
 -----------
