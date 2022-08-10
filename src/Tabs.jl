@@ -43,7 +43,7 @@ julia> tab(name="photos", icon="photos", label="Photos")
 """
 function tab(args...;
               kwargs...)
-  q__tab(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__tab(args...; kw(kwargs)...)
 end
 
 """
