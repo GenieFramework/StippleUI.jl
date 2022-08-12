@@ -43,7 +43,7 @@ julia> tab(name="photos", icon="photos", label="Photos")
 """
 function tab(args...;
               kwargs...)
-  q__tab(args...; attributes([kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__tab(args...; kw(kwargs)...)
 end
 
 """
@@ -102,7 +102,7 @@ julia> tabgroup(:tab_m, inlinelabel=true, class="bg-primary text-white shadow-2"
 function tabgroup(fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
                   kwargs...)
-  q__tabs(args...; attributes([:fieldname => fieldname, kwargs...], StippleUI.API.ATTRIBUTES_MAPPINGS)...)
+  q__tabs(args...; kw([:fieldname => fieldname, kwargs...])...)
 end
 
 end
