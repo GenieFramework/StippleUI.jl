@@ -7,6 +7,7 @@ import Genie.Renderer.Html: HTMLString, normal_element, table, template, registe
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 
 register_normal_element("q__table", context = @__MODULE__)
+register_normal_element("q__td", context = @__MODULE__)
 
 const ID = "__id"
 const DataTableSelection = Vector{Dict{String, Any}}
@@ -226,6 +227,7 @@ function table( fieldname::Symbol,
   q__table(args...; kw(
     [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
     :fieldname => fieldname, kwargs...])...)
+  q__td(args...)
 end
 
 #===#
