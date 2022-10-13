@@ -118,7 +118,7 @@ function numberfield( label::String = "",
             args...;
             kw(
               [:label => label, :fieldname => fieldname, kwargs...],
-              Dict("fieldname" => "v-model.number"))...
+              Dict("fieldname" => "v-model.number", "type" => "number"))...
             )
 end
 
