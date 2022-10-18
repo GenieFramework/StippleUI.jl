@@ -85,7 +85,7 @@ julia> range(18:1:90,
       * `dense::Bool` - Dense mode; occupies less space
 """
 function Base.range(
-                range::AbstractRange{T} where T <: Real,
+                range::AbstractRange{<:QRangeType},
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
                 lazy = false,
@@ -99,6 +99,26 @@ function Base.range(
               kwargs...
   ])...)
 end
+
+const QRangeType = Union{Symbol, String, Real}
+struct QRange <: AbstractRange{QRangeType}
+  min::QRangeType
+  step::QRangeType
+  max::QRangeType
+end
+
+Base.length(qr::QRange) = (qr.min isa Real && qr.step isa Real && qr.max isa Real) ? length(qr.min:qr.step:qr.max) : nothing
+Base.step(qr::QRange) = qr.step
+Base.first(qr::QRange) = qr.min
+Base.last(qr::QRange) = qr.max
+
+QRange(min::QRangeType, max::QRangeType) = QRange(min, 1, max)
+
+Base.:(:)(start::Union{Symbol, String}, step::QRangeType, stop::QRangeType) = QRange(start, step, stop)
+Base.:(:)(start::Real, step::Union{Symbol, String}, stop::QRangeType) = QRange(start, step, stop)
+Base.:(:)(start::Real, step::Real, stop::Union{Symbol, String}) = QRange(start, step, stop)
+Base.:(:)(start::Union{Symbol, String}, stop::QRangeType) = QRange(start, 1, stop)
+Base.:(:)(start::Real, stop::Union{Symbol, String}) = QRange(start, 1, stop)
 
 """
     slider(range::AbstractRange{T} where T <: Real, fieldname::Union{Symbol,Nothing} = nothing, args...; lazy = false, kwargs...)
@@ -165,7 +185,7 @@ function slider(range::AbstractRange{T} where T <: Real,
   ])...)
 end
 
-function Stipple.render(rd::RangeData{T}, fieldname::Union{Symbol,Nothing} = nothing) where {T,R}
+function Stipple.render(rd::RangeData{T}, fieldname::Union{Symbol,Nothing} = nothing) where {T}
   Dict(:min => rd.range.start, :max => rd.range.stop)
 end
 
