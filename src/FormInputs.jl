@@ -117,7 +117,7 @@ function numberfield( label::String = "",
   q__input( [isa(content, Function) ? content() : join(content)],
             args...;
             kw(
-              [:label => label, :fieldname => fieldname, kwargs...],
+              [:label => label, :fieldname => fieldname, :type => "number", kwargs...],
               Dict("fieldname" => "v-model.number"))...
             )
 end
