@@ -89,7 +89,7 @@ julia> textfield("What's your name *", :name, name = "name", @iif(:warin), :fill
        * `debounce::Union{String, Int}` - Debounce amount (in milliseconds) when updating model ex. `0` `500`
        * `maxlength::Union{String, Int}` - Specify a max length of model ex. `12`
 """
-function textfield( label::String = "",
+function textfield( label::Union{String, Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     content::Union{String,Vector,Function} = "",
@@ -103,13 +103,13 @@ end
 textfield(content::Union{Vector,Function},
           fieldname::Union{Symbol,Nothing} = nothing,
           args...;
-          label::String = "",
+          label::Union{String, Symbol} = "",
           kwargs...) = textfield(label, fieldname, args...; content, kwargs...)
 
 """
-    numberfield( label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
+    numberfield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function numberfield( label::String = "",
+function numberfield( label::Union{String, Symbol} = "",
                       fieldname::Union{Symbol,Nothing} = nothing,
                       args...;
                       content::Union{String,Vector,Function} = "",
@@ -125,7 +125,7 @@ end
 """
     textarea(label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function textarea(label::String = "",
+function textarea(label::Union{String, Symbol} = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
                   content::Union{String,Vector,Function} = "",
@@ -134,9 +134,9 @@ function textarea(label::String = "",
 end
 
 """
-filefield( label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
+filefield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
 """
-function filefield( label::String = "",
+function filefield( label::Union{String, Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     kwargs...)
