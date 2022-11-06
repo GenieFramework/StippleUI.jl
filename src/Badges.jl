@@ -48,7 +48,7 @@ julia> Html.div("Badge", class="text-h6", [
       * `rounded::Bool` - Makes a rounded shaped badge
 """
 function badge( fieldname::Union{Symbol,String,Nothing} = nothing,
-                args...; kwargs...) where {T<:Stipple.ReactiveModel}
+                args...; kwargs...)
   q__badge(args...;
           kw( [(isa(fieldname, String) ? :label : :fieldname) => fieldname, kwargs...] )...
   )
