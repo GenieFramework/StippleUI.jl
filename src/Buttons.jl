@@ -71,7 +71,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
       * `dense::Bool` - Dense mode; occupies less space
       * `round::Bool` - Makes a circle shaped button
 """
-function btn( label::String = "",
+function btn( label::Union{String,Symbol} = "",
               args...;
               content::Union{String,Vector,Function} = "",
               kwargs...)
@@ -82,14 +82,14 @@ function btn( label::String = "",
 end
 
 function btn( content::Union{Function,Vector},
-              label::String = "",
+              label::Union{String,Symbol} = "",
               args...;
               kwargs...)
   btn(label, args...; content = content, kwargs...)
 end
 
 function btn( args...;
-              label::String = "",
+              label::Union{String,Symbol} = "",
               content::Union{String,Vector,Function} = "",
               kwargs...)
   btn(label, args...; content = content, kwargs...)
@@ -103,7 +103,7 @@ mutable struct Btn
   content
   kwargs
 
-  Btn(label::String = "",
+  Btn(label::Union{String,Symbol} = "",
       args...;
       content::Union{String,Vector,Function} = "",
       kwargs...) = new(fieldname, args, mask, kwargs)

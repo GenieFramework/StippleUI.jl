@@ -52,7 +52,7 @@ julia> textfield("What's your name *", :name, name = "name", @iif(:warin), :fill
 3. Content
        * `errormessage::String` - Validation error message (gets displayed only if 'error' is set to 'true') ex. `Username must have at least 5 characters`
        * `noerroricon::Bool` - Hide error icon when there is an error
-       * `label::String` - A text label that will “float” up above the input field, once the field gets focus ex. `Username`
+       * `label::Union{String,Symbol}` - A text label that will “float” up above the input field, once the field gets focus ex. `Username`
        * `stacklabel::Bool` - Label will be always shown above the field regardless of field content (if any)
        * `hint::String` - Helper (hint) text which gets placed below your wrapped form component ex. `Fill in between 3 and 12 characters`
        * `hidehint::Bool` - Hide the helper (hint) text when field doesn't have focus
@@ -123,7 +123,7 @@ function numberfield( label::Union{String, Symbol} = "",
 end
 
 """
-    textarea(label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
+    textarea(label::Union{String,Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
 function textarea(label::Union{String, Symbol} = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
