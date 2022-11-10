@@ -8,7 +8,7 @@ export bignumber
 register_normal_element("st__big__number", context = @__MODULE__)
 
 """
-      bignumber(label::String = "", number::Union{Symbol,Number,Nothing} = nothing, args...; kwargs...)
+      bignumber(label::Union{String,Symbol} = "", number::Union{Symbol,Number,Nothing} = nothing, args...; kwargs...)
 
 Renders a Big Number UI element.
 

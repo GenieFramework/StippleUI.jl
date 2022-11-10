@@ -7,7 +7,7 @@ export innerloader
 
 register_normal_element("q__inner__loading", context = @__MODULE__)
 
-function innerloader(label::String = "",
+function innerloader(label::Union{String,Symbol} = "",
                           state::Union{Symbol,Nothing} = nothing,
                           args...;
                           kwargs...)

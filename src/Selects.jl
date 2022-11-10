@@ -54,7 +54,7 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
       * `tablecolspan::Union{Int, String}` - The number of columns in the table (you need this if you use table-layout: fixed) ex. `tablecolspan="12"`
       * `errormessage::String` - Validation error message (gets displayed only if 'error' is set to 'true') ex. `Username must have at least 5 characters`
       * `noerroricon::Bool` - Hide error icon when there is an error
-      * `label::String` - A text label that will “float” up above the input field, once the field gets focus ex. `Username`
+      * `label::Union{String,Symbol}` - A text label that will “float” up above the input field, once the field gets focus ex. `Username`
       * `stacklabel::Bool` - Label will be always shown above the field regardless of field content (if any)
       * `hint::String` - Helper (hint) text which gets placed below your wrapped form component ex. `Fill in between 3 and 12 characters`
       * `hidehint::Bool` - Hide the helper (hint) text when field doesn't have focus
@@ -77,7 +77,7 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
 5. Options
       * `options::Vector` - Available options that the user can select from. For best performance freeze the list of options ex. `options=[ 'BMW', 'Samsung Phone' ]`
       * `optionvalue::String` - Property of option which holds the 'value'; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optionvalue=modelNumber` `optionvalue="(item) => item === null ? null : item.modelNumber"`
-      * `optionlabel::String` - Property of option which holds the 'label'; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optionlabel=itemName` `optionlabel="(item) => item === null ? null : item.itemName"`
+      * `optionlabel::Union{String,Symbol}` - Property of option which holds the 'label'; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optionlabel=itemName` `optionlabel="(item) => item === null ? null : item.itemName"`
       * `optiondisable::String` - Property of option which tells it's disabled; The value of the property must be a Boolean; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optiondisable=cannotSelect` `optiondisable="(item) => item === null ? null : item.cannotSelect"`
       * `optionsdense::Bool` - Dense mode for options list; occupies less space
       * `optionsdark::Bool` - Options menu will be colored with a dark color

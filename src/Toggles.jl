@@ -8,7 +8,7 @@ export toggle
 register_normal_element("q__toggle", context = @__MODULE__)
 
 """
-    toggle(label::String, fieldname::Union{Symbol,Nothing}, args...; kwargs...)
+    toggle(label::Union{String,Symbol}, fieldname::Union{Symbol,Nothing}, args...; kwargs...)
 
 The `toggle` component is another basic element for user input. You can use this for turning settings, features or true/false inputs on and off.
 
@@ -53,7 +53,7 @@ julia> toggle("Red", color="red", :selection, val="red")
       * `uncheckedicon::String` - The icon to be used when the toggle is off ex. `visibility-off`
       * `indeterminateicon::String` - The icon to be used when the model is indeterminate ex. `help`
 5. Label
-      * `label::String` - Label to display along the component ex. `I agree to terms and conditions`
+      * `label::Union{String,Symbol}` - Label to display along the component ex. `I agree to terms and conditions`
       * `leftlabel::Bool` - Label (if any specified) should be displayed on the left side of the component
 6. Model
       * `val::Union{Bool, Int, Float64, String, Vector}` - Works when model ('value') is Array. It tells the component which value should add/remove when ticked/unticked ex. `car`
@@ -68,7 +68,7 @@ julia> toggle("Red", color="red", :selection, val="red")
       * `dense::Bool` - Dense mode; occupies less space
       * `iconcolor` - Override default icon color (for truthy state only); Color name for component from the [Color Palette](https://quasar.dev/style/color-palette) ex. `primary` `teal-10`
 """
-function toggle(label::String = "",
+function toggle(label::Union{String,Symbol} = "",
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
                 kwargs...)
