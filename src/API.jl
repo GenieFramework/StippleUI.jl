@@ -107,6 +107,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "leftlabel" => "left-label",
   "manualfocus" => "manual-focus",
   "mapoptions" => "map-options",
+  "markerlabels" => "marker-labels",
   "maxfiles" => "max-files",
   "maxfilesize" => "max-file-size",
   "maxheight" => "max-height",
