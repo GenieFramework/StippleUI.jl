@@ -174,7 +174,7 @@ If a symbol argument is supplied, `@click` sets this value to true.
 Modifers can be appended as an array:
 ```
 @click(:foo, [:stop, :prevent])
-# "v-on:click.stop.prevent='me = true'"
+# "v-on:click.stop.prevent='foo = true'"
 
 @click("foo = true", ["stop", "prevent"])
 # "v-on:click.stop.prevent='foo = true'"
@@ -185,7 +185,7 @@ macro click(expr, mode=[])
     x = $(esc(expr))
     m = $(esc(mode))
 
-    if !isempty($(esc(mode)))
+    if !isempty(m)
       m = m isa Vector{Symbol} ? [string(i) for i in m] : [i for i in m]
       m = string(".", join(m, "."))
     else
