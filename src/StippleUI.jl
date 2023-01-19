@@ -171,20 +171,31 @@ If a symbol argument is supplied, `@click` sets this value to true.
 
 `@click("savefile = true")` or `@click("myjs_func();")` or `@click(:button)`
 
-Modifers can be appended:
+Modifers can be appended as an array:
 ```
-@click(:me, :native)
-# "v-on:click.native='me = true'"
+@click(:foo, [:stop, :prevent])
+# "v-on:click.stop.prevent='me = true'"
+
+@click("foo = true", ["stop", "prevent"])
+# "v-on:click.stop.prevent='foo = true'"
 ```
 """
-macro click(expr, mode="")
+macro click(expr, mode=[])
   quote
     x = $(esc(expr))
     m = $(esc(mode))
-    if x isa Symbol
-      """v-on:click$(m == "" ? "" : ".$m")='$x = true'"""
+
+    if !isempty($(esc(mode)))
+      m = m isa Vector{Symbol} ? [string(i) for i in m] : [i for i in m]
+      m = string(".", join(m, "."))
     else
-      "v-on:click='$(replace(x, "'" => raw"\'"))'"
+      m = ""
+    end
+
+    if x isa Symbol
+      """v-on:click$(m == "" ? "" : "$m")='$x = true'"""
+    else
+      "v-on:click$m='$(replace(x, "'" => raw"\'"))'"
     end
   end
 end
