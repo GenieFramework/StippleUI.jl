@@ -77,7 +77,7 @@ function btn( label::Union{String,Symbol} = "",
               kwargs...)
   q__btn([isa(content, Function) ? content() : join(content)],
           args...;
-          label = label, kw(kwargs)...
+          kw([:label => label, kwargs...])...
   )
 end
 
