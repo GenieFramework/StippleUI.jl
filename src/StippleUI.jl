@@ -164,36 +164,30 @@ export page_container # from Layouts
 #===#
 
 """
-    `@click(expr)`
+    `@click(expr, modifiers = [])`
 
 Defines a js routine that is called by a click of the quasar component.
 If a symbol argument is supplied, `@click` sets this value to true.
 
 `@click("savefile = true")` or `@click("myjs_func();")` or `@click(:button)`
 
-Modifers can be appended as an array:
+Modifers can be appended as String, Symbol or array of String/Symbol:
 ```
-@click(:foo, [:stop, :prevent])
-# "v-on:click.stop.prevent='foo = true'"
+@click(:foo, :stop)
+# "v-on:click.stop='foo = true'"
 
-@click("foo = true", ["stop", "prevent"])
-# "v-on:click.stop.prevent='foo = true'"
+@click("foo = bar", [:stop, "prevent"])
+# "v-on:click.stop.prevent='foo = bar'"
 ```
 """
-macro click(expr, mode=[])
+macro click(expr, modifiers=[])
   quote
-    x = $(esc(expr))
-    m = $(esc(mode))
-
-    if !isempty(m)
-      m = m isa Vector{Symbol} ? [string(i) for i in m] : [i for i in m]
-      m = string(".", join(m, "."))
-    else
-      m = ""
-    end
+    local x = $(esc(expr))
+    local mods = $(esc(modifiers))
+    local m = mods isa Symbol || ! isempty(mods) ? mods isa Vector ? '.' * join(String.(mods), '.') : ".$mods" : ""
 
     if x isa Symbol
-      """v-on:click$(m == "" ? "" : "$m")='$x = true'"""
+      "v-on:click$m='$x = true'"
     else
       "v-on:click$m='$(replace(x, "'" => raw"\'"))'"
     end
