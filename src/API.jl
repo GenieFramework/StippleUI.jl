@@ -254,7 +254,7 @@ function quasar(elem::Symbol, args...; kwargs...)
 end
 
 function vue(elem::Symbol, args...; kwargs...)
-  xelem(Symbol("q-$elem"), args...; kwargs...)
+  xelem(Symbol("vue-$elem"), args...; kwargs...)
 end
 
 xelem_pure(elem::Symbol, args...; kwargs...) = xelem(elem, args...; kwargs...)
