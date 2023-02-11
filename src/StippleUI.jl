@@ -110,7 +110,7 @@ include("Videos.jl")
 
 import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
-export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
+export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
 
 @reexport using .Avatars
@@ -164,37 +164,6 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 export page_container # from Layouts
 
 #===#
-
-"""
-    `@click(expr, modifiers = [])`
-
-Defines a js routine that is called by a click of the quasar component.
-If a symbol argument is supplied, `@click` sets this value to true.
-
-`@click("savefile = true")` or `@click("myjs_func();")` or `@click(:button)`
-
-Modifers can be appended as String, Symbol or array of String/Symbol:
-```
-@click(:foo, :stop)
-# "v-on:click.stop='foo = true'"
-
-@click("foo = bar", [:stop, "prevent"])
-# "v-on:click.stop.prevent='foo = bar'"
-```
-"""
-macro click(expr, modifiers=[])
-  quote
-    local x = $(esc(expr))
-    local mods = $(esc(modifiers))
-    local m = mods isa Symbol || ! isempty(mods) ? mods isa Vector ? '.' * join(String.(mods), '.') : ".$mods" : ""
-
-    if x isa Symbol
-      "v-on:click$m='$x = true'"
-    else
-      "v-on:click$m='$(replace(x, "'" => raw"\'"))'"
-    end
-  end
-end
 
 #===#
 
