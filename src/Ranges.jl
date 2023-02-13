@@ -111,13 +111,23 @@ function Base.range(
                 lazy = false,
                 kwargs...)
 
-  q__range( "", lazy ? @on(:change,"val => { $fieldname = val }") : "" , args...; kw([
-              Symbol(":min") => first(range),
-              Symbol(":max") => last(range),
-              Symbol(":step") => step(range),
-              (lazy ? :value : :fieldname) => fieldname,
-              kwargs...
-  ])...)
+  if lazy
+    q__range(args...;  @on(:change, "val => { $fieldname = val }"), kw([
+      Symbol(":min") => first(range),
+      Symbol(":max") => last(range),
+      Symbol(":step") => step(range),
+      :value => fieldname,
+      kwargs...
+    ])...)
+  else
+    q__range(args...; kw([
+      Symbol(":min") => first(range),
+      Symbol(":max") => last(range),
+      Symbol(":step") => step(range),
+      :fieldname => fieldname,
+      kwargs...
+    ])...)
+  end
 end
 
 """
@@ -176,13 +186,23 @@ function slider(range::AbstractRange{<:QRangeType},
                 lazy = false,
                 kwargs...)
 
-  q__slider("", lazy ? @on(:change,"val => { $fieldname = val }") : "", args...; kw([
-              Symbol(":min") => first(range),
-              Symbol(":max") => last(range),
-              Symbol(":step") => step(range),
-              (lazy ? :value : :fieldname) => fieldname,
-              kwargs...
-  ])...)
+  if lazy
+    q__slider(args..., @on(:change, "val => { $fieldname = val }"); kw([
+            Symbol(":min") => first(range),
+            Symbol(":max") => last(range),
+            Symbol(":step") => step(range),
+            :value => fieldname,
+            kwargs...
+    ])...)
+  else
+    q__slider(args...; kw([
+            Symbol(":min") => first(range),
+            Symbol(":max") => last(range),
+            Symbol(":step") => step(range),
+            :fieldname => fieldname,
+            kwargs...
+    ])...)
+  end
 end
 
 function Stipple.render(rd::RangeData{T}, fieldname::Union{Symbol,Nothing} = nothing) where {T}
