@@ -112,7 +112,7 @@ function Base.range(
                 kwargs...)
 
   if lazy
-    q__range( args...;  @on(:change, "val => { $fieldname = val }"), kw([
+    q__range(args...;  @on(:change, "val => { $fieldname = val }"), kw([
       Symbol(":min") => first(range),
       Symbol(":max") => last(range),
       Symbol(":step") => step(range),
@@ -120,7 +120,7 @@ function Base.range(
       kwargs...
     ])...)
   else
-    q__range( args...; kw([
+    q__range(args...; kw([
       Symbol(":min") => first(range),
       Symbol(":max") => last(range),
       Symbol(":step") => step(range),
