@@ -81,7 +81,7 @@ There are two ways of assigning component properties
 
 Vue.js has defined several short cuts which typically start with a `@`-character. In Julia the `@`-character is reserved for macros. So we decided to use macros to achieve a similar syntax.
 Have a look at the docstrings of `@on`, `@iif`, `@els`, `@elsiif`, `@click`, `@recur`, `@text`, `@bind`, `@data` and `@showif` to learn more.
-### Example app
+## Example app
 
 This snippet illustrates how to build a reactive UI based on StippleUI. You find three different ways of triggering handlers.
 - Every input in the input field triggers a function that sets the inverted input string in the output field.
