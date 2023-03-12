@@ -79,11 +79,71 @@ There are two ways of assigning component properties
  The `R""` string macro is a convenient way of defining Symbols.
 ### Helper macros
 
-Vue.js has defined several short cuts which typically start with a `@`-character. In Julia the `@`-character is reserved for macros. So we decided to use macros to achieve a similar syntax.
-Have a look at the docstrings of `@on`, `@iif`, `@els`, `@elsiif`, `@click`, `@recur`, `@text`, `@bind`, `@data` and `@showif` to learn more.
+Vue.js has defined several short cuts which typically start with a `@`-character. In Julia the `@`-character is reserved for macros. So we decided to use macros to achieve a similar syntax. But we also provide macros to add attributes with other 'forbidden' characters like `.` or `-`.
+Have a look at the docstrings of `@click`, `@on`,  `@iif`, `@els`, `@elsiif`, `@recur`, `@text`, `@bind`, `@data` and `@showif` to learn more. To try out whether rendering is correct enter the tentative expression at the REPL, e.g.
+```julia
+julia> span(@showif(true))
+"<span v-show=\"true\"></span>"
+
+julia> span(@click(:mybutton))
+"<span v-on:click=\"mybutton = true\"></span>"
+```
+
+### Javascript code
+
+Vue.js offers the possibility of embedding javascript functions that are called ither manually (`methods`) or automatically when certain events occur, e.g. `watch`, `mounted`, `created`, `computed`. Such code can easily be defined by the respective macros `@methods`, `@watch`, `@mounted`, `@created`, `@computed`, e.g.
+
+
+```julia
+@methods """
+logdemo: function(text) {
+    console.log("Text from Stipple: " + text)
+    return text
+},
+squaredemo: function(number) {
+    console.log("The square of " + number + " is " + number**2)
+    return number**2
+}
+"""
+
+@created """"
+    console.log('This app has just been created!')
+"""
+```
+See the [editable tree demo](https://github.com/GenieFramework/StippleDemos/blob/master/ReactiveTools%20API/EditableTree.jl) for more information.
+These macros also work for explicit models, e.g.
+```julia
+@created MyApp """"
+    console.log('This app has just been created!')
+"""
+```
+### User-defined events
+There is support for user-defined events by the macro `@event`.
+```julia
+@event :uploaded begin            
+    println("Files have been uploaded!")
+end
+```
+These lines define julia code that is executed when an event from the client is forwarded to the server.
+Typically, events at the client originate from certain vue components, e.g. `q-uploader`. They can be forwarded by calling the `@on` macro
+with two Symbol arguments.
+
+```julia
+julia> uploader("Upload files", url = "/upload" , @on(:uploaded, :uploaded))
+"<q-uploader url=\"/upload\" v-on:uploaded=\"function(event) { handle_event(event, 'uploaded') }\">Upload files</q-uploader>"
+```
+Events can also be triggered manually by calling `handle_event(event, 'uploaded')` on the client side.
+
+See the [file upload demo](https://github.com/GenieFramework/StippleDemos/blob/master/ReactiveTools%20API/FileUpload.jl) for more information.
+Again the `@event` macro also works for explicit models, e.g.
+```julia
+@event MyApp :uploaded begin            
+    println("Files have been uploaded to MyApp!")
+end
+```
 ## Example app
 
-This snippet illustrates how to build a reactive UI based on StippleUI. You find three different ways of triggering handlers.
+The following snippet illustrates how to build a reactive UI based on StippleUI. You find three different ways of triggering handlers.
 - Every input in the input field triggers a function that sets the inverted input string in the output field.
 - Hitting the `Enter` key in the input field inverts the output string.
 - Pressing of the action button inverts the output string.
