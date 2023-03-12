@@ -125,7 +125,7 @@ end
 
 route("/") do
   model = Inverter |> init |> handlers
-  page(model, class = "container", ui()) |> html
+  page(model, ui()) |> html
 end
 
 Genie.isrunning(:webserver) || up()
