@@ -19,7 +19,7 @@ The `imageview` component makes working with images (any picture format) easy an
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct Model <: ReactiveModel
+julia> @vars Model begin
           url::R{String} = "https://placeimg.com/500/300/nature"
        end
 ```

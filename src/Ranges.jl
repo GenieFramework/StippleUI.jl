@@ -50,7 +50,7 @@ The `range` component is a great way to offer the user the selection of a sub-ra
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct RangeModel <: ReactiveModel
+julia> @vars RangeModel begin
          range_data::R{RangeData{Int}} = RangeData(18:80)
        end
 ```

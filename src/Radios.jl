@@ -19,7 +19,7 @@ The `radio` component is another basic element for user input. You can use this 
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct RadioModel <: ReactiveModel
+julia> @vars RadioModel begin
          shape::R{String} = "line"
        end
 ```

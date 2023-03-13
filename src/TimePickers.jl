@@ -21,7 +21,7 @@ The `timepicker` component provides a method to input time.
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct TabPanelModel <: ReactiveModel
+julia> @vars TabPanelModel begin
          time::R{Time} = Dates.Time(t -> Dates.minute(t) == 20, 23)
          timewithseconds::R{Time} = Dates.Time(t -> Dates.second(t) == 12, 20, 23)
        end

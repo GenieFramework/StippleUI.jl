@@ -19,7 +19,7 @@ The `checkbox` component is another basic element for user input. You can use th
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct CheckboxModel <: ReactiveModel
+julia> @vars CheckboxModel begin
           valone::R{Bool} = true
        end
 ```

@@ -19,7 +19,7 @@ Using the `video` component makes embedding a video like Youtube easy. It also r
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct RadioModel <: ReactiveModel
+julia> @vars RadioModel begin
          v_ratio::R{String} = "16/9"
        end
 ```

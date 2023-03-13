@@ -18,7 +18,7 @@ register_normal_element("q__file", context = @__MODULE__)
 ### Model
 
 ```julia-repl
-julia> @reactive! mutable struct TextField <: ReactiveModel
+julia> @vars TextField begin
           name::R{String} = ""
        end
 ```

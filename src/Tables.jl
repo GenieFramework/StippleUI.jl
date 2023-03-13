@@ -203,7 +203,7 @@ end
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct TableModel <: ReactiveModel
+julia> @vars TableModel begin
           data::R{DataTable} = DataTable(DataFrame(rand(100000,2), ["x1", "x2"]), DataTableOptions(columns = [Column("x1"), Column("x2", align = :right)]))
           data_pagination::DataTablePagination = DataTablePagination(rows_per_page=50)
        end
@@ -366,7 +366,7 @@ end
 Select table rows of a model based on selection criteria. More information on selection syntax can be found in `rowselection`
 
 ```
-@reactive! mutable struct TableDemo <: ReactiveModel
+@vars TableDemo begin
     @mixin table::TableWithPaginationSelection
 end
 

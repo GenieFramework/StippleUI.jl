@@ -17,7 +17,7 @@ register_normal_element("q__select", context = @__MODULE__)
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct SelectModel <: ReactiveModel
+julia> @vars SelectModel begin
           model::R{Vector{String}} = []
           networks::R{Vector{String}} = ["Google", "Facebook", "Twitter", "Pinterest", "Reddit"]
        end

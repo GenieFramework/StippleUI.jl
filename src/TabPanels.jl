@@ -20,7 +20,7 @@ register_normal_element("q__tab__panel", context = @__MODULE__)
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct TabPanelModel <: ReactiveModel
+julia> @vars TabPanelModel begin
             gpanel::R{String} = "panel"
        end
 ```

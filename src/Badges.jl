@@ -19,7 +19,7 @@ The `badge` component allows you to create a small badge for adding information 
 ### Model
 
 ```julia-repl
-julia> @reactive! mutable struct BadgeModel <: ReactiveModel
+julia> @vars BadgeModel begin
           myicon = "bluetooth"
        end
 ```

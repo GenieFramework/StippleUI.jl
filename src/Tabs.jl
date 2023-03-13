@@ -56,7 +56,7 @@ The `menu` component is a convenient way to show menus. Goes very well with `lis
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct TabModel <: ReactiveModel
+julia> @vars TabModel begin
           tab_m::R{String} = "tab"
        end
 ```

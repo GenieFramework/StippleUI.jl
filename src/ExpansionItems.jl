@@ -21,7 +21,7 @@ They are basically `item` components wrapped with additional functionality. So t
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct ExpansionModel <: ReactiveModel
+julia> @vars ExpansionModel begin
           dummy::R{Bool} = true
        end
 ```

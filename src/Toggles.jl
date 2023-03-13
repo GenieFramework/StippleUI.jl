@@ -19,7 +19,7 @@ The `toggle` component is another basic element for user input. You can use this
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct ToggleModel <: ReactiveModel
+julia> @vars ToggleModel begin
           value::R{Bool} = false
           selection::R{Vector{String}} = ["yellow", "red"]
        end

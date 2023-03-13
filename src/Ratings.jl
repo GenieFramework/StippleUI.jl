@@ -19,7 +19,7 @@ Rating is a Component which allows users to rate items, usually known as “Star
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct RatingModel <: ReactiveModel
+julia> @vars RatingModel begin
           myrating::R{Int} = 3
        end
 

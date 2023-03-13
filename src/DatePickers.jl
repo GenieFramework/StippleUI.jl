@@ -38,7 +38,7 @@ If the `fieldname` references a `Vector{DateRange}`, both the `multiple` and the
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct DatePickers <: ReactiveModel
+julia> @vars DatePickers begin
         date::R{Date} = today() + Day(30)
         dates::R{Vector{Date}} = Date[today()+Day(10), today()+Day(20), today()+Day(30)]
         daterange::R{DateRange} = DateRange(today(), (today() + Day(3)))

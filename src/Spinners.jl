@@ -24,7 +24,7 @@ A `spinner` is used to show the user a timely process is currently taking place.
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct SpinnerModel <: ReactiveModel
+julia> @vars SpinnerModel begin
           box::R{String} = "box"
           comment::R{String} = "comment"
           hourglass::R{String} = "hourglass"

@@ -16,7 +16,7 @@ register_normal_element("q__splitter", context = @__MODULE__)
 
 ### Model
 ```julia-repl
-julia> @reactive mutable struct SplitterModel <: ReactiveModel
+julia> @vars SplitterModel begin
             splitterM::R{Int} = 50
        end
 ```
