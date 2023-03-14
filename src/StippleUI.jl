@@ -56,6 +56,7 @@ end
 
 include("API.jl")
 include("PopupProxies.jl")
+include("StippleUIParser.jl")
 
 include("Avatars.jl")
 include("Badges.jl")
