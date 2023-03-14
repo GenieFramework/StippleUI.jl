@@ -192,6 +192,40 @@ Genie.isrunning(:webserver) || up()
 ```
 <img src="docs/content/img/Example.png">
 
+## StippleUIParser
+
+A very new tool - still under construction - is StippleUIParser. It converts html code to the respective Julian code.
+```julia
+julia> doc_string = """
+       <template>
+         <div class="q-pa-md">
+           <q-scroll-area style="height: 230px; max-width: 300px;">
+             <div class="row no-wrap">
+               <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
+                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+               </div>
+               <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
+                       <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
+                             </div>
+           </q-scroll-area>
+         </div>
+       </template>
+       """;
+
+julia> parse_vue_html(doc_string) |> println
+template(
+    Stipple.Html.div(class = "q-pa-md",
+        scrollarea(style = "height: 230px; max-width: 300px;",
+            Stipple.Html.div(class = "row no-wrap", [
+                Stipple.Html.div(var"v-for" = "n in 10", key! = "n", style = "width: 150px", class = "q-pa-sm")
+                btn("`Animate to \${position}px`", color = "primary", var"true" = "")
+                quasar(:input, hint = "Please enter some words", var"v-on:keyup.enter" = "process = true", label = "Input", fieldname = "input", class = "q-my-md")
+            ])
+        )
+    )
+)
+```
+
 ## Demos
 ### StippleDemos
 We have dedicated a Github Page to Stipple Demos with many downloadable examples at:
