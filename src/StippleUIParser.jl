@@ -30,9 +30,9 @@ end
 function method_signatures(mm::Union{Vector{Method}, Base.MethodList})
   sigs = Vector{String}[]
   for m in mm
-      startswith("$(m.module)", "Stipple") || continue
-      sig = method_signature(m)
-      (length(sig) == 0 || sig[1] ∉ ["children", "content"]) && push!(sigs, sig)
+    startswith("$(m.module)", "Stipple") || continue
+    sig = method_signature(m)
+    (length(sig) == 0 || sig[1] ∉ ["children", "content"]) && push!(sigs, sig)
   end
   sort(union(sigs), lt = (x, y) -> length(x) > length(y))
 end
@@ -50,13 +50,13 @@ end
  function stipple_attr(attr)
   js = startswith(attr[1], ':')
   k = js ? attr[1][2:end] : attr[1]
-  k = replace(get(REV_DICT, k, k), "@" => "v-on:")
+  k = replace(get(REV_DICT, k, k), "__vue-on__" => "v-on:")
   startswith(repr(Symbol(k)), ':') || (k = "var\"$k\"")
-
+  
   v = replace(attr[2], raw"$" => raw"\$")
   v = js ? repr(Symbol(attr[2])) : "\"$v\""
   if js
-      v = startswith(v, ":") ? v : "R\"$v\""
+    v = startswith(v, ":") ? v : "R\"$v\""
   end
 
   k => v
@@ -118,6 +118,7 @@ function attr_tostring(attr::Pair)
 end
 
 function parse_elem(el::EzXML.Node, level = 1)
+    iselement(el) || return replace(el.content, r"\s*(.*)\s*" => s"\1")
     indent = repeat(' ', level * 4)
     arg_str = ""
     attrs = attr_dict(stipple_attr, el)
@@ -126,8 +127,9 @@ function parse_elem(el::EzXML.Node, level = 1)
 
     attr_str = join(attr_tostring.(collect(new_attrs)), ", ")
 
-    children = collect(eachelement(el))
-    children_str = join(parse_elem.(children, level + 1), "\n$indent")
+    children = parse_elem.(nodes(el), level + 1)
+    children = children[length.(children) .> 0]
+    children_str = join(children, "\n$indent")
  
     no = length(children)
     sep1 = (length(arg_str) + length(attr_str) == 0) ? "" : ", "
@@ -146,12 +148,13 @@ end
 
  
 function parse_vue_html(html)
+  doc_string = replace(html, "@"=>"__vue-on__")
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
-    EzXML.parsehtml(html).root
+    EzXML.parsehtml(doc_string).root
   end
   # remove the html -> body levels
-  parse_elem(first(eachelement(first(eachelement(doc)))))
+  replace(parse_elem(first(eachelement(first(eachelement(doc))))), "__vue-on__" => "@")
 end
 
 # precompilation ...
