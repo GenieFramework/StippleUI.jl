@@ -157,6 +157,29 @@ function parse_vue_html(html)
   replace(parse_elem(first(eachelement(first(eachelement(doc))))), "__vue-on__" => "@")
 end
 
+function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE__)
+  kk = String.(collect(keys(attrs)))
+  pos = findfirst(startswith(r"fieldname$|var\"v-model."), kk)
+  if pos === nothing
+    function_parser(Val(:q__input), attrs)
+  else
+    haskey(attrs, "label") || (attrs["label"] = "\"\"")
+    k = kk[pos]
+    v = attrs[k]
+    v_symbol = repr(Symbol(strip(v, '"')))
+    startswith(v_symbol, ":") && (v = v_symbol)
+
+    k == "fieldname" || delete!(attrs, k)
+    attrs["fieldname"] = v
+
+    if k == "var\"v-model.number\""
+      function_parser(Val(:numberfield), attrs)
+    else
+      function_parser(Val(:textfield), attrs)
+    end
+  end
+end
+
 # precompilation ...
 
 doc_string = """
