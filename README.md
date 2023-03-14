@@ -202,7 +202,7 @@ julia> doc_string = """
            <q-scroll-area style="height: 230px; max-width: 300px;">
              <div class="row no-wrap">
                <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
-                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+                 Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
                </div>
                <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
                        <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
@@ -214,11 +214,13 @@ julia> doc_string = """
 
 julia> parse_vue_html(doc_string) |> println
 template(
-    Stipple.Html.div(class = "q-pa-md",
-        scrollarea(style = "height: 230px; max-width: 300px;",
+    Stipple.Html.div(class = "q-pa-md", 
+        scrollarea(style = "height: 230px; max-width: 300px;", 
             Stipple.Html.div(class = "row no-wrap", [
-                Stipple.Html.div(var"v-for" = "n in 10", key! = "n", style = "width: 150px", class = "q-pa-sm")
-                btn("`Animate to \${position}px`", color = "primary", var"true" = "")
+                Stipple.Html.div(var"v-for" = "n in 10", key! = "n", style = "width: 150px", class = "q-pa-sm", 
+                    Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+                )
+                btn("`Animate to \${position}px`", color = "primary", var"v-on:click" = "scroll = true")
                 quasar(:input, hint = "Please enter some words", var"v-on:keyup.enter" = "process = true", label = "Input", fieldname = "input", class = "q-my-md")
             ])
         )
