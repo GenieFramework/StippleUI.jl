@@ -2,24 +2,24 @@ module StippleUIParser
 
 export parse_vue_html
 
-using Logging
 using Stipple
 using StippleUI
 using OrderedCollections
 
-using EzXML
+using Genie.Logging
+using Genie.Renderer.Html.HTMLParser
 
 # add a method that doesn't interpret ':' as separator for namespace
 function Base.getindex(node::EzXML.Node, attr::Symbol)
   str_ptr = ccall(
-      (:xmlGetNoNsProp, EzXML.libxml2),
-      Cstring,
-      (Ptr{Cvoid}, Cstring),
-      node.ptr, String(attr))
-      str = unsafe_string(str_ptr)
-  Libc.free(str_ptr)
-  return str
-end
+    (:xmlGetNoNsProp, EzXML.libxml2),
+    Cstring,
+    (Ptr{Cvoid}, Cstring),
+    node.ptr, String(attr))
+    str = unsafe_string(str_ptr)
+    Libc.free(str_ptr)
+    return str
+  end
 
 REV_DICT = Dict(zip(values(StippleUI.API.ATTRIBUTES_MAPPINGS), keys(StippleUI.API.ATTRIBUTES_MAPPINGS)))
 
