@@ -64,7 +64,7 @@ end
  
 function function_parser(tag, attrs, context = @__MODULE__)
   tag_str = replace(String(typeof(tag).parameters[1]), "-" => "__")
-  julia_fn = Symbol(replace(String(typeof(tag).parameters[1]), r"^q-" => "", "-" => ""))
+  julia_fn = Symbol(replace(replace(String(typeof(tag).parameters[1]), r"^q-" => ""), "-" => ""))
   M = if isdefined(Stipple, julia_fn)
     Stipple
   elseif isdefined(StippleUI, julia_fn)
