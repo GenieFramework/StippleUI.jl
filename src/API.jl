@@ -230,15 +230,15 @@ macro kw(kwargs)
   :( Stipple.attributes($(esc(kwargs)), ATTRIBUTES_MAPPINGS) )
 end
 
-function q__elem(f::Function, elem::Symbol, args...; attrs...) :: HTMLString
+function q__elem(f::Function, elem::Symbol, args...; attrs...) :: ParsedHTMLString
   normal_element(f, string(elem), [args...], Pair{Symbol,Any}[attrs...])
 end
 
-function q__elem(elem::Symbol, children::Union{String,Vector{String}} = "", args...; attrs...) :: HTMLString
+function q__elem(elem::Symbol, children::Union{String,Vector{String}} = "", args...; attrs...) :: ParsedHTMLString
   normal_element(children, string(elem), [args...], Pair{Symbol,Any}[attrs...])
 end
 
-function q__elem(elem::Symbol, children::Any, args...; attrs...) :: HTMLString
+function q__elem(elem::Symbol, children::Any, args...; attrs...) :: ParsedHTMLString
   normal_element(string(children), string(elem), [args...], Pair{Symbol,Any}[attrs...])
 end
 
