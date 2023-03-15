@@ -194,23 +194,24 @@ Genie.isrunning(:webserver) || up()
 
 ## StippleUIParser
 
-A very new tool - still under construction - is StippleUIParser. It converts html code to the respective Julian code.
+A very new tool - still under construction - is StippleUIParser. It converts html code to the respective Julian code. This is meant as a helper tool to port demo code from the internet into Stipple/Genie apps.
 ```julia
 julia> doc_string = """
-       <template>
-         <div class="q-pa-md">
-           <q-scroll-area style="height: 230px; max-width: 300px;">
-             <div class="row no-wrap">
-               <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
-                 Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
-               </div>
-               <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
-                       <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
-                             </div>
-           </q-scroll-area>
-         </div>
-       </template>
-       """;
+<template>
+    <div class="q-pa-md">
+    <q-scroll-area style="height: 230px; max-width: 300px;">
+        <div class="row no-wrap">
+            <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
+                Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+            </div>
+            <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
+            <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
+            <q-input hint=\"Please enter a number\" label=\"Input\" v-model.number=\"numberinput\" class=\"q-my-md\"></q-input>
+        </div>
+    </q-scroll-area>
+    </div>
+</template>
+""";
 
 julia> parse_vue_html(doc_string) |> println
 template(
@@ -221,7 +222,8 @@ template(
                     Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
                 )
                 btn("`Animate to \${position}px`", color = "primary", var"v-on:click" = "scroll = true")
-                quasar(:input, hint = "Please enter some words", var"v-on:keyup.enter" = "process = true", label = "Input", fieldname = "input", class = "q-my-md")
+                textfield("Input", :input, hint = "Please enter some words", var"v-on:keyup.enter" = "process = true", class = "q-my-md")
+                numberfield("Input", :numberinput, hint = "Please enter a number", class = "q-my-md")
             ])
         )
     )

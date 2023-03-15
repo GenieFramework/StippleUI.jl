@@ -118,7 +118,7 @@ function attr_tostring(attr::Pair)
 end
 
 function parse_elem(el::EzXML.Node, level = 1)
-    iselement(el) || return replace(el.content, r"\s*(.*)\s*" => s"\1")
+    iselement(el) || return strip(el.content)
     indent = repeat(' ', level * 4)
     arg_str = ""
     attrs = attr_dict(stipple_attr, el)
@@ -187,12 +187,13 @@ doc_string = """
     <div class="q-pa-md">
     <q-scroll-area style="height: 230px; max-width: 300px;">
         <div class="row no-wrap">
-        <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+            <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
+                Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+            </div>
+            <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
+            <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
+            <q-input hint=\"Please enter a number\" label=\"Input\" v-model.number=\"numberinput\" class=\"q-my-md\"></q-input>
         </div>
-        <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
-                <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
-                        </div>
     </q-scroll-area>
     </div>
 </template>
