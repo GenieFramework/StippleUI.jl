@@ -123,7 +123,7 @@ function parse_elem(el::EzXML.Node, level = 1)
       content == "" && return ""
       quotes = occursin('"', content) ? "\"\"\"" : "\""
       endswith(content, '"') && (content = content[1:end-1] * "\\\"")
-      return string(occursin('$', content) ? "raw" : '"', quotes, content, quotes)
+      return string(occursin('$', content) ? "raw" : "", quotes, content, quotes)
     end
     indent = repeat(' ', level * 4)
     arg_str = ""
