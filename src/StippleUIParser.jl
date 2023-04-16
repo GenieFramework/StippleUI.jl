@@ -118,7 +118,13 @@ function attr_tostring(attr::Pair)
 end
 
 function parse_elem(el::EzXML.Node, level = 1)
-    iselement(el) || return strip(el.content)
+    if ! iselement(el)
+      content = strip(el.content)
+      content == "" && return ""
+      quotes = occursin('"', content) ? "\"\"\"" : "\""
+      endswith(content, '"') && (content = content[1:end-1] * "\\\"")
+      return string(occursin('$', content) ? "raw" : '"', quotes, content, quotes)
+    end
     indent = repeat(' ', level * 4)
     arg_str = ""
     attrs = attr_dict(stipple_attr, el)
