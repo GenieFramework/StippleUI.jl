@@ -1,6 +1,9 @@
 module StippleUIParser
 
+using SnoopPrecompile
+
 export parse_vue_html, test_vue_parsing
+
 
 using Stipple
 using StippleUI
@@ -219,23 +222,34 @@ end
 
 # precompilation ...
 
-html_string = """
-<template>
-    <div class="q-pa-md">
-    <q-scroll-area style="height: 230px; max-width: 300px;">
-        <div class="row no-wrap">
-            <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
-                Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
-            </div>
-            <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
-            <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
-            <q-input hint=\"Please enter a number\" label=\"Input\" v-model.number=\"numberinput\" class=\"q-my-md\"></q-input>
-        </div>
-    </q-scroll-area>
-    </div>
-</template>
-""";
+@precompile_setup begin
+  # Putting some things in `setup` can reduce the size of the
+  # precompile file and potentially make loading faster.
+  using StippleUI.API
 
-parse_vue_html(html_string)
+  html_string = """
+  <template>
+      <div class="q-pa-md">
+      <q-scroll-area style="height: 230px; max-width: 300px;">
+          <div class="row no-wrap">
+              <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
+                  Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+              </div>
+              <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
+              <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
+              <q-input hint=\"Please enter a number\" label=\"Input\" v-model.number=\"numberinput\" class=\"q-my-md\"></q-input>
+          </div>
+      </q-scroll-area>
+      </div>
+  </template>
+  """
+  @precompile_all_calls begin
+      # all calls in this block will be precompiled, regardless of whether
+      # they belong to your package or not (on Julia 1.8 and higher)
+      redirect_stdout(devnull) do
+        test_vue_parsing(html_string)
+      end
+  end
+end
 
 end
