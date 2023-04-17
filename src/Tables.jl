@@ -221,7 +221,7 @@ function table( fieldname::Symbol,
                                     title::String = "",
                                     datakey::String = "data_$fieldname",
                                     columnskey::String = "columns_$fieldname",
-                                    kwargs...) :: String
+                                    kwargs...) :: ParsedHTMLString
 
   q__table(args...; kw(
     [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
