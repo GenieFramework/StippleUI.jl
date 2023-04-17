@@ -1,6 +1,6 @@
 module StippleUIParser
 
-export parse_vue_html
+export parse_vue_html, test_vue_parsing
 
 using Stipple
 using StippleUI
@@ -10,16 +10,29 @@ using Genie.Logging
 using Genie.Renderer.Html.HTMLParser
 
 # add a method that doesn't interpret ':' as separator for namespace
+# when a Symbol is passed as index (instead of an AbstractString)
 function Base.getindex(node::EzXML.Node, attr::Symbol)
   str_ptr = ccall(
     (:xmlGetNoNsProp, EzXML.libxml2),
     Cstring,
     (Ptr{Cvoid}, Cstring),
-    node.ptr, String(attr))
-    str = unsafe_string(str_ptr)
-    Libc.free(str_ptr)
-    return str
+    node.ptr, String(attr)
+  )
+  str = unsafe_string(str_ptr)
+  Libc.free(str_ptr)
+  return str
+end
+
+function rawrepr(x)
+  r = string(x) #repr(x)[2:end-1]
+  quotes = if occursin('"', r)
+      endswith(r, '"') && (r = r[1:end-1] * "\\\"")
+      "\"\"\""
+  else
+      "\""
   end
+  string(occursin('$', r) ? "raw" : "", quotes, r, quotes)
+end
 
 REV_DICT = Dict(zip(values(StippleUI.API.ATTRIBUTES_MAPPINGS), keys(StippleUI.API.ATTRIBUTES_MAPPINGS)))
 
@@ -53,10 +66,11 @@ end
   k = replace(get(REV_DICT, k, k), "__vue-on__" => "v-on:")
   startswith(repr(Symbol(k)), ':') || (k = "var\"$k\"")
   
-  v = replace(attr[2], raw"$" => raw"\$")
-  v = js ? repr(Symbol(attr[2])) : "\"$v\""
-  if js
-    v = startswith(v, ":") ? v : "R\"$v\""
+  v = if js
+    v_sym = repr(Symbol(attr[2]))
+    startswith(v_sym, ":") ? v_sym : "R\"" * attr[2] * '"'
+  else
+    repr(attr[2])
   end
 
   k => v
@@ -96,9 +110,13 @@ function function_parser(tag, attrs, context = @__MODULE__)
 
     if is_html_tag
       # then the function (probably) does not support Symbol values for arguments, so revert to adding a '!' to the key
+      # e.g. `a = :test`, `b = R"myarray[1]"`
       index = startswith.(values(attrs), '"')
       if ! all(index)
-        attrs = LittleDict(startswith(v, '"') ? k => v : "$(k)!" => (startswith(v, 'R') ? v[2:end] : "\"$(v[2:end])\"") for (k, v) in zip(keys(attrs), values(attrs)))
+        attrs = LittleDict(startswith(v, '"') ? k => v : 
+          (endswith(k, '"') ? string(k[1:end-1], "!\"") : string(k, '!')) => rawrepr(startswith(v, 'R') ? v[3:end-1] : v[2:end])
+          for (k, v) in attrs
+        )
       end
     end
   end
@@ -154,10 +172,10 @@ end
 
  
 function parse_vue_html(html)
-  doc_string = replace(html, "@"=>"__vue-on__")
+  html_string = replace(html, "@"=>"__vue-on__")
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
-    EzXML.parsehtml(doc_string).root
+    EzXML.parsehtml(html_string).root
   end
   # remove the html -> body levels
   replace(parse_elem(first(eachelement(first(eachelement(doc))))), "__vue-on__" => "@")
@@ -186,9 +204,22 @@ function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE
   end
 end
 
+function test_vue_parsing(html_string)
+  println("\nOriginal HTML string:")
+  printstyled(html_string, "\n\n", color = :light_red)
+  
+  julia_code = parse_vue_html(html_string)
+
+  println("Julia code:")
+  printstyled(julia_code, "\n\n", color = :blue)
+
+  println("Produced HTML:")
+  printstyled(eval(Meta.parse(julia_code)), "\n", color = :green)
+end
+
 # precompilation ...
 
-doc_string = """
+html_string = """
 <template>
     <div class="q-pa-md">
     <q-scroll-area style="height: 230px; max-width: 300px;">
@@ -205,6 +236,6 @@ doc_string = """
 </template>
 """;
 
-parse_vue_html(doc_string)
+parse_vue_html(html_string)
 
 end

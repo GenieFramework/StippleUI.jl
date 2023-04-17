@@ -194,7 +194,7 @@ Genie.isrunning(:webserver) || up()
 
 ## StippleUIParser
 
-A very new tool - still under construction - is StippleUIParser. It converts html code to the respective Julian code. This is meant as a helper tool to port demo code from the internet into Stipple/Genie apps.
+A very new tool is StippleUIParser. It converts html code to the respective Julian code. This is meant as a helper tool to port demo code from the internet into Stipple/Genie apps.
 ```julia
 julia> doc_string = """
 <template>
@@ -228,6 +228,32 @@ template(
         )
     )
 )
+```
+There is also a testing tool `test_vue_parsing()` whether the parsing was successful:
+```julia
+julia> test_vue_parsing(raw"""<a :hello-world="I need $$$"></a>""")
+
+Original HTML string:
+<a :hello-world="I need $$$"></a>     
+
+Julia code:
+a(var"hello-world!" = raw"I need $$$")
+
+Produced HTML:
+<a :hello-world="I need $$$"></a>
+```
+
+```jc
+julia> test_vue_parsing(raw"""<q-test :hello-world="I need $$$"></q-test>""")
+
+Original HTML string:
+<q-test :hello-world="I need $$$"></q-test>
+
+Julia code:
+quasar(:test, var"hello-world" = R"I need $$$")
+
+Produced HTML:
+<q-test :hello-world="I need $$$"></q-test>
 ```
 
 ## Demos
