@@ -2,8 +2,7 @@ module StippleUIParser
 
 using SnoopPrecompile
 
-export parse_vue_html, test_vue_parsing
-
+export parse_vue_html, test_vue_parsing, prettify
 
 using Stipple
 using StippleUI
@@ -38,10 +37,11 @@ function rawrepr(x)
 end
 
 function symrepr(x)
-  # if x is already a Symbol representation return x
-  startswith(x, "\":") || startswith(x, "\"R\"") && return string(x)
   # if x is surrounded by quotes strip quotes
   startswith(x, '"') && endswith(x, '"') && length(x) > 1 && (x = x[2:end-1])
+
+  # if x is already a Symbol representation return x
+  startswith(x, ":") || startswith(x, "R\"") && return string(x)
 
   v_sym = repr(Symbol(x))
   if startswith(v_sym, ":")
@@ -155,55 +155,101 @@ function function_parser(tag, attrs, context = @__MODULE__)
   fn_str, arg_str, attrs
 end
  
-function attr_tostring(attr::Pair)
-    "$(attr[1]) = $(attr[2])"
+function attr_to_kwargstring(attr::Pair)
+  "$(attr[1]) = $(attr[2])"
 end
 
-function parse_elem(el::EzXML.Node, level = 1)
-    if ! iselement(el)
-      content = strip(el.content)
-      content == "" && return ""
-      quotes = occursin('"', content) ? "\"\"\"" : "\""
-      endswith(content, '"') && (content = content[1:end-1] * "\\\"")
-      return string(occursin('$', content) ? "raw" : "", quotes, content, quotes)
-    end
-    indent = repeat(' ', level * 4)
-    arg_str = ""
-    attrs = attr_dict(stipple_attr, el)
-
-    fn_str, arg_str, new_attrs = function_parser(Val(Symbol(el.name)), attrs)
-
-    attr_str = join(attr_tostring.(collect(new_attrs)), ", ")
-
-    children = parse_elem.(nodes(el), level + 1)
-    children = children[length.(children) .> 0]
-    children_str = join(children, "\n$indent")
- 
-    no = length(children)
-    sep1 = (length(arg_str) + length(attr_str) == 0) ? "" : ", "
-    indent2 = no == 0 ? "" : repeat(' ', (level-1) * 4)
-    sep2, sep3 = if no == 0
-        ("", "")
-    elseif no == 1
-        ("$sep1\n$indent", "\n$indent2")
-    else
-        ("$sep1[\n$indent", "\n$indent2]")
-    end
- 
-    sep0 = length(arg_str) > 0 && length(attr_str) > 0 ? ", " : ""
-    """$fn_str$arg_str$sep0$attr_str$sep2$children_str$sep3)"""
+function attr_to_paramstring(attr::Pair)
+  "$(attr[1])=\"$(attr[2])\""
 end
 
+function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4)
+  if ! iselement(el)
+    content = strip(el.content)
+    content == "" && return ""
+    quotes = occursin('"', content) ? "\"\"\"" : "\""
+    endswith(content, '"') && (content = content[1:end-1] * "\\\"")
+    return string(occursin('$', content) ? "raw" : "", quotes, content, quotes)
+  end
+  indent_1 = repeat(' ', level * indent)
+  arg_str = ""
+  attrs = attr_dict(stipple_attr, el)
+
+  fn_str, arg_str, new_attrs = function_parser(Val(Symbol(el.name)), attrs)
+
+  attr_str = join(attr_to_kwargstring.(collect(new_attrs)), ", ")
+
+  children = parse_to_stipple.(nodes(el), level + 1; indent)
+  children = children[length.(children) .> 0]
+  children_str = join(children, "\n$indent_1")
+
+  no = length(children)
+  sep1 = (length(arg_str) + length(attr_str) == 0) ? "" : ", "
+  indent_2 = no == 0 ? "" : repeat(' ', (level - 1) * indent)
+  sep2, sep3 = if no == 0
+      ("", "")
+  elseif no == 1
+      ("$sep1\n$indent_1", "\n$indent_2")
+  else
+      ("$sep1[\n$indent_1", "\n$indent_2]")
+  end
+
+  sep0 = length(arg_str) > 0 && length(attr_str) > 0 ? ", " : ""
+  """$fn_str$arg_str$sep0$attr_str$sep2$children_str$sep3)"""
+end
+
+function parse_to_html(el::EzXML.Node, level = 1; indent = 4)
+  if ! iselement(el)
+      indent_1 = repeat(' ', (level - 1) * indent)
+      return replace(strip(el.content), r"\n\s*" =>"\n$indent_1")
+  end
+  indent_1 = repeat(' ', level * indent)
+  attrs = attr_dict(el)
+
+  attr_str = join(attr_to_paramstring.(collect(attrs)), ", ")
+
+  children = parse_to_html.(nodes(el), level + 1; indent)
+  children = children[length.(children) .> 0]
+  children_str = join(children, "\n$indent_1")
+  no = length(children)
+  sep1 = (length(attr_str) == 0) ? "" : " "
+  indent_2 = no == 0 ? "" : repeat(' ', (level - 1) * indent)
+  sep2, sep3 = if no == 0
+      ("", "")
+  else
+      ("$sep1\n$indent_1", "\n$indent_2")
+  end
+  tag = el.name
+  """<$tag$sep1$attr_str>$sep2$children_str$sep3</$tag>"""
+end
  
-function parse_vue_html(html)
+function parse_vue_html(html; indent = 4)
   html_string = replace(html, "@"=>"__vue-on__")
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
   end
   # remove the html -> body levels
-  replace(parse_elem(first(eachelement(first(eachelement(doc))))), "__vue-on__" => "@")
+  replace(parse_to_stipple(first(eachelement(first(eachelement(doc)))); indent), "__vue-on__" => "@")
 end
+
+function prettify(html::AbstractString; indent = 4)
+  html_string = replace(html, "@"=>"__vue-on__")
+  empty!(EzXML.XML_GLOBAL_ERROR_STACK)
+  doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
+    EzXML.parsehtml(html_string).root
+  end
+  # remove the html -> body levels
+  replace(parse_to_html(first(eachelement(first(eachelement(doc)))); indent), "__vue-on__" => "@") |> ParsedHTMLString
+end
+
+function prettify(el::EzXML.Node; indent = 4)
+  replace(parse_to_html(el; indent), "__vue-on__" => "@")
+end
+
+prettify(doc::EzXML.Document; indent = 4) = prettify(doc.root; indent)
+
+prettify(v::Vector) = prettify(join(v))
 
 function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE__)
   kk = String.(collect(keys(attrs)))
@@ -214,9 +260,6 @@ function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE
     haskey(attrs, "label") || (attrs["label"] = "\"\"")
     k = kk[pos]
     v = attrs[k]
-    v_symbol = repr(Symbol(strip(v, '"')))
-    startswith(v_symbol, ":") && (v = v_symbol)
-
     k == "fieldname" || delete!(attrs, k)
     attrs["fieldname"] = v
 
@@ -228,17 +271,18 @@ function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE
   end
 end
 
-function test_vue_parsing(html_string)
+function test_vue_parsing(html_string; prettify::Bool = true, indent = 4)
   println("\nOriginal HTML string:")
   printstyled(html_string, "\n\n", color = :light_red)
   
-  julia_code = parse_vue_html(html_string)
+  julia_code = parse_vue_html(html_string; indent)
 
   println("Julia code:")
   printstyled(julia_code, "\n\n", color = :blue)
 
   println("Produced HTML:")
-  printstyled(eval(Meta.parse(julia_code)), "\n", color = :green)
+  new_html = eval(Meta.parse(julia_code))
+  printstyled(prettify ? StippleUIParser.prettify(new_html; indent) : new_html, "\n", color = :green)
 end
 
 # precompilation ...
@@ -254,10 +298,10 @@ end
       <q-scroll-area style="height: 230px; max-width: 300px;">
           <div class="row no-wrap">
               <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
-                  Lorem @ipsum dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+                  Lorem @ipsum dolor sit amet consectetur adipisicing elit.
               </div>
               <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
-              <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
+              <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\"></q-input>
               <q-input hint=\"Please enter a number\" label=\"Input\" v-model.number=\"numberinput\" class=\"q-my-md\"></q-input>
           </div>
       </q-scroll-area>

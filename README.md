@@ -1,15 +1,21 @@
-# StippleUI [![Docs](https://img.shields.io/badge/stippleui-docs-greenyellow)](https://www.genieframework.com/docs/)
+# StippleUI.jl [![Docs](https://img.shields.io/badge/stippleui-docs-greenyellow)](https://www.genieframework.com/docs/)
 
 StippleUI is a library of reactive UI elements for [Stipple.jl](https://github.com/GenieFramework/Stipple.jl).
 
-`StippleUI.jl`, together with [Stipple.jl](https://github.com/GenieFramework/Stipple.jl),
-[StippleCharts.jl](https://github.com/GenieFramework/StippleCharts.jl) and
-[Genie.jl](https://github.com/GenieFramework/Genie.jl) provide a powerful and complete solution for building
+together with
+- [Stipple.jl](https://github.com/GenieFramework/Stipple.jl),
+- [StipplePlotly.jl](https://github.com/GenieFramework/StipplePlotly.jl) and
+- [Genie.jl](https://github.com/GenieFramework/Genie.jl)
+
+it is part of the [GenieFramework](https://github.com/GenieFramework/GenieFramework.jl), a powerful and complete solution for building
 beautiful, responsive, reactive, high performance interactive data dashboards in pure Julia.
 
 `StippleUI` provides over 30 UI elements, including forms and form inputs (button, slider, checkbox, radio, toggle, range), lists, data tables,
 higher level components (badges, banners, cards, dialogs, chips, icons), and layout elements (row, col, dashboard, heading, space) from the [Quasar Framework](https://quasar.dev).
 
+**New**: [StippleUIParser](#stippleuiparser)
+- conversion of html code to julia code
+- pretty-printing of html
 ## Installation
 
 ```julia
@@ -193,19 +199,26 @@ Genie.isrunning(:webserver) || up()
 <img src="docs/content/img/Example.png">
 
 ## StippleUIParser
+### Tools
+- `parse_vue_html`
+- `test_vue_parsing`
+- `prettify`
 
-A very new tool is StippleUIParser. It converts html code to the respective Julian code. This is meant as a helper tool to port demo code from the internet into Stipple/Genie apps.
+A very new tool is StippleUIParser. It converts html code to the respective Julian code and prettifies html code. This is meant as a helper tool to port demo code from the internet into Stipple/Genie apps.
+
+#### Parse vue html code to julia code
 ```julia
+julia> using StippleUI.StippleUIParser
 julia> doc_string = """
 <template>
     <div class="q-pa-md">
     <q-scroll-area style="height: 230px; max-width: 300px;">
         <div class="row no-wrap">
             <div v-for="n in 10" :key="n" style="width: 150px" class="q-pa-sm">
-                Lorem @ipsum \$dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!
+                Lorem @ipsum \$dolor sit amet consectetur adipisicing elit.
             </div>
             <q-btn color=\"primary\" label=\"`Animate to \${position}px`\" @click=\"scroll = true\"></q-btn>
-            <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\" class=\"q-my-md\"></q-input>
+            <q-input hint=\"Please enter some words\" v-on:keyup.enter=\"process = true\" label=\"Input\" v-model=\"input\"></q-input>
             <q-input hint=\"Please enter a number\" label=\"Input\" v-model.number=\"numberinput\" class=\"q-my-md\"></q-input>
         </div>
     </q-scroll-area>
@@ -213,47 +226,44 @@ julia> doc_string = """
 </template>
 """;
 
-julia> parse_vue_html(doc_string) |> println
+julia> parse_vue_html(html_string, indent = 2) |> println
 template(
-    Stipple.Html.div(class = "q-pa-md", 
-        scrollarea(style = "height: 230px; max-width: 300px;", 
-            Stipple.Html.div(class = "row no-wrap", [
-                Stipple.Html.div(var"v-for" = "n in 10", key! = "n", style = "width: 150px", class = "q-pa-sm", 
-                    raw"Lorem @ipsum $dolor sit amet consectetur adipisicing elit. Architecto fuga quae veritatis blanditiis sequi id expedita amet esse aspernatur! Iure, doloribus!"
-                )
-                btn("`Animate to \${position}px`", color = "primary", var"v-on:click" = "scroll = true")
-                textfield("Input", :input, hint = "Please enter some words", var"v-on:keyup.enter" = "process = true", class = "q-my-md")
-                numberfield("Input", :numberinput, hint = "Please enter a number", class = "q-my-md")
-            ])
+  Stipple.Html.div(class = "q-pa-md",
+    scrollarea(style = "height: 230px; max-width: 300px;",
+      Stipple.Html.div(class = "row no-wrap", [
+        Stipple.Html.div(var"v-for" = "n in 10", key! = "n", style = "width: 150px", class = "q-pa-sm",
+          "Lorem @ipsum dolor sit amet consectetur adipisicing elit."
         )
+        btn(raw"`Animate to ${position}px`", color = "primary", var"v-on:click" = "scroll = true")
+        textfield("Input", :input, hint = "Please enter some words", var"v-on:keyup.enter" = "process = true")
+        numberfield("Input", :numberinput, hint = "Please enter a number", class = "q-my-md")
+      ])
     )
+  )
 )
 ```
+#### Test parsing result
+
 There is also a testing tool `test_vue_parsing()` whether the parsing was successful:
+
+<div style="background-color:#f6f8fa;"><pre>
+<DIV STYLE="font-family:ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;font-size:10pt;"><SPAN STYLE="color:#98C379;">julia&gt; </SPAN><SPAN STYLE="color:#383A42;">test_vue_parsing(raw"""&lt;a :hello-world="I need $$$"&gt;asap&lt;/a&gt;""")<BR><BR>Original HTML string:<BR></SPAN><SPAN STYLE="color:#DF6C75;">&lt;a :hello-world="I need $$$"&gt;asap&lt;/a&gt;<BR><BR></SPAN><SPAN STYLE="color:#383A42;">Julia code:<BR></SPAN><SPAN STYLE="color:#0184BC;">a(var"hello-world!" = raw"I need $$$",<BR>    "asap"<BR>)<BR><BR></SPAN><SPAN STYLE="color:#383A42;">Produced HTML:<BR></SPAN><SPAN STYLE="color:#50A14F;">&lt;a :hello-world="I need $$$"&gt;<BR>    asap<BR>&lt;/a&gt;</SPAN></DIV>
+</pre></div>
+
+<div style="background-color:#f6f8fa;"><pre>
+<DIV STYLE="font-family:ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;font-size:10pt;"><SPAN STYLE="color:#98C379;background-color:#FAFAFA;">julia&gt; </SPAN><SPAN STYLE="color:#383A42;background-color:#FAFAFA;">test_vue_parsing(raw"""&lt;q-test :hello-world="I need $$$"&gt;asap&lt;/q-test&gt;"""; indent = 2)<BR><BR>Original HTML string:<BR></SPAN><SPAN STYLE="color:#DF6C75;background-color:#FAFAFA;">&lt;q-test :hello-world="I need $$$"&gt;asap&lt;/q-test&gt;<BR><BR></SPAN><SPAN STYLE="color:#383A42;background-color:#FAFAFA;">Julia code:<BR></SPAN><SPAN STYLE="color:#0184BC;background-color:#FAFAFA;">quasar(:test, var"hello-world" = R"I need $$$",<BR>  "asap"<BR>)<BR><BR></SPAN><SPAN STYLE="color:#383A42;background-color:#FAFAFA;">Produced HTML:<BR></SPAN><SPAN STYLE="color:#50A14F;background-color:#FAFAFA;">&lt;q-test :hello-world="I need $$$"&gt;<BR>  asap<BR>&lt;/q-test&gt;</SPAN></DIV>
+</pre></div>
+#### Prettify html code
+The new prettifier is already used in `test_vue_parsing()` by default
 ```julia
-julia> test_vue_parsing(raw"""<a :hello-world="I need $$$"></a>""")
-
-Original HTML string:
-<a :hello-world="I need $$$"></a>     
-
-Julia code:
-a(var"hello-world!" = raw"I need $$$")
-
-Produced HTML:
-<a :hello-world="I need $$$"></a>
-```
-
-```jc
-julia> test_vue_parsing(raw"""<q-test :hello-world="I need $$$"></q-test>""")
-
-Original HTML string:
-<q-test :hello-world="I need $$$"></q-test>
-
-Julia code:
-quasar(:test, var"hello-world" = R"I need $$$")
-
-Produced HTML:
-<q-test :hello-world="I need $$$"></q-test>
+julia> prettify("""<div  class="first">single line<div> more\nlines</div></div>"""; indent = 5) |> println
+<div class="first">
+     single line
+     <div>
+          more
+          lines
+     </div>
+</div>
 ```
 
 ## Demos
