@@ -246,14 +246,53 @@ template(
 
 There is also a testing tool `test_vue_parsing()` whether the parsing was successful:
 
-<div style="background-color:#f6f8fa;"><pre>
-<DIV STYLE="font-family:ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;font-size:10pt;"><SPAN STYLE="color:#98C379;">julia&gt; </SPAN><SPAN STYLE="color:#383A42;">test_vue_parsing(raw"""&lt;a :hello-world="I need $$$"&gt;asap&lt;/a&gt;""")<BR><BR>Original HTML string:<BR></SPAN><SPAN STYLE="color:#DF6C75;">&lt;a :hello-world="I need $$$"&gt;asap&lt;/a&gt;<BR><BR></SPAN><SPAN STYLE="color:#383A42;">Julia code:<BR></SPAN><SPAN STYLE="color:#0184BC;">a(var"hello-world!" = raw"I need $$$",<BR>    "asap"<BR>)<BR><BR></SPAN><SPAN STYLE="color:#383A42;">Produced HTML:<BR></SPAN><SPAN STYLE="color:#50A14F;">&lt;a :hello-world="I need $$$"&gt;<BR>    asap<BR>&lt;/a&gt;</SPAN></DIV>
-</pre></div>
+```
+julia> test_vue_parsing(raw"""<a :hello="I need $$$">asap</a>""")
 
-<div style="background-color:#f6f8fa;"><pre>
-<DIV STYLE="font-family:ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;font-size:10pt;"><SPAN STYLE="color:#98C379;background-color:#FAFAFA;">julia&gt; </SPAN><SPAN STYLE="color:#383A42;background-color:#FAFAFA;">test_vue_parsing(raw"""&lt;q-test :hello-world="I need $$$"&gt;asap&lt;/q-test&gt;"""; indent = 2)<BR><BR>Original HTML string:<BR></SPAN><SPAN STYLE="color:#DF6C75;background-color:#FAFAFA;">&lt;q-test :hello-world="I need $$$"&gt;asap&lt;/q-test&gt;<BR><BR></SPAN><SPAN STYLE="color:#383A42;background-color:#FAFAFA;">Julia code:<BR></SPAN><SPAN STYLE="color:#0184BC;background-color:#FAFAFA;">quasar(:test, var"hello-world" = R"I need $$$",<BR>  "asap"<BR>)<BR><BR></SPAN><SPAN STYLE="color:#383A42;background-color:#FAFAFA;">Produced HTML:<BR></SPAN><SPAN STYLE="color:#50A14F;background-color:#FAFAFA;">&lt;q-test :hello-world="I need $$$"&gt;<BR>  asap<BR>&lt;/q-test&gt;</SPAN></DIV>
-</pre></div>
+Original HTML string:
+<a :hello="I need $$$">asap</a>
+
+Julia code:
+a(hello! = raw"I need $$$", 
+    "asap"
+)
+
+Produced HTML:
+<a :hello="I need $$$"> 
+    asap
+</a>
+```
+which knows the details of binding syntax and which does respect the html preserve tag `<pre>`
+```
+julia> test_vue_parsing(raw"""<q-test :hello-world="I need $$$"> asap\n    or\ntoday <pre>asap\n    or\ntoday </pre></q-test>"""; indent = 2)
+
+Original HTML string:
+<q-test :hello-world="I need $$$"> asap\n    or\ntoday <pre>asap\n    or\ntoday </pre></q-test>
+
+Julia code:
+quasar(:test, var"hello-world" = R"I need $$$", [
+  "asap\n    or\ntoday"
+  pre(
+    "asap\n    or\ntoday "
+  )
+])
+
+Produced HTML:
+<q-test :hello-world="I need $$$"> 
+  asap
+  or
+  today
+  <pre>
+asap
+    or
+today 
+  </pre>
+</q-test>
+```
+
+
 #### Prettify html code
+
 The new prettifier is already used in `test_vue_parsing()` by default
 ```julia
 julia> prettify("""<div  class="first">single line<div> more\nlines</div></div>"""; indent = 5) |> println

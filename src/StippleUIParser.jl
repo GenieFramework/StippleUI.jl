@@ -163,9 +163,9 @@ function attr_to_paramstring(attr::Pair)
   "$(attr[1])=\"$(attr[2])\""
 end
 
-function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4)
+function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4, pre = false)
   if ! iselement(el)
-    content = strip(el.content)
+    content = pre ? el.content : strip(el.content)
     content == "" && return ""
     quotes = occursin('"', content) ? "\"\"\"" : "\""
     endswith(content, '"') && (content = content[1:end-1] * "\\\"")
@@ -179,7 +179,7 @@ function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4)
 
   attr_str = join(attr_to_kwargstring.(collect(new_attrs)), ", ")
 
-  children = parse_to_stipple.(nodes(el), level + 1; indent)
+  children = parse_to_stipple.(nodes(el), level + 1; indent, pre = pre || lowercase(el.name) == "pre")
   children = children[length.(children) .> 0]
   children_str = join(children, "\n$indent_1")
 
@@ -198,17 +198,17 @@ function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4)
   """$fn_str$arg_str$sep0$attr_str$sep2$children_str$sep3)"""
 end
 
-function parse_to_html(el::EzXML.Node, level = 1; indent = 4)
+function parse_to_html(el::EzXML.Node, level = 1; indent = 4, pre = false)
   if ! iselement(el)
       indent_1 = repeat(' ', (level - 1) * indent)
-      return replace(strip(el.content), r"\n\s*" =>"\n$indent_1")
+      return pre ? el.content : replace(strip(el.content), r"\n\s*" =>"\n$indent_1")
   end
   indent_1 = repeat(' ', level * indent)
   attrs = attr_dict(el)
 
   attr_str = join(attr_to_paramstring.(collect(attrs)), ", ")
 
-  children = parse_to_html.(nodes(el), level + 1; indent)
+  children = parse_to_html.(nodes(el), level + 1; indent, pre = pre || lowercase(el.name) == "pre")
   children = children[length.(children) .> 0]
   children_str = join(children, "\n$indent_1")
   no = length(children)
@@ -220,6 +220,7 @@ function parse_to_html(el::EzXML.Node, level = 1; indent = 4)
       ("$sep1\n$indent_1", "\n$indent_2")
   end
   tag = el.name
+  lowercase(tag) == "pre" && no > 0 && (sep2 = "$sep1\n")
   """<$tag$sep1$attr_str>$sep2$children_str$sep3</$tag>"""
 end
  
