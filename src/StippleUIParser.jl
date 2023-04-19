@@ -165,6 +165,7 @@ end
 
 function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4, pre = false)
   if ! iselement(el)
+    # content = pre ? replace(replace(el.content, r"^\r?\n" => ""), r"\r?\n$" => "") : strip(el.content)
     content = pre ? el.content : strip(el.content)
     content == "" && return ""
     quotes = occursin('"', content) ? "\"\"\"" : "\""
@@ -220,7 +221,10 @@ function parse_to_html(el::EzXML.Node, level = 1; indent = 4, pre = false)
       ("$sep1\n$indent_1", "\n$indent_2")
   end
   tag = el.name
-  lowercase(tag) == "pre" && no > 0 && (sep2 = "$sep1\n")
+  if lowercase(tag) == "pre"
+    no > 0 && (sep2 = "$sep1\n")
+    children_str = replace(replace(children_str, r"^\r?\n" => ""), r"\r?\n$" => "")
+  end
   """<$tag$sep1$attr_str>$sep2$children_str$sep3</$tag>"""
 end
  
