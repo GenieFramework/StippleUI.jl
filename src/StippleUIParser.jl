@@ -37,18 +37,33 @@ function rawrepr(x)
   string(occursin('$', r) ? "raw" : "", quotes, r, quotes)
 end
 
+function symrepr(x)
+  # if x is already a Symbol representation return x
+  startswith(x, "\":") || startswith(x, "\"R\"") && return string(x)
+  # if x is surrounded by quotes strip quotes
+  startswith(x, '"') && endswith(x, '"') && length(x) > 1 && (x = x[2:end-1])
+
+  v_sym = repr(Symbol(x))
+  if startswith(v_sym, ":")
+    v_sym
+  else
+    x = rawrepr(x)
+    string("R", startswith(x, "raw") ? x[4:end] : x)
+  end
+end
+
 REV_DICT = Dict(zip(values(StippleUI.API.ATTRIBUTES_MAPPINGS), keys(StippleUI.API.ATTRIBUTES_MAPPINGS)))
 
 function method_signature(m::Method)
-  String[v for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], m.sig.types[2:end]) if ! (T isa Core.TypeofVararg)]
+  Tuple[(v, T) for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], m.sig.types[2:end]) if ! (T isa Core.TypeofVararg)]
 end
 
 function method_signatures(mm::Union{Vector{Method}, Base.MethodList})
-  sigs = Vector{String}[]
+  sigs = Vector{Tuple}[]
   for m in mm
     startswith("$(m.module)", "Stipple") || continue
     sig = method_signature(m)
-    (length(sig) == 0 || sig[1] ∉ ["children", "content"]) && push!(sigs, sig)
+    (length(sig) == 0 || sig[1][1] ∉ ["children", "content"]) && push!(sigs, sig)
   end
   sort(union(sigs), lt = (x, y) -> length(x) > length(y))
 end
@@ -70,10 +85,9 @@ end
   startswith(repr(Symbol(k)), ':') || (k = "var\"$k\"")
   
   v = if js
-    v_sym = repr(Symbol(attr[2]))
-    startswith(v_sym, ":") ? v_sym : "R\"" * attr[2] * '"'
+    symrepr(attr[2])
   else
-    repr(attr[2])
+    rawrepr(attr[2])
   end
 
   k => v
@@ -101,12 +115,19 @@ function function_parser(tag, attrs, context = @__MODULE__)
     is_html_tag = length(sigs) == 0
 
     args = String[]
+    type_dict = LittleDict{String, Type}()
     for sig in sigs
-      length(intersect(sig, attr_names)) == length(sig) && (args = sig; break)
+      sig_names = getindex.(sig, 1)
+      if length(intersect(sig_names, attr_names)) == length(sig)
+        type_dict = LittleDict{String, Type}(sig)
+        args = sig_names
+        break
+      end
     end
 
     name_dict = LittleDict(zip(attr_names, keys(attrs)))
-    arg_str = join([attrs[name_dict[k]] for k in args], ", ")
+    # if variable accepts Symbols but no Strings convert to Symbol
+    arg_str = join([!(String <: type_dict[k]) && Symbol <: type_dict[k] ? symrepr(attrs[name_dict[k]]) : attrs[name_dict[k]] for k in args], ", ")
     for k in args
       delete!(attrs, name_dict[k])
     end
