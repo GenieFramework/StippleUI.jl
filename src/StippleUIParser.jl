@@ -52,6 +52,17 @@ function symrepr(x)
   end
 end
 
+function strip_newline(s)
+  length(s) == 0 && return s
+  pos1 = 1
+  pos2 = length(s)
+  s[pos1] == '\r' && (pos1 += 1)
+  s[pos1] == '\n' && (pos1 += 1)
+  s[pos2] == '\n' && (pos2 -= 1)
+  s[pos2] == '\r' && (pos2 -= 1)
+  s[pos1:pos2]
+end
+
 REV_DICT = Dict(zip(values(StippleUI.API.ATTRIBUTES_MAPPINGS), keys(StippleUI.API.ATTRIBUTES_MAPPINGS)))
 
 function method_signature(m::Method)
@@ -95,7 +106,8 @@ end
  
 function function_parser(tag, attrs, context = @__MODULE__)
   tag_str = replace(String(typeof(tag).parameters[1]), "-" => "__")
-  julia_fn = Symbol(replace(replace(String(typeof(tag).parameters[1]), r"^q-" => ""), "-" => ""))
+  julia_str = String(typeof(tag).parameters[1])
+  julia_fn = Symbol(replace(startswith(julia_str, "q-") ? julia_str[3:end] : julia_str, "-" => ""))
   M = if isdefined(Stipple, julia_fn)
     Stipple
   elseif isdefined(StippleUI, julia_fn)
@@ -165,7 +177,6 @@ end
 
 function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4, pre = false)
   if ! iselement(el)
-    # content = pre ? replace(replace(el.content, r"^\r?\n" => ""), r"\r?\n$" => "") : strip(el.content)
     content = pre ? el.content : strip(el.content)
     content == "" && return ""
     quotes = occursin('"', content) ? "\"\"\"" : "\""
@@ -199,37 +210,61 @@ function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4, pre = false)
   """$fn_str$arg_str$sep0$attr_str$sep2$children_str$sep3)"""
 end
 
-function parse_to_html(el::EzXML.Node, level = 1; indent = 4, pre = false)
-  if ! iselement(el)
-      indent_1 = repeat(' ', (level - 1) * indent)
-      return pre ? el.content : replace(strip(el.content), r"\n\s*" =>"\n$indent_1")
-  end
-  indent_1 = repeat(' ', level * indent)
-  attrs = attr_dict(el)
-
-  attr_str = join(attr_to_paramstring.(collect(attrs)), ", ")
-
-  children = parse_to_html.(nodes(el), level + 1; indent, pre = pre || lowercase(el.name) == "pre")
-  children = children[length.(children) .> 0]
-  children_str = join(children, "\n$indent_1")
-  no = length(children)
-  sep1 = (length(attr_str) == 0) ? "" : " "
-  indent_2 = no == 0 ? "" : repeat(' ', (level - 1) * indent)
-  sep2, sep3 = if no == 0
-      ("", "")
+function parse_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
+  indent_str = if indent isa Int
+    repeat(' ', level * indent::Int)
   else
-      ("$sep1\n$indent_1", "\n$indent_2")
+    repeat(indent::String, level)
+  end
+
+  if ! iselement(el)
+    return if el.content == "\n"
+      ""
+    elseif pre || length(el.content) == 0
+      el.content
+    else
+      "$indent_str$(occursin('\n', el.content) ? replace(strip(el.content), r"\n\s*" =>"\n$indent_str") : strip(el.content))"
+    end
   end
   tag = el.name
-  if lowercase(tag) == "pre"
-    no > 0 && (sep2 = "$sep1\n")
-    children_str = replace(replace(children_str, r"^\r?\n" => ""), r"\r?\n$" => "")
+
+  attrs = attr_dict(el)
+  attr_str = join(attr_to_paramstring.(collect(attrs)), " ")
+
+  pre = tag == "pre"
+  childnodes = nodes(el)
+  children = parse_to_html.(childnodes, level + 1; indent, pre)
+
+  if ! pre
+    index = length.(children) .> 0
+    all(index) || (children = children[index])
   end
-  """<$tag$sep1$attr_str>$sep2$children_str$sep3</$tag>"""
+  children_str = join(children, "\n")
+  no = length(children)
+
+  if no > 0 && pre && startswith(children_str, "\n")
+    children_str = children_str[2:end]
+  end
+
+  last_child_is_el = length(children) > 0 && iselement(childnodes[end])
+  single_line = no == 0 || pre && ! occursin('\n', children_str)
+  sep1 = length(attr_str) == 0 ? "" : " "
+  sep2 = single_line ? "" : "\n"
+  sep3 = if no == 0
+    ""
+  else
+    if pre && ! last_child_is_el
+      endswith(children_str, "\n") ? indent_str : ""
+    else
+      "\n$indent_str"
+    end
+  end
+  end_tag = tag == "br" ? "" : "</$tag>"
+  """$indent_str<$tag$sep1$attr_str>$sep2$children_str$sep3$end_tag"""
 end
  
 function parse_vue_html(html; indent = 4)
-  html_string = replace(html, "@"=>"__vue-on__")
+  html_string = replace(html, "@" => "__vue-on__")
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
@@ -239,7 +274,7 @@ function parse_vue_html(html; indent = 4)
 end
 
 function prettify(html::AbstractString; indent = 4)
-  html_string = replace(html, "@"=>"__vue-on__")
+  html_string = replace(html, "@" => "__vue-on__")
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
