@@ -253,12 +253,12 @@ Original HTML string:
 <a :hello="I need $$$">asap</a>
 
 Julia code:
-a(hello! = raw"I need $$$", 
+a(hello! = raw"I need $$$",
     "asap"
 )
 
 Produced HTML:
-<a :hello="I need $$$"> 
+<a :hello="I need $$$">
     asap
 </a>
 ```
@@ -271,22 +271,21 @@ Original HTML string:
 
 Julia code:
 quasar(:test, var"hello-world" = R"I need $$$", [
-  "asap\n    or\ntoday"
+  "asap\n    or\ntoday",
   pre(
-    "asap\n    or\ntoday "
+      "asap\n    or\ntoday "
   )
 ])
 
 Produced HTML:
-<q-test :hello-world="I need $$$"> 
+<q-test :hello-world="I need $$$">
   asap
   or
   today
   <pre>
 asap
     or
-today 
-  </pre>
+today </pre>
 </q-test>
 ```
 
