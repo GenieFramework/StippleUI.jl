@@ -52,16 +52,6 @@ function symrepr(x)
   end
 end
 
-function strip_newline(s)
-  length(s) == 0 && return s
-  pos1 = 1
-  pos2 = length(s)
-  s[pos1] == '\r' && (pos1 += 1)
-  s[pos1] == '\n' && (pos1 += 1)
-  s[pos2] == '\n' && (pos2 -= 1)
-  s[pos2] == '\r' && (pos2 -= 1)
-  s[pos1:pos2]
-end
 
 REV_DICT = Dict(zip(values(StippleUI.API.ATTRIBUTES_MAPPINGS), keys(StippleUI.API.ATTRIBUTES_MAPPINGS)))
 
@@ -175,15 +165,21 @@ function attr_to_paramstring(attr::Pair)
   "$(attr[1])=\"$(attr[2])\""
 end
 
-function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4, pre = false)
-  if ! iselement(el)
-    content = pre ? el.content : strip(el.content)
-    content == "" && return ""
-    quotes = occursin('"', content) ? "\"\"\"" : "\""
-    endswith(content, '"') && (content = content[1:end-1] * "\\\"")
-    return string(occursin('$', content) ? "raw" : "", quotes, content, quotes)
+function parse_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
+  is_el = iselement(el)
+  ! is_el && (length(el.content) == 0 || el.content == "\n") && return ""
+  
+  indent_str = if indent isa Int
+    repeat(' ', level * indent::Int)
+  else
+    repeat(indent::String, level)
   end
-  indent_1 = repeat(' ', level * indent)
+ 
+  ! is_el && return "$indent_str$(rawrepr(pre ? el.content : strip(el.content)))"
+
+  tag = el.name
+  pre = pre || lowercase(tag) == "pre"
+
   arg_str = ""
   attrs = attr_dict(stipple_attr, el)
 
@@ -191,23 +187,24 @@ function parse_to_stipple(el::EzXML.Node, level = 1; indent = 4, pre = false)
 
   attr_str = join(attr_to_kwargstring.(collect(new_attrs)), ", ")
 
-  children = parse_to_stipple.(nodes(el), level + 1; indent, pre = pre || lowercase(el.name) == "pre")
-  children = children[length.(children) .> 0]
-  children_str = join(children, "\n$indent_1")
+  children = parse_to_stipple.(nodes(el), level + 1; indent, pre)
+  if ! pre
+    children = children[length.(children) .> 0]
+  end
+  children_str = join(children, ",\n")
 
   no = length(children)
-  sep1 = (length(arg_str) + length(attr_str) == 0) ? "" : ", "
-  indent_2 = no == 0 ? "" : repeat(' ', (level - 1) * indent)
-  sep2, sep3 = if no == 0
-      ("", "")
-  elseif no == 1
-      ("$sep1\n$indent_1", "\n$indent_2")
+  sep3, sep4 = if no == 0
+    "", ""
+  elseif no == 1 
+    "\n$indent_str", "\n$indent_str"
   else
-      ("$sep1[\n$indent_1", "\n$indent_2]")
+    "[\n$indent_str", "\n$indent_str]"
   end
 
-  sep0 = length(arg_str) > 0 && length(attr_str) > 0 ? ", " : ""
-  """$fn_str$arg_str$sep0$attr_str$sep2$children_str$sep3)"""
+  sep1 = length(arg_str) > 0 && length(attr_str) > 0 ? ", " : ""
+  sep2 = (length(arg_str) + length(attr_str) == 0) ? "" : ", "
+  """$indent_str$fn_str$arg_str$sep1$attr_str$sep2$sep3$children_str$sep4)"""
 end
 
 function parse_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
