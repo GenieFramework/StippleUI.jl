@@ -165,7 +165,10 @@ function attr_to_paramstring(attr::Pair)
   "$(attr[1])=\"$(attr[2])\""
 end
 
-function parse_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
+function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
+  startlevel = level
+  level < 0 && (level = 0) 
+
   is_el = iselement(el)
   ! is_el && (length(el.content) == 0 || el.content == "\n") && return ""
   
@@ -187,7 +190,7 @@ function parse_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union
 
   attr_str = join(attr_to_kwargstring.(collect(new_attrs)), ", ")
 
-  children = parse_to_stipple.(nodes(el), level + 1; indent, pre)
+  children = node_to_stipple.(nodes(el), startlevel + 1; indent, pre)
   if ! pre
     children = children[length.(children) .> 0]
   end
@@ -197,7 +200,7 @@ function parse_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union
   sep3, sep4 = if no == 0
     "", ""
   elseif no == 1 
-    "\n$indent_str", "\n$indent_str"
+    "\n", "\n$indent_str"
   else
     "[\n$indent_str", "\n$indent_str]"
   end
@@ -207,7 +210,9 @@ function parse_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union
   """$indent_str$fn_str$arg_str$sep1$attr_str$sep2$sep3$children_str$sep4)"""
 end
 
-function parse_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
+function node_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
+  startlevel = level
+  level < 0 && (level = 0) 
   indent_str = if indent isa Int
     repeat(' ', level * indent::Int)
   else
@@ -230,7 +235,7 @@ function parse_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{In
 
   pre = tag == "pre"
   childnodes = nodes(el)
-  children = parse_to_html.(childnodes, level + 1; indent, pre)
+  children = node_to_html.(childnodes, startlevel + 1; indent, pre)
 
   if ! pre
     index = length.(children) .> 0
@@ -260,33 +265,57 @@ function parse_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{In
   """$indent_str<$tag$sep1$attr_str>$sep2$children_str$sep3$end_tag"""
 end
  
-function parse_vue_html(html; indent = 4)
+function parse_vue_html(html, level = 0; indent = 4)
+  indent_str = if indent isa Int
+    repeat(' ', level * indent::Int)
+  else
+    repeat(indent::String, level)
+  end
+
   html_string = replace(html, "@" => "__vue-on__")
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
-  doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
+  root = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
   end
   # remove the html -> body levels
-  replace(parse_to_stipple(first(eachelement(first(eachelement(doc)))); indent), "__vue-on__" => "@")
+  children = nodes(first(eachelement(root)))
+  is_single = length(children) <= 1
+  children_str =  join(node_to_stipple.(children, is_single ? level : level + 1; indent), "\n")
+  replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", "__vue-on__" => "@")
 end
 
-function prettify(html::AbstractString; indent = 4)
+function prettify(html::AbstractString, level = 0; indent = 4)
+  indent_str = if indent isa Int
+    repeat(' ', level * indent::Int)
+  else
+    repeat(indent::String, level)
+  end
+
   html_string = replace(html, "@" => "__vue-on__")
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
   end
   # remove the html -> body levels
-  replace(parse_to_html(first(eachelement(first(eachelement(doc)))); indent), "__vue-on__" => "@") |> ParsedHTMLString
+  root = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
+    EzXML.parsehtml(html_string).root
+  end
+  # remove the html -> body levels
+  children = nodes(first(eachelement(root)))
+  is_single = length(children) <= 1
+  children_str =  join(node_to_html.(children, is_single ? level : level + 1; indent), "\n")
+  replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", "__vue-on__" => "@")
+
+  replace(join(node_to_html.(nodes(first(eachelement(doc))); indent), '\n'), "__vue-on__" => "@") |> ParsedHTMLString
 end
 
 function prettify(el::EzXML.Node; indent = 4)
-  replace(parse_to_html(el; indent), "__vue-on__" => "@")
+  replace(node_to_html(el; indent), "__vue-on__" => "@")
 end
 
 prettify(doc::EzXML.Document; indent = 4) = prettify(doc.root; indent)
 
-prettify(v::Vector) = prettify(join(v))
+prettify(v::Vector; indent = 4) = prettify(join(v); indent)
 
 function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE__)
   kk = String.(collect(keys(attrs)))
