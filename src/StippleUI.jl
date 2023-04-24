@@ -113,6 +113,7 @@ import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
 export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
+@reexport using .StippleUIParser
 
 @reexport using .Avatars
 @reexport using .Badges

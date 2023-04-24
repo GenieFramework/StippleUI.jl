@@ -267,7 +267,29 @@ function node_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int
   """$indent_str<$tag$sep1$attr_str>$sep2$children_str$sep3$end_tag"""
 end
  
-function parse_vue_html(html, level = 0; indent = 4)
+"""
+    parse_vue_html(html, level = 0; indent::Union{String, Int} = 4)
+
+Parse html code to Julia/StippleUI code with automatic line breaks and indenting. Indenting can be determined by
+- level: starting level for formatting; negative values are allowed, negative levels are not indented
+- indent: either Integer for number of ' ' characters per level or a string value
+"""
+function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4)
+  startlevel = level
+  level < 0 && (level = 0)
+
+  html_string = ""
+  root = if startswith(html, r"\s*<html(\s|>)"i)
+    :html
+  elseif startswith(html, r"\s*<body(\s|>)"i)
+    :body
+  elseif startswith(html, r"\s*<head(\s|>)"i)
+    :head
+  else
+    html_string = replace("<body>$html</body>", "@" => AT_MASK)
+    root = :no_root
+  end
+
   indent_str = if indent isa Int
     repeat(' ', level * indent::Int)
   else
@@ -276,34 +298,58 @@ function parse_vue_html(html, level = 0; indent = 4)
 
   html_string = replace(html, "@" => AT_MASK)
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
-  root = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
+  root_node = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
   end
   # remove the html -> body levels
-  children = nodes(first(eachelement(root)))
-  is_single = length(children) <= 1
-  children_str =  join(node_to_stipple.(children, is_single ? level : level + 1; indent), "\n")
-  replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", AT_MASK => "@")
+
+  if root == :html
+    node_to_stipple(root_node, startlevel; indent)
+  else
+    # remove the html / body levels
+    children = nodes(root == :no_root ? root_node.firstelement : root_node)
+    is_single = length(children) <= 1
+    children_str =  join(node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent), "\n")
+    replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", AT_MASK => "@")
+  end |> ParsedHTMLString
 end
 
+"""
+    prettify(html::AbstractString; level::Int = 0, indent::Union{String, Int} = 4)
+
+Format html code with automatic line breaks and indenting. Indenting can be determined by
+- level: starting level for formatting; negative values are allowed, negative levels are not indented
+- indent: either Integer for number of ' ' characters per level or a string value
+"""
 function prettify(html::AbstractString; level::Int = 0, indent::Union{String, Int} = 4)
   startlevel = level
   level < 0 && (level = 0)
-  indent_str = if indent isa Int
-    repeat(' ', level * indent::Int)
+  
+  html_string = ""
+  root = if startswith(html, r"\s*<html(\s|>)"i)
+    :html
+  elseif startswith(html, r"\s*<body(\s|>)"i)
+    :body
+  elseif startswith(html, r"\s*<head(\s|>)"i)
+    :head
   else
-    repeat(indent::String, level)
+    html_string = replace("<body>$html</body>", "@" => AT_MASK)
+    root = :no_root
   end
-
-  html_string = replace(html, "@" => AT_MASK)
+  
+  length(html_string) == 0 && (html_string = replace(html, "@" => AT_MASK))
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
-  root = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
+  root_node = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
   end
-  # remove the html -> body levels
-  children = nodes(first(eachelement(root)))
-
-  replace(join(node_to_html.(children, startlevel; indent), "\n"), AT_MASK => "@") |> ParsedHTMLString
+  
+  if root == :html
+    node_to_html(root_node, startlevel; indent)
+  else
+    # remove the html / body levels
+    children = nodes(root == :no_root ? root_node.firstelement : root_node)
+    replace(join(node_to_html.(children, startlevel; indent), "\n"), AT_MASK => "@")
+  end |> ParsedHTMLString
 end
 
 function prettify(el::EzXML.Node; indent = 4)
@@ -334,18 +380,26 @@ function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE
   end
 end
 
-function test_vue_parsing(html_string; prettify::Bool = true, indent = 4)
+"""
+    test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4)
+
+Parse html code with automatic line breaks and indentingto Julia/StippleUI code, execute the code and prettify the result.
+Indenting can be determined by
+- level: starting level for formatting; negative values are allowed, negative levels are not indented
+- indent: either Integer for number of ' ' characters per level or a string value    
+"""
+function test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4)
   println("\nOriginal HTML string:")
   printstyled(html_string, "\n\n", color = :light_red)
   
-  julia_code = parse_vue_html(html_string; indent)
+  julia_code = parse_vue_html(html_string; level, indent)
 
   println("Julia code:")
   printstyled(julia_code, "\n\n", color = :blue)
 
   println("Produced HTML:")
   new_html = eval(Meta.parse(julia_code))
-  printstyled(prettify ? StippleUIParser.prettify(new_html; indent) : new_html, "\n", color = :green)
+  printstyled(prettify ? StippleUIParser.prettify(new_html; level, indent) : new_html, "\n", color = :green)
 end
 
 # precompilation ...
