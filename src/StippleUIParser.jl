@@ -11,6 +11,8 @@ using OrderedCollections
 using Genie.Logging
 using Genie.Renderer.Html.HTMLParser
 
+const AT_MASK = "__vue-on__"
+
 # add a method that doesn't interpret ':' as separator for namespace
 # when a Symbol is passed as index (instead of an AbstractString)
 function Base.getindex(node::EzXML.Node, attr::Symbol)
@@ -82,7 +84,7 @@ end
  function stipple_attr(attr)
   js = startswith(attr[1], ':')
   k = js ? attr[1][2:end] : attr[1]
-  k = replace(get(REV_DICT, k, k), "__vue-on__" => "v-on:")
+  k = replace(get(REV_DICT, k, k), AT_MASK => "v-on:")
   startswith(repr(Symbol(k)), ':') || (k = "var\"$k\"")
   
   v = if js
@@ -199,7 +201,7 @@ function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{
   no = length(children)
   sep3, sep4 = if no == 0
     "", ""
-  elseif no == 1 
+  elseif no == 1
     "\n", "\n$indent_str"
   else
     "[\n$indent_str", "\n$indent_str]"
@@ -272,7 +274,7 @@ function parse_vue_html(html, level = 0; indent = 4)
     repeat(indent::String, level)
   end
 
-  html_string = replace(html, "@" => "__vue-on__")
+  html_string = replace(html, "@" => AT_MASK)
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   root = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
@@ -281,36 +283,31 @@ function parse_vue_html(html, level = 0; indent = 4)
   children = nodes(first(eachelement(root)))
   is_single = length(children) <= 1
   children_str =  join(node_to_stipple.(children, is_single ? level : level + 1; indent), "\n")
-  replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", "__vue-on__" => "@")
+  replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", AT_MASK => "@")
 end
 
-function prettify(html::AbstractString, level = 0; indent = 4)
+function prettify(html::AbstractString; level::Int = 0, indent::Union{String, Int} = 4)
+  startlevel = level
+  level < 0 && (level = 0)
   indent_str = if indent isa Int
     repeat(' ', level * indent::Int)
   else
     repeat(indent::String, level)
   end
 
-  html_string = replace(html, "@" => "__vue-on__")
+  html_string = replace(html, "@" => AT_MASK)
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
-  doc = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
-    EzXML.parsehtml(html_string).root
-  end
-  # remove the html -> body levels
   root = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
   end
   # remove the html -> body levels
   children = nodes(first(eachelement(root)))
-  is_single = length(children) <= 1
-  children_str =  join(node_to_html.(children, is_single ? level : level + 1; indent), "\n")
-  replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", "__vue-on__" => "@")
 
-  replace(join(node_to_html.(nodes(first(eachelement(doc))); indent), '\n'), "__vue-on__" => "@") |> ParsedHTMLString
+  replace(join(node_to_html.(children, startlevel; indent), "\n"), AT_MASK => "@") |> ParsedHTMLString
 end
 
 function prettify(el::EzXML.Node; indent = 4)
-  replace(node_to_html(el; indent), "__vue-on__" => "@")
+  replace(node_to_html(el; indent), AT_MASK => "@")
 end
 
 prettify(doc::EzXML.Document; indent = 4) = prettify(doc.root; indent)
