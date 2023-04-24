@@ -352,13 +352,13 @@ function prettify(html::AbstractString; level::Int = 0, indent::Union{String, In
   end |> ParsedHTMLString
 end
 
-function prettify(el::EzXML.Node; indent = 4)
-  replace(node_to_html(el; indent), AT_MASK => "@")
+function prettify(el::EzXML.Node; level::Int = 0, indent::Union{String, Int} = 4)
+  replace(node_to_html(el, level; indent), AT_MASK => "@")
 end
 
-prettify(doc::EzXML.Document; indent = 4) = prettify(doc.root; indent)
+prettify(doc::EzXML.Document; level::Int = 0, indent::Union{String, Int} = 4) = prettify(doc.root; level, indent)
 
-prettify(v::Vector; indent = 4) = prettify(join(v); indent)
+prettify(v::Vector; level::Int = 0, indent::Union{String, Int} = 4) = prettify(join(v); level, indent)
 
 function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE__)
   kk = String.(collect(keys(attrs)))
