@@ -9,7 +9,7 @@ using StippleUI
 using OrderedCollections
 
 using Genie.Logging
-using Genie.Renderer.Html.HTMLParser
+using Genie.Renderer.Html.HTMLParser # EzXML
 
 const AT_MASK = "__vue-on__"
 
