@@ -185,7 +185,7 @@ function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
   rows
 end
 
-function data(t::T, fieldname::Symbol; datakey = "data_$fieldname", columnskey = "columns_$fieldname")::Dict{String,Any} where {T<:DataTable}
+function data(t::T, fieldname::Symbol; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
   Dict(
     columnskey  => columns(t),
     datakey     => rows(t)
@@ -219,12 +219,12 @@ function table( fieldname::Symbol,
                                     args...;
                                     rowkey::String = ID,
                                     title::String = "",
-                                    datakey::String = "data_$fieldname",
-                                    columnskey::String = "columns_$fieldname",
+                                    datakey::String = "$fieldname.data",
+                                    columnskey::String = "$fieldname.columns",
                                     kwargs...) :: ParsedHTMLString
 
   q__table(args...; kw(
-    [Symbol(":data") => "$fieldname.$datakey", Symbol(":columns") => "$fieldname.$columnskey", Symbol("row-key") => rowkey,
+    [Symbol(":data") => "$datakey", Symbol(":columns") => "$columnskey", Symbol("row-key") => rowkey,
     :fieldname => fieldname, kwargs...])...)
 end
 
