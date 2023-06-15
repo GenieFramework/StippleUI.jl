@@ -1,5 +1,6 @@
-module Tables
+module QTables
 
+import Tables
 import DataFrames
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
@@ -107,7 +108,7 @@ Base.@kwdef mutable struct DataTableOptions
 end
 
 
-Base.@kwdef mutable struct DataTable{T<:DataFrames.DataFrame}
+Base.@kwdef mutable struct DataTable{T}
   data::T = DataFrames.DataFrame()
   opts::DataTableOptions = DataTableOptions()
 end
@@ -125,14 +126,14 @@ julia> df = DataFrame(a = sin.(-π:π/10:π), b = cos.(-π:π/10:π), c = string
 julia> dt = DataTable(df)
 ```
 """
-function DataTable(data::T) where {T<:DataFrames.DataFrame}
+function DataTable(data::T) where {T}
   DataTable(data, DataTableOptions())
 end
 
 #===#
 
 function active_columns(t::T)::Vector{Column} where {T<:DataTable}
-  t.opts.columns !== nothing ? t.opts.columns : [Column(string(name)) for name in DataFrames.names(t.data)]
+  t.opts.columns !== nothing ? t.opts.columns : [Column(string(name)) for name in Tables.columnnames(t.data)]
 end
 
 """
@@ -167,7 +168,7 @@ end
 function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
   rows = []
 
-  for (count, row) in enumerate(DataFrames.eachrow(t.data))
+  for (count, row) in enumerate(Tables.rows(t.data))
     r = Dict()
 
     if t.opts.addid
@@ -185,7 +186,7 @@ function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
   rows
 end
 
-function data(t::T, fieldname::Symbol; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
+function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
   Dict(
     columnskey  => columns(t),
     datakey     => rows(t)
@@ -193,7 +194,7 @@ function data(t::T, fieldname::Symbol; datakey = "data", columnskey = "columns")
 end
 
 """
-    table(fieldnmae::Symbol, args...; kwargs...)
+    table(fieldname::Symbol, args...; kwargs...)
 
 
 ----------
@@ -230,11 +231,11 @@ end
 
 #===#
 
-function Stipple.render(t::T, fieldname::Union{Symbol,Nothing} = nothing) where {T<:DataTable}
-  data(t, fieldname)
+function Stipple.render(t::T) where {T<:DataTable}
+  data(t)
 end
 
-function Stipple.render(dtp::DataTablePagination, fieldname::Union{Symbol,Nothing} = nothing)
+function Stipple.render(dtp::DataTablePagination)
   Dict(:sortBy => dtp.sort_by, :descending => dtp.descending, :page => dtp.page, :rowsPerPage => dtp.rows_per_page)
 end
 
@@ -259,6 +260,7 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp
 end
 
+# this function should be moved to an extension
 function Stipple.stipple_parse(::Type{DataFrames.DataFrame}, d::Vector)
   isempty(d) ? DataFrames.DataFrame() : reduce(vcat, DataFrames.DataFrame.(d))
 end
@@ -270,7 +272,7 @@ function Stipple.convertvalue(target::R{<:DataTable}, d::AbstractDict)
   DataTable(df[:, names(df) .!== "__id"], target.opts)
 end
 
-function StippleUI.Tables.DataTableOptions(d::AbstractDict)
+function DataTableOptions(d::AbstractDict)
   DataTableOptions(d["addid"], d["idcolumn"], d["columns"], d["columnspecs"])
 end
 
@@ -309,7 +311,7 @@ function rowselection(dt::DataTable, rows, cols = Colon(), idcolumn = dt.opts.ad
   if isnothing(cols)
       [Dict{String, Any}(union([idcolumn, "__id"]) .=> row) for row in (rows == Colon() ? (1:nrow(dt.data)) : rows)]
   else
-      dd = Stipple.render(dt[rows, cols], :dt)["data_dt"]
+      dd = Stipple.render(dt[rows, cols])["data"]
       setindex!.(dd, rows, "__id")
       dt.opts.addid && setindex!.(dd, rows, dt.opts.idcolumn)
       dd |> Vector{Dict{String, Any}}

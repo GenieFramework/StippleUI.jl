@@ -151,7 +151,8 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 @reexport using .Spaces
 @reexport using .Spinners
 @reexport using .Splitters
-@reexport using .Tables
+@reexport using .QTables
+const Tables = QTables
 @reexport using .TabPanels
 @reexport using .Tabs
 @reexport using .Timelines
