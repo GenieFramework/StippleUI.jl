@@ -128,11 +128,11 @@ Base.string(dp::DatePicker) = datepicker(dp.fieldname, dp.args...; dp.mask, dp.c
 
 # rendering and parsing internals
 
-function Stipple.render(dr::DateRange, _::Union{Symbol,Nothing} = nothing)
+function Stipple.render(dr::DateRange)
   Dict(:from => dr.start, :to => dr.stop)
 end
 
-function Stipple.render(vdr::Vector{DateRange}, _::Union{Symbol,Nothing} = nothing)
+function Stipple.render(vdr::Vector{DateRange})
   [ Dict(:from => dr.start, :to => dr.stop) for dr in vdr ]
 end
 
