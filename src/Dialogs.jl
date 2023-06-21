@@ -8,7 +8,7 @@ export dialog
 register_normal_element("q__dialog", context = @__MODULE__)
 
 """
-    dailog()
+    dialog()
 
 The `dialog`` component is a great way to offer the user the ability to choose a specific action or list of actions. They also can provide the user with important information, or require them to make a decision (or multiple decisions).
 
