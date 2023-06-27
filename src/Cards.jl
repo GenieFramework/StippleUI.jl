@@ -22,7 +22,7 @@ register_normal_element("q__card__actions", context = @__MODULE__)
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct CardModel <: ReactiveModel
+julia> @vars CardModel begin
           lorem::R{String} = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           url::R{String} = "https://cdn.quasar.dev/img/parallax2.jpg"
        end
@@ -92,7 +92,7 @@ const cardsection = card_section
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct CardModel <: ReactiveModel
+julia> @vars CardModel begin
           lorem::R{String} = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
        end
 ```

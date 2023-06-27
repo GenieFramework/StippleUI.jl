@@ -21,7 +21,7 @@ The `dialog`` component is a great way to offer the user the ability to choose a
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct DialogModel <: ReactiveModel
+julia> @vars DialogModel begin
          show_dialog::R{Bool} = false
        end
 ```

@@ -19,7 +19,7 @@ Stipple supplies a way for you to upload files through the `uploader` component.
 ### View
 
 ```julia-repl
-julia> uploader(label="Upload Image", :auto__upload, :multiple, method="POST", url="/upload", field__name="img")
+julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="POST", url="/upload", field__name="img")
 ```
 
 -----------
@@ -37,7 +37,7 @@ julia> uploader(label="Upload Image", :auto__upload, :multiple, method="POST", u
       * `autoupload::Bool` - Upload files immediately when added
       * `hideuploadbtn::Bool` - Don't show the upload button
 2. Content
-      * `label::String` - Label for the uploader ex. `Upload photo here`
+      * `label::Union{String,Symbol}` - Label for the uploader ex. `Upload photo here`
       * `nothumbnails::Bool` - Don't display thumbnails for image files
 3. State
       * `disable::Bool` - Put component in disabled mode

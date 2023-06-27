@@ -10,12 +10,36 @@ export range, RangeData, slider
 register_normal_element("q__range", context = @__MODULE__)
 register_normal_element("q__slider", context = @__MODULE__)
 
+# we have to use UnitRange because Quasar does not send back the step so we always
+# end up with a UnitRange from Quasar
+# this means that we need to use UnitRange on the Julia side and do the stepping in Quasar
+# so no StepRange is allowed here
 Base.@kwdef mutable struct RangeData{T}
   range::UnitRange{T}
 end
 
+const QRangeType = Union{Symbol, String, Real}
+struct QRange <: AbstractRange{QRangeType}
+  min::QRangeType
+  step::QRangeType
+  max::QRangeType
+end
+
+Base.length(qr::QRange) = (qr.min isa Real && qr.step isa Real && qr.max isa Real) ? length(qr.min:qr.step:qr.max) : nothing
+Base.step(qr::QRange) = qr.step
+Base.first(qr::QRange) = qr.min
+Base.last(qr::QRange) = qr.max
+
+QRange(min::QRangeType, max::QRangeType) = QRange(min, 1, max)
+
+Base.:(:)(start::Union{Symbol, String}, step::QRangeType, stop::QRangeType) = QRange(start, step, stop)
+Base.:(:)(start::Real, step::Union{Symbol, String}, stop::QRangeType) = QRange(start, step, stop)
+Base.:(:)(start::Real, step::Real, stop::Union{Symbol, String}) = QRange(start, step, stop)
+Base.:(:)(start::Union{Symbol, String}, stop::QRangeType) = QRange(start, 1, stop)
+Base.:(:)(start::Real, stop::Union{Symbol, String}) = QRange(start, 1, stop)
+
 """
-    range(range::AbstractRange{T} where T <: Real, fieldname::Union{Symbol,Nothing} = nothing, args...; lazy = false, kwargs...)
+    range(range::AbstractRange{<:Union{Symbol, String, Real}}, fieldname::Union{Symbol,Nothing} = nothing, args...; lazy = false, kwargs...)
 
 The `range` component is a great way to offer the user the selection of a sub-range of values between a minimum and maximum value, with optional steps to select those values. An example use case for the Range component would be to offer a price range selection
 
@@ -26,7 +50,7 @@ The `range` component is a great way to offer the user the selection of a sub-ra
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct RangeModel <: ReactiveModel
+julia> @vars RangeModel begin
          range_data::R{RangeData{Int}} = RangeData(18:80)
        end
 ```
@@ -68,7 +92,8 @@ julia> range(18:1:90,
       * `labelvalueleft::Union{String, Int}` - Override default label for min value ex. `labelvalueleft="model.min + 'px'"`
       * `labelvalueright::Union{String, Int}` - Override default label for max value ex. `labelvalueright="model.max + 'px'"`
 5. Model
-      * `range::AbstractRange{T}` - The range of values to select from min:step:max
+      * `range::AbstractRange{T}` - The range of values to select from min:step:max, symbols or strings can be used to reference model fields, e.g. `range("min":2:"max", :myvalue)`
+      * `lazy::Bool` - If true, update the value of the model field only upon release of the slider
 6. State
       * `disable::Bool` - Put component in disabled mode
       * `readonly::Bool` - Put component in readonly mode
@@ -80,23 +105,33 @@ julia> range(18:1:90,
       * `dense::Bool` - Dense mode; occupies less space
 """
 function Base.range(
-                range::AbstractRange{T} where T <: Real,
+                range::AbstractRange{<:QRangeType},
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
                 lazy = false,
                 kwargs...)
 
-  q__range( "", lazy ? @on(:change," val => { $fieldname } ") : "" , args...; kw([
-              Symbol(":min") => first(range),
-              Symbol(":max") => last(range),
-              Symbol(":step") => step(range),
-              ( lazy ? () : (:fieldname => fieldname,) )...,
-              kwargs...
-  ])...)
+  if lazy
+    q__range(args...;  @on(:change, "val => { $fieldname = val }"), kw([
+      Symbol(":min") => first(range),
+      Symbol(":max") => last(range),
+      Symbol(":step") => step(range),
+      :value => fieldname,
+      kwargs...
+    ])...)
+  else
+    q__range(args...; kw([
+      Symbol(":min") => first(range),
+      Symbol(":max") => last(range),
+      Symbol(":step") => step(range),
+      :fieldname => fieldname,
+      kwargs...
+    ])...)
+  end
 end
 
 """
-    slider(range::AbstractRange{T} where T <: Real, fieldname::Union{Symbol,Nothing} = nothing, args...; lazy = false, kwargs...)
+    slider(range::AbstractRange{<:Union{Symbol, String, Real}}, fieldname::Union{Symbol,Nothing} = nothing, args...; lazy = false, kwargs...)
 
 The `slider` is a great way for the user to specify a number value between a minimum and maximum value, with optional steps between valid values. The slider also has a focus indicator (highlighted slider button), which allows for keyboard adjustments of the slider.
 ----------
@@ -133,7 +168,8 @@ julia> slider(1:5:100)
       * `labelvalueleft::Union{String, Int}` - Override default label for min value ex. `labelvalueleft="model.min + 'px'"`
       * `labelvalueright::Union{String, Int}` - Override default label for max value ex. `labelvalueright="model.max + 'px'"`
 5. Model
-      * `range::AbstractRange{T}` - The range of values to select from min:step:max
+      * `range::AbstractRange{T}` - The range of values to select from min:step:max, symbols or strings can be used to reference model fields, e.g. `range("min":2:"max", :myvalue)`
+      * `lazy::Bool` - If true, update the value of the model field only upon release of the slider
 6. State
       * `disable::Bool` - Put component in disabled mode
       * `readonly::Bool` - Put component in readonly mode
@@ -144,22 +180,32 @@ julia> slider(1:5:100)
       * `dark::Bool` - Notify the component that the background is a dark color
       * `dense::Bool` - Dense mode; occupies less space
 """
-function slider(range::AbstractRange{T} where T <: Real,
+function slider(range::AbstractRange{<:QRangeType},
                 fieldname::Union{Symbol, Nothing} = nothing,
                 args...;
                 lazy = false,
                 kwargs...)
 
-  q__slider("", lazy ? @on(:change," val => { $fieldname } ") : "", args...; kw([
-              Symbol(":min") => first(range),
-              Symbol(":max") => last(range),
-              Symbol(":step") => step(range),
-              ( lazy ? () : (:fieldname => fieldname,) )...,
-              kwargs...
-  ])...)
+  if lazy
+    q__slider(args..., @on(:change, "val => { $fieldname = val }"); kw([
+            Symbol(":min") => first(range),
+            Symbol(":max") => last(range),
+            Symbol(":step") => step(range),
+            :value => fieldname,
+            kwargs...
+    ])...)
+  else
+    q__slider(args...; kw([
+            Symbol(":min") => first(range),
+            Symbol(":max") => last(range),
+            Symbol(":step") => step(range),
+            :fieldname => fieldname,
+            kwargs...
+    ])...)
+  end
 end
 
-function Stipple.render(rd::RangeData{T}, fieldname::Union{Symbol,Nothing} = nothing) where {T,R}
+function Stipple.render(rd::RangeData{T}, fieldname::Union{Symbol,Nothing} = nothing) where {T}
   Dict(:min => rd.range.start, :max => rd.range.stop)
 end
 

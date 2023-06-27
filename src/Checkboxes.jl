@@ -8,7 +8,7 @@ export checkbox
 register_normal_element("q__checkbox", context = @__MODULE__)
 
 """
-      checkbox(label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
+      checkbox(label::Union{String,Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
     
 The `checkbox` component is another basic element for user input. You can use this to supply a way for the user to toggle an option.
 
@@ -19,7 +19,7 @@ The `checkbox` component is another basic element for user input. You can use th
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct CheckboxModel <: ReactiveModel
+julia> @vars CheckboxModel begin
           valone::R{Bool} = true
        end
 ```
@@ -43,7 +43,7 @@ julia> checkbox(label = "Apples", fieldname = :valone, dense = true, size = "xl"
 2. General
       * `tabindex::Union{Int, String}` - Tabindex HTML attribute value
 3. Label
-      * `label::String` - Label to display along the component
+      * `label::Union{String,Symbol}` - Label to display along the component
       * `leftlabel::Bool` - Label (if any specified) should be displayed on the left side of the component
 4. Model
       * `fieldname::Symbol` - Model of the component
@@ -58,7 +58,7 @@ julia> checkbox(label = "Apples", fieldname = :valone, dense = true, size = "xl"
       * `dark::Bool` - Notify the component that the background is a dark color
       * `dense::Bool` - Dense mode; occupies less space
 """
-function checkbox(label::String = "",
+function checkbox(label::Union{String,Symbol} = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...; kwargs...)
 

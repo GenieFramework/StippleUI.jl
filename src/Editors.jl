@@ -19,7 +19,7 @@ Component is a WYSIWYG (“what you see is what you get”) editor component tha
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct EditorModel <: ReactiveModel
+julia> @vars EditorModel begin
           s_editor::R{String} = "What you see is <b>what</b> you get."
        end
 ```

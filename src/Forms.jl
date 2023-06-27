@@ -19,7 +19,7 @@ The `form` component renders a <form> DOM element and allows you to easily valid
 ### Model
 
 ```julia-repl
-julia> @reactive! mutable struct FormModel <: ReactiveModel
+julia> @vars FormModel begin
           name::R{String} = ""
           age::R{Int} = 0
           warin::R{Bool} = true

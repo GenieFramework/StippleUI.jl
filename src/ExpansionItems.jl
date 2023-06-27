@@ -21,7 +21,7 @@ They are basically `item` components wrapped with additional functionality. So t
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct ExpansionModel <: ReactiveModel
+julia> @vars ExpansionModel begin
           dummy::R{Bool} = true
        end
 ```
@@ -67,7 +67,7 @@ julia> list(bordered=true, class="rounded-borders", [
       * `icon::String` - Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it) ex. `map` `ion-add` `img:https://cdn.quasar.dev/logo/svg/quasar-logo.svg` `img:path/to/some_image.png`
       * `expandicon::String` - Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it) ex. `map` `ion-add` `img:https://cdn.quasar.dev/logo/svg/quasar-logo.svg` `img:path/to/some_image.png`
       * `expandedicon::String` - Expand icon name (following Quasar convention) for when `expansionitem` is expanded; When used, it also disables the rotation animation of the expand icon; Make sure you have the icon library installed unless you are using 'img:' prefix ex. `map` `ion-add` `img:https://cdn.quasar.dev/logo/svg/quasar-logo.svg` `img:path/to/some_image.png`
-      * `label::String` - Header label
+      * `label::Union{String,Symbol}` - Header label
       * `labellines::Union{Int, String}` - Apply ellipsis when there's not enough space to render on the specified number of lines; If more than one line specified, then it will only work on webkit browsers because it uses the '-webkit-line-clamp' CSS property! ex. `labellines="2"` `1` `2`
       * `caption::String` - Header sub-label (unless using 'header' slot) ex. `Unread message: 5`
       * `captionlines::Union{Int, String}` - Apply ellipsis when there's not enough space to render on the specified number of lines; If more than one line specified, then it will only work on webkit browsers because it uses the '-webkit-line-clamp' CSS property! ex. `labellines="2"` `1` `2`

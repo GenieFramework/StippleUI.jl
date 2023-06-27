@@ -18,7 +18,7 @@ register_normal_element("q__file", context = @__MODULE__)
 ### Model
 
 ```julia-repl
-julia> @reactive! mutable struct TextField <: ReactiveModel
+julia> @vars TextField begin
           name::R{String} = ""
        end
 ```
@@ -52,7 +52,7 @@ julia> textfield("What's your name *", :name, name = "name", @iif(:warin), :fill
 3. Content
        * `errormessage::String` - Validation error message (gets displayed only if 'error' is set to 'true') ex. `Username must have at least 5 characters`
        * `noerroricon::Bool` - Hide error icon when there is an error
-       * `label::String` - A text label that will “float” up above the input field, once the field gets focus ex. `Username`
+       * `label::Union{String,Symbol}` - A text label that will “float” up above the input field, once the field gets focus ex. `Username`
        * `stacklabel::Bool` - Label will be always shown above the field regardless of field content (if any)
        * `hint::String` - Helper (hint) text which gets placed below your wrapped form component ex. `Fill in between 3 and 12 characters`
        * `hidehint::Bool` - Hide the helper (hint) text when field doesn't have focus
@@ -89,7 +89,7 @@ julia> textfield("What's your name *", :name, name = "name", @iif(:warin), :fill
        * `debounce::Union{String, Int}` - Debounce amount (in milliseconds) when updating model ex. `0` `500`
        * `maxlength::Union{String, Int}` - Specify a max length of model ex. `12`
 """
-function textfield( label::String = "",
+function textfield( label::Union{String, Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     content::Union{String,Vector,Function} = "",
@@ -103,13 +103,13 @@ end
 textfield(content::Union{Vector,Function},
           fieldname::Union{Symbol,Nothing} = nothing,
           args...;
-          label::String = "",
+          label::Union{String, Symbol} = "",
           kwargs...) = textfield(label, fieldname, args...; content, kwargs...)
 
 """
-    numberfield( label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
+    numberfield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function numberfield( label::String = "",
+function numberfield( label::Union{String, Symbol} = "",
                       fieldname::Union{Symbol,Nothing} = nothing,
                       args...;
                       content::Union{String,Vector,Function} = "",
@@ -117,15 +117,15 @@ function numberfield( label::String = "",
   q__input( [isa(content, Function) ? content() : join(content)],
             args...;
             kw(
-              [:label => label, :fieldname => fieldname, kwargs...],
+              [:label => label, :fieldname => fieldname, :type => "number", kwargs...],
               Dict("fieldname" => "v-model.number"))...
             )
 end
 
 """
-    textarea(label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
+    textarea(label::Union{String,Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function textarea(label::String = "",
+function textarea(label::Union{String, Symbol} = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
                   content::Union{String,Vector,Function} = "",
@@ -134,9 +134,9 @@ function textarea(label::String = "",
 end
 
 """
-filefield( label::String = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
+filefield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
 """
-function filefield( label::String = "",
+function filefield( label::Union{String, Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     kwargs...)

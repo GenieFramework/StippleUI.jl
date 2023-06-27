@@ -3,9 +3,13 @@ module API
 using Stipple, StippleUI, Colors
 import Genie.Renderer.Html: HTMLString, normal_element
 
-export attributes, quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors, kw, @kw
+export quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors, kw, @kw
 
 const ATTRIBUTES_MAPPINGS = Dict{String,String}(
+  "activeclass" => "active-class",
+  "activecolor" => "active-color",
+  "activecolorbg" => "active-bg-color",
+  "alerticon" => "alert-icon",
   "autoclose" => "auto-close",
   "autoupload" => "auto-upload",
   "barstyle" => "bar-style",
@@ -13,6 +17,8 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "bottomslots" => "bottom-slots",
   "captionlines" => "caption-lines",
   "checkedicon" => "checked-icon",
+  "classafter" => "after-class",
+  "classbefore" => "before-class",
   "clearicon" => "clear-icon",
   "colorhalf" => "color-half",
   "colorselected" => "color-selected",
@@ -21,6 +27,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "contentstyle" => "content-style",
   "contextmenu" => "context-menu",
   "darkpercentage" => "dark-percentage",
+  "defaultdate" => "default-date",
   "defaultopened" => "default-opened",
   "defaultyearmonth" => "default-year-month",
   "defaultview" => "default-view",
@@ -38,6 +45,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "emitvalue" => "emit-value",
   "errormessage" => "error-message",
   "eventcolor" => "event-color",
+  "exactactiveclass" => "exact-active-class",
   "expandicon" => "expand-icon",
   "expandiconclass" => "expand-icon-class",
   "expandedicon" => "expanded-icon",
@@ -61,6 +69,10 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "hidehint" => "hide-hint",
   "hideselected" => "hide-selected",
   "hideuploadbtn" => "hide-upload-btn",
+  "htmllabel" => "label-html",
+  "htmlname" => "name-html",
+  "htmlstamp" => "stamp-html",
+  "htmltext" => "text-html",
   "iconcolor" => "icon-color",
   "iconhalf" => "icon-half",
   "iconremove" => "icon-remove",
@@ -70,12 +82,17 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "imagestyle" => "img-style",
   "indeterminateicon" => "indeterminate-icon",
   "indeterminatevalue" => "indeterminate-value",
+  "indicatorcolor" => "indicator-color",
   "inlineactions" => "inline-actions",
+  "inlinelabel" => "inline-label",
   "inputclass" => "input-class",
   "inputdebounce" => "input-debounce",
   "inputstyle" => "input-style",
   "insetlevel" => "inset-level",
   "itemaligned" => "item-aligned",
+  "keepalive" => "keep-alive",
+  "keepaliveexclude" => "keep-alive-exclude",
+  "keepaliveinclude" => "keep-alive-include",
   "keepcolor" => "keep-color",
   "labelalways" => "label-always",
   "labelcolor" => "label-color",
@@ -90,9 +107,11 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "labeltextcolorleft" => "left-label-text-color",
   "labeltextcolorright" => "right-label-text-color",
   "lazyrules" => "lazy-rules",
+  "lefticon" => "left-icon",
   "leftlabel" => "left-label",
   "manualfocus" => "manual-focus",
   "mapoptions" => "map-options",
+  "markerlabels" => "marker-labels",
   "maxfiles" => "max-files",
   "maxfilesize" => "max-file-size",
   "maxheight" => "max-height",
@@ -104,7 +123,9 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "menuself" => "menu-self",
   "menushrink" => "menu-shrink",
   "minheight" => "min-height",
+  "mobilearrows" => "mobile-arrows",
   "multiline" => "multi-line",
+  "narrowindicator" => "narrow-indicator",
   "nativecontextmenu" => "native-context-menu",
   "navmaxyearmonth" => "navigation-max-year-month",
   "navminyearmonth" => "navigation-min-year-month",
@@ -124,6 +145,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "noresetfocus" => "no-reset-focus",
   "noroutefullscreenexit" => "no-route-fullscreen-exit",
   "nothumbnails" => "no-thumbnails",
+  "nowbtn" => "now-btn",
   "nowrap" => "no-wrap",
   "nounset" => "no-unset",
   "optiondisable" => "option-disable",
@@ -131,9 +153,13 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "optionscover" => "options-cover",
   "optionsdark" => "options-dark",
   "optionsdense" => "options-dense",
+  "optionshour" => "hour-options",
+  "optionsminute" => "minute-options",
   "optionssanitize" => "options-sanitize",
+  "optionssecond" => "second-options",
   "optionsselectedclass" => "options-selected-class",
   "optionvalue" => "option-value",
+  "outsidearrows" => "outside-arrows",
   "pagination" => ":pagination.sync",
   "paragraphtag" => "paragraph-tag",
   "placeholdersrc" => "placeholder-src",
@@ -141,9 +167,12 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "popupcontentstyle" => "popup-content-style",
   "reactiverules" => "reactive-rules",
   "reversefillmask" => "reverse-fill-mask",
+  "righticon" => "right-icon",
   "rules" => ":rules",
   "selected" => ":selected.sync",
   "sendraw" => "send-raw",
+  "separatorclass" => "separator-class",
+  "separatorstyle" => "separator-style",
   "scrolltarget" => "scroll-target",
   "shadowtext" => "shadow-text",
   "showifabove" => "show-if-above",
@@ -151,6 +180,7 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "spinnersize" => "spinner-size",
   "stacked" => "stack",
   "stacklabel" => "stack-label",
+  "switchindicator" => "switch-indicator",
   "switchtoggleside" => "switch-toggle-side",
   "textcolor" => "text-color",
   "thumbpath" => "thumb-path",
@@ -167,6 +197,8 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "pastenative" => "@paste.native",
   "tablecolspan" => "table-colspan",
   "transitionhide" => "transition-hide",
+  "transitionnext" => "transition-next",
+  "transitionprev" => "transition-prev",
   "transitionshow" => "transition-show",
   "truevalue" => "true-value",
   "uncheckedicon" => "unchecked-icon",
@@ -183,54 +215,30 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
   "virtualscrollstickysizeend" => "virtual-scroll-sticky-size-end",
   "vripple" => "v-ripple",
   "withcredentials" => "with-credentials",
+  "withseconds" => "with-seconds",
   "yearsinmonthview" => "years-in-month-view"
 );
 
-
-function attributes(kwargs::Union{Vector{<:Pair}, Base.Iterators.Pairs, Dict},
-                    mappings::Dict{String,String} = Dict{String,String}())::NamedTuple
-
-  attrs = Stipple.OptDict()
-  mapped = false
-
-  for (k,v) in kwargs
-    v === nothing && continue
-    mapped = false
-
-    if haskey(mappings, string(k))
-      k = mappings[string(k)]
-    end
-
-    attr_key = string((isa(v, Symbol) && ! startswith(string(k), ":") &&
-      ! ( startswith(string(k), "v-") || startswith(string(k), "v" * Genie.config.html_parser_char_dash) ) ? ":" : ""), "$k") |> Symbol
-    attr_val = isa(v, Symbol) && ! startswith(string(k), ":") ? Stipple.julia_to_vue(v) : v
-
-    attrs[attr_key] = attr_val
-  end
-
-  NamedTuple(attrs)
-end
-
-function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict}, 
+function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict},
   attributesmappings::Dict{String,String} = Dict{String,String}();
   merge::Bool = true) where X
-  
-  attributes(kwargs, merge ? ( isempty(attributesmappings) ? ATTRIBUTES_MAPPINGS : Base.merge(ATTRIBUTES_MAPPINGS, attributesmappings) ) : attributesmappings)
+
+  Stipple.attributes(kwargs, merge ? ( isempty(attributesmappings) ? ATTRIBUTES_MAPPINGS : Base.merge(ATTRIBUTES_MAPPINGS, attributesmappings) ) : attributesmappings)
 end
 
 macro kw(kwargs)
-  :( attributes($(esc(kwargs)), ATTRIBUTES_MAPPINGS) )
+  :( Stipple.attributes($(esc(kwargs)), ATTRIBUTES_MAPPINGS) )
 end
 
-function q__elem(f::Function, elem::Symbol, args...; attrs...) :: HTMLString
+function q__elem(f::Function, elem::Symbol, args...; attrs...) :: ParsedHTMLString
   normal_element(f, string(elem), [args...], Pair{Symbol,Any}[attrs...])
 end
 
-function q__elem(elem::Symbol, children::Union{String,Vector{String}} = "", args...; attrs...) :: HTMLString
+function q__elem(elem::Symbol, children::Union{String,Vector{String}} = "", args...; attrs...) :: ParsedHTMLString
   normal_element(children, string(elem), [args...], Pair{Symbol,Any}[attrs...])
 end
 
-function q__elem(elem::Symbol, children::Any, args...; attrs...) :: HTMLString
+function q__elem(elem::Symbol, children::Any, args...; attrs...) :: ParsedHTMLString
   normal_element(string(children), string(elem), [args...], Pair{Symbol,Any}[attrs...])
 end
 
@@ -246,7 +254,7 @@ function quasar(elem::Symbol, args...; kwargs...)
 end
 
 function vue(elem::Symbol, args...; kwargs...)
-  xelem(Symbol("q-$elem"), args...; kwargs...)
+  xelem(Symbol("vue-$elem"), args...; kwargs...)
 end
 
 xelem_pure(elem::Symbol, args...; kwargs...) = xelem(elem, args...; kwargs...)

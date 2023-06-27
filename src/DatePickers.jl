@@ -38,7 +38,7 @@ If the `fieldname` references a `Vector{DateRange}`, both the `multiple` and the
 ### Model
 
 ```julia-repl
-julia> @reactive mutable struct DatePickers <: ReactiveModel
+julia> @vars DatePickers begin
         date::R{Date} = today() + Day(30)
         dates::R{Vector{Date}} = Date[today()+Day(10), today()+Day(20), today()+Day(30)]
         daterange::R{DateRange} = DateRange(today(), (today() + Day(3)))
@@ -126,11 +126,7 @@ end
 
 Base.string(dp::DatePicker) = datepicker(dp.fieldname, dp.args...; dp.mask, dp.content, dp.kwargs...)
 
-# internals
-
-function Base.parse(::Type{Date}, d::String) :: Date
-  Date(d)
-end
+# rendering and parsing internals
 
 function Stipple.render(dr::DateRange, _::Union{Symbol,Nothing} = nothing)
   Dict(:from => dr.start, :to => dr.stop)
@@ -140,10 +136,8 @@ function Stipple.render(vdr::Vector{DateRange}, _::Union{Symbol,Nothing} = nothi
   [ Dict(:from => dr.start, :to => dr.stop) for dr in vdr ]
 end
 
-function Base.parse(::Type{DateRange}, d::Dict{String,Any})
-  DateRange(d["from"], d["to"])
+function Stipple.stipple_parse(::Type{DateRange}, d::Dict{String,Any})
+  DateRange(Date(d["from"]), Date(d["to"]))
 end
-
-Base.convert(::Type{DateRange}, d::Dict{String,Any}) = parse(DateRange, d)
 
 end

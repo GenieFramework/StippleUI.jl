@@ -9,14 +9,14 @@ const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 function deps_routes(; twbpatch::Bool = false) :: Nothing
   if ! Genie.Assets.external_assets(assets_config)
-    Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="quasar.min")) do
+    Genie.Router.route(Genie.Assets.asset_route(assets_config, :css, file="quasar.min")) do
       Genie.Renderer.WebRenderable(
         Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="css", file="quasar.min")),
         :css) |> Genie.Renderer.respond
     end
 
     if twbpatch
-      Genie.Router.route(Genie.Assets.asset_path(assets_config, :css, file="bootstrap-patch")) do
+      Genie.Router.route(Genie.Assets.asset_route(assets_config, :css, file="bootstrap-patch")) do
         Genie.Renderer.WebRenderable(
           Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="css", file="bootstrap-patch")),
           :css) |> Genie.Renderer.respond
@@ -25,7 +25,7 @@ function deps_routes(; twbpatch::Bool = false) :: Nothing
   end
 
   if ! Genie.Assets.external_assets(assets_config)
-    Genie.Router.route(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min")) do
+    Genie.Router.route(Genie.Assets.asset_route(assets_config, :js, file="quasar.umd.min")) do
       Genie.Renderer.WebRenderable(
         Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.min")),
         :javascript) |> Genie.Renderer.respond
@@ -56,6 +56,7 @@ end
 
 include("API.jl")
 include("PopupProxies.jl")
+include("StippleUIParser.jl")
 
 include("Avatars.jl")
 include("Badges.jl")
@@ -63,6 +64,7 @@ include("Banners.jl")
 include("BigNumbers.jl")
 include("Buttons.jl")
 include("Cards.jl")
+include("ChatMessages.jl")
 include("Checkboxes.jl")
 include("Chips.jl")
 include("DatePickers.jl")
@@ -88,21 +90,31 @@ include("Ratings.jl")
 include("ScrollAreas.jl")
 include("Selects.jl")
 include("Separators.jl")
+include("Skeletons.jl")
 include("Spaces.jl")
 include("Spinners.jl")
 include("Steppers.jl")
+include("Splitters.jl")
 include("Tables.jl")
+include("TabPanels.jl")
+include("Tabs.jl")
+include("Timelines.jl")
+include("TimePickers.jl")
 include("Toggles.jl")
+include("Toolbars.jl")
 include("Tooltips.jl")
+include("Trees.jl")
 include("Uploaders.jl")
+include("Videos.jl")
 
 
 #===#
 
 import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
-export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
+export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
+@reexport using .StippleUIParser
 
 @reexport using .Avatars
 @reexport using .Badges
@@ -110,6 +122,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .BigNumbers
 @reexport using .Buttons
 @reexport using .Cards
+@reexport using .ChatMessages
 @reexport using .Checkboxes
 @reexport using .Chips
 @reexport using .DatePickers
@@ -135,43 +148,26 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, @click, csscolors
 @reexport using .ScrollAreas
 @reexport using .Selects
 @reexport using .Separators
+@reexport using .Skeletons
 @reexport using .Spaces
 @reexport using .Spinners
 @reexport using .Steppers
+@reexport using .Splitters
 @reexport using .Tables
+@reexport using .TabPanels
+@reexport using .Tabs
+@reexport using .Timelines
+@reexport using .TimePickers
 @reexport using .Toggles
+@reexport using .Toolbars
 @reexport using .Tooltips
+@reexport using .Trees
 @reexport using .Uploaders
+@reexport using .Videos
 
 export page_container # from Layouts
 
 #===#
-
-"""
-    `@click(expr)`
-
-Defines a js routine that is called by a click of the quasar component.
-If a symbol argument is supplied, `@click` sets this value to true.
-
-`@click("savefile = true")` or `@click("myjs_func();")` or `@click(:button)`
-
-Modifers can be appended:
-```
-@click(:me, :native)
-# "v-on:click.native='me = true'"
-```
-"""
-macro click(expr, mode="")
-  quote
-    x = $(esc(expr))
-    m = $(esc(mode))
-    if x isa Symbol
-      """v-on:click$(m == "" ? "" : ".$m")='$x = true'"""
-    else
-      "v-on:click='$(replace(x, "'" => raw"\'"))'"
-    end
-  end
-end
 
 #===#
 
