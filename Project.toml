@@ -11,6 +11,7 @@ Genie = "c43c736e-a2d1-11e8-161f-af95117fbd1e"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 SnoopPrecompile = "66db9d55-30c0-4569-8b51-7e840670fc0c"
 Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
+Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
 
 [compat]
 Colors = "0.12"

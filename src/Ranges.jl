@@ -205,7 +205,7 @@ function slider(range::AbstractRange{<:QRangeType},
   end
 end
 
-function Stipple.render(rd::RangeData{T}, fieldname::Union{Symbol,Nothing} = nothing) where {T}
+function Stipple.render(rd::RangeData{T}) where {T}
   Dict(:min => rd.range.start, :max => rd.range.stop)
 end
 
