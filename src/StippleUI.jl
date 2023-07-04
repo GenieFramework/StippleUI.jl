@@ -170,10 +170,21 @@ export page_container # from Layouts
 
 #===#
 
+if !isdefined(Base, :get_extension)
+  using Stipple.Requires
+end
+
 function __init__()
   deps_routes()
   push!(Stipple.Layout.THEMES, theme)
   Stipple.deps!(@__MODULE__, deps)
+
+  @static if !isdefined(Base, :get_extension)
+    @require DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0" begin
+      # evaluate the code of the extension without the surrounding module
+      include(joinpath(@__DIR__, "..", "ext", "StippleUIDataFrames.jl"))
+    end
+  end
 end
 
 end

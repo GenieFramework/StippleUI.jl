@@ -1,7 +1,6 @@
 module QTables
 
 import Tables
-import DataFrames
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
@@ -108,14 +107,13 @@ Base.@kwdef mutable struct DataTableOptions
 end
 
 
-Base.@kwdef mutable struct DataTable{T}
-  data::T = DataFrames.DataFrame()
-  opts::DataTableOptions = DataTableOptions()
+mutable struct DataTable{T}
+  data::T
+  opts::DataTableOptions
 end
 
-
 """
-    DataTable(data::T<:DataFrames.DataFrame, opts::DataTableOptions)
+    DataTable(data::T, opts::DataTableOptions)
 
 ----------
 # Examples
@@ -127,8 +125,16 @@ julia> dt = DataTable(df)
 ```
 """
 function DataTable(data::T) where {T}
-  DataTable(data, DataTableOptions())
+  DataTable{T}(data, DataTableOptions())
 end
+
+function DataTable{T}() where {T}
+  DataTable{T}(T(), DataTableOptions())
+end
+
+# function DataTableWithSelection() where {T}
+#   DataTable{T}(T(), DataTableOptions())
+# end
 
 #===#
 
@@ -260,26 +266,19 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp
 end
 
-# this function should be moved to an extension
-function Stipple.stipple_parse(::Type{DataFrames.DataFrame}, d::Vector)
-  isempty(d) ? DataFrames.DataFrame() : reduce(vcat, DataFrames.DataFrame.(d))
-end
-
-function Stipple.convertvalue(target::R{<:DataTable}, d::AbstractDict)
-  kk = collect(keys(d))
-  df = Stipple.stipple_parse(DataFrames.DataFrame, d[kk[findfirst(startswith("data_"), kk)]])
-
-  DataTable(df[:, names(df) .!== "__id"], target.opts)
-end
-
 function DataTableOptions(d::AbstractDict)
   DataTableOptions(d["addid"], d["idcolumn"], d["columns"], d["columnspecs"])
 end
 
-Base.@kwdef struct DataTableWithSelection
-  var""::R{DataTable} = DataTable(DataFrames.DataFrame())
-  _pagination::R{DataTablePagination} = DataTablePagination()
-  _selection::R{DataTableSelection} = DataTableSelection()
+mutable struct DataTableWithSelection
+  var""::R{DataTable}
+  _pagination::R{DataTablePagination}
+  _selection::R{DataTableSelection}
+end
+
+function DataTableWithSelection(data::T) where {T}
+  dt = DataTable{T}(data, DataTableOptions())
+  DataTableWithSelection(dt,  DataTablePagination(), DataTableSelection())
 end
 
 Base.getindex(dt::DataTable, args...) = DataTable(dt.data[args...], dt.opts)
