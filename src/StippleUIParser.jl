@@ -56,9 +56,16 @@ end
 
 
 REV_DICT = Dict(zip(values(StippleUI.API.ATTRIBUTES_MAPPINGS), keys(StippleUI.API.ATTRIBUTES_MAPPINGS)))
+ToV = @static if isdefined(Core, :TypeofVararg) # VERSION >= v"1.7.0-DEV.77"
+  # Core.TypeofVararg introduced in https://github.com/JuliaLang/julia/pull/38136
+  typeof(Vararg)
+else
+  # not sure whether this will handle all cases correctly, but tests pass
+  UnionAll
+end
 
 function method_signature(m::Method)
-  Tuple[(v, T) for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], m.sig.types[2:end]) if ! (T isa Core.TypeofVararg)]
+  Tuple[(v, T) for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], m.sig.types[2:end]) if ! (T isa ToV)]
 end
 
 function method_signatures(mm::Union{Vector{Method}, Base.MethodList})
