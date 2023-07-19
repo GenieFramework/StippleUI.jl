@@ -15,3 +15,42 @@ using Stipple
     empty!(dt_target.data)
     @test Stipple.convertvalue(R(dt_target), dict).data == dt.data
 end
+
+@testset "Parsers" begin
+    doc_string = """<div>
+        <q-input v-model="message"/>
+                <br>
+        <p> Message: {{message}}</p>
+        <p> Vowel count: {{vowels}} vowels.</p>
+    </div>"""
+    
+    result = """Stipple.Html.div([
+        textfield("", :message, ),
+        br(),
+        p(
+            "Message: {{message}}"
+        ),
+        p(
+            "Vowel count: {{vowels}} vowels."
+        )
+    ])"""
+    
+    @test parse_vue_html(doc_string) == result
+    
+    result = """Stipple.Html.div([
+        textfield("", :message, )
+    
+        br()
+    
+        p(
+            "Message: {{message}}"
+        )
+    
+        p(
+            "Vowel count: {{vowels}} vowels."
+        )
+    ])"""
+    
+    @test parse_vue_html(doc_string, vec_sep = "\n\n") == result
+    
+    end

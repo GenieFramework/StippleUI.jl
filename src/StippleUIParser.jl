@@ -1,6 +1,6 @@
 module StippleUIParser
 
-using SnoopPrecompile
+using PrecompileTools
 
 export parse_vue_html, test_vue_parsing, prettify
 
@@ -9,7 +9,7 @@ using StippleUI
 using OrderedCollections
 
 using Genie.Logging
-using Genie.Renderer.Html.HTMLParser # EzXML
+using Genie.Renderer.Html.EzXML
 
 const AT_MASK = "__vue-on__"
 
@@ -167,12 +167,18 @@ function attr_to_paramstring(attr::Pair)
   "$(attr[1])=\"$(attr[2])\""
 end
 
-function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre = false)
+function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre::Bool = false, vec_sep::String = ",\n")
   startlevel = level
   level < 0 && (level = 0) 
 
   is_el = iselement(el)
-  ! is_el && (length(el.content) == 0 || el.content == "\n") && return ""
+  content = if is_el
+    ""
+  else
+    pre ? el.content : strip(el.content)
+  end
+  
+  ! is_el && (length(content) == 0 || content == "\n") && return ""
   
   indent_str = if indent isa Int
     repeat(' ', level * indent::Int)
@@ -180,7 +186,7 @@ function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{
     repeat(indent::String, level)
   end
  
-  ! is_el && return "$indent_str$(rawrepr(pre ? el.content : strip(el.content)))"
+  ! is_el && return "$indent_str$(rawrepr(content))"
 
   tag = el.name
   pre = pre || lowercase(tag) == "pre"
@@ -192,11 +198,9 @@ function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{
 
   attr_str = join(attr_to_kwargstring.(collect(new_attrs)), ", ")
 
-  children = node_to_stipple.(nodes(el), startlevel + 1; indent, pre)
-  if ! pre
-    children = children[length.(children) .> 0]
-  end
-  children_str = join(children, ",\n")
+  children = node_to_stipple.(nodes(el), startlevel + 1; indent, pre, vec_sep)
+  children = children[length.(children) .> 0]
+  children_str = join(children, vec_sep)
 
   no = length(children)
   sep3, sep4 = if no == 0
@@ -268,13 +272,14 @@ function node_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int
 end
  
 """
-    parse_vue_html(html, level = 0; indent::Union{String, Int} = 4)
+    parse_vue_html(html, level = 0; indent::Union{String, Int} = 4, vec_sep::String = ",\n")
 
 Parse html code to Julia/StippleUI code with automatic line breaks and indenting. Indenting can be determined by
-- level: starting level for formatting; negative values are allowed, negative levels are not indented
-- indent: either Integer for number of ' ' characters per level or a string value
+- `level: starting level for formatting; negative values are allowed, negative levels are not indented
+- `indent`: either Integer for number of ' ' characters per level or a string value
+- `vec_sep`: separator in array listings, reasonable values are `",\\n"`, `"\\n\\n"`, `",\\n\\n"`
 """
-function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4)
+function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4, vec_sep::String = ",\n")
   startlevel = level
   level < 0 && (level = 0)
 
@@ -304,12 +309,12 @@ function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4
   # remove the html -> body levels
 
   if root == :html
-    node_to_stipple(root_node, startlevel; indent)
+    node_to_stipple(root_node, startlevel; indent, vec_sep)
   else
     # remove the html / body levels
     children = nodes(root == :no_root ? root_node.firstelement : root_node)
     is_single = length(children) <= 1
-    children_str =  join(node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent), "\n")
+    children_str = join(node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep))
     replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", AT_MASK => "@")
   end |> ParsedHTMLString
 end
@@ -404,7 +409,7 @@ end
 
 # precompilation ...
 
-@precompile_setup begin
+@setup_workload begin
   # Putting some things in `setup` can reduce the size of the
   # precompile file and potentially make loading faster.
   using StippleUI.API
@@ -425,7 +430,7 @@ end
       </div>
   </template>
   """
-  @precompile_all_calls begin
+  @compile_workload begin
       # all calls in this block will be precompiled, regardless of whether
       # they belong to your package or not (on Julia 1.8 and higher)
       redirect_stdout(devnull) do
