@@ -56,7 +56,7 @@ end
 
 
 REV_DICT = Dict(zip(values(StippleUI.API.ATTRIBUTES_MAPPINGS), keys(StippleUI.API.ATTRIBUTES_MAPPINGS)))
-ToV = @static if isdefined(Core, :TypeofVararg) # VERSION >= v"1.7.0-DEV.77"
+const ToV = @static if isdefined(Core, :TypeofVararg) # VERSION >= v"1.7.0-DEV.77"
   # Core.TypeofVararg introduced in https://github.com/JuliaLang/julia/pull/38136
   typeof(Vararg)
 else
