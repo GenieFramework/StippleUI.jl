@@ -65,7 +65,8 @@ else
 end
 
 function method_signature(m::Method)
-  Tuple[(v, T) for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], m.sig.types[2:end]) if ! (T isa ToV)]
+  tt = hasproperty(m.sig, :types) ? m.sig.types : m.sig.body.types
+  Tuple[(v, T) for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], tt) if ! (T isa ToV)]
 end
 
 function method_signatures(mm::Union{Vector{Method}, Base.MethodList})
@@ -215,9 +216,9 @@ function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{
   elseif no == 1
     "\n", "\n$indent_str"
   else
-    "[\n$indent_str", "\n$indent_str]"
+    "[\n", "\n$indent_str]"
   end
-
+  
   sep1 = length(arg_str) > 0 && length(attr_str) > 0 ? ", " : ""
   sep2 = (length(arg_str) + length(attr_str) == 0) ? "" : ", "
   """$indent_str$fn_str$arg_str$sep1$attr_str$sep2$sep3$children_str$sep4)"""
@@ -321,8 +322,8 @@ function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4
     # remove the html / body levels
     children = nodes(root == :no_root ? root_node.firstelement : root_node)
     is_single = length(children) <= 1
-    children_str = join(node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep))
-    replace(is_single ? children_str : "$indent_str[\n$children_str$indent_str\n]", AT_MASK => "@")
+    children_str = node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep)
+    replace(is_single ? children_str[1] : "$indent_str[\n$(join(filter(!isempty, children_str), vec_sep))$indent_str\n]", AT_MASK => "@")
   end |> ParsedHTMLString
 end
 
