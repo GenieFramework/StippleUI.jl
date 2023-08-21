@@ -66,7 +66,7 @@ end
 
 function method_signature(m::Method)
   tt = hasproperty(m.sig, :types) ? m.sig.types : m.sig.body.types
-  Tuple[(v, T) for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], tt) if ! (T isa ToV)]
+  Tuple[(v, T) for (v, T) in zip(split(m.slot_syms, '\0')[2:end-1], tt[2:end-1]) if ! (T isa ToV)]
 end
 
 function method_signatures(mm::Union{Vector{Method}, Base.MethodList})
