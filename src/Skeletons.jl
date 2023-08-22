@@ -39,7 +39,7 @@ julia> skeleton(type="QAvatar")
       * `height::String` - Height in CSS units, including unit name; Apply custom height; Use this prop or through CSS; Overridden by 'size' prop if used. Examples `"16px"` `"2em"`
 """
 function skeleton(args...; kwargs...)
-  q__skeleton(args...; kw(kwargs)...)
+  q__skeleton(args...; kw(kwargs, flexgrid_mappings = Dict(:size => :colsize))...)
 end
 
 end

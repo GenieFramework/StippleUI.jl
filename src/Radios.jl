@@ -55,7 +55,7 @@ function radio( label::AbstractString = "",
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
                 kwargs...)
-  q__radio(args...; kw([:label => label, :fieldname => fieldname, kwargs...])...)
+  q__radio(args...; kw([:label => label, :fieldname => fieldname, kwargs...], flexgrid_mappings = Dict(:size => :colsize))...)
 end
 
 end

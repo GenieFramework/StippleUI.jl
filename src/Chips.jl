@@ -53,7 +53,7 @@ julia> chip("Add to calendar", icon="event")
       * `outline::Bool` - Display using the 'outline' design
 """
 function chip(args...; kwargs...)
-  q__chip(args...; kw(kwargs)...)
+  q__chip(args...; kw(kwargs, flexgrid_mappings = Dict(:size => :colsize))...)
 end
 
 end

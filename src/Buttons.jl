@@ -70,6 +70,9 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
       * `textcolor::String` - Overrides text color (if needed); Color name from the [Color Palette](https://quasar.dev/style/color-palette) eg. `primary` `teal-10`
       * `dense::Bool` - Dense mode; occupies less space
       * `round::Bool` - Makes a circle shaped button
+7. Flexgrid
+      * `colsize::Int/Symbol` - replaces the flexgrid parameter `size` as that is used already (see 6. Style)
+
 """
 function btn( label::Union{String,Symbol} = "",
               args...;
@@ -77,7 +80,7 @@ function btn( label::Union{String,Symbol} = "",
               kwargs...)
   q__btn([isa(content, Function) ? content() : join(content)],
           args...;
-          kw([:label => label, kwargs...])...
+          kw([:label => label, kwargs...], flexgrid_mappings = Dict(:size => :colsize))...
   )
 end
 
