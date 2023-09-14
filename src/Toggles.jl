@@ -73,7 +73,7 @@ function toggle(label::Union{String,Symbol} = "",
                 args...;
                 kwargs...)
 
-  q__toggle(args...; kw([:label => label, :fieldname => fieldname, kwargs...], flexgrid_mappings = Dict(:size => :colsize))...)
+  q__toggle(args...; kw([:label => label, :fieldname => fieldname, kwargs...])...)
 end
 
 end

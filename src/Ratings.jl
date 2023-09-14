@@ -57,7 +57,7 @@ julia> rating(:myrating, size="2.5em", color="purple-4", icon="create")
       * `nodimming::Bool` - Does not lower opacity for unselected icons
 """
 function rating(fieldname::Union{Symbol,Nothing} = nothing,args...; kwargs...)
-  q__rating(args...; kw([:fieldname => fieldname, kwargs...], flexgrid_mappings = Dict(:size => :colsize))...)
+  q__rating(args...; kw([:fieldname => fieldname, kwargs...])...)
 end
 
 end

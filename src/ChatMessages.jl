@@ -55,8 +55,6 @@ julia> chatmessage(R"message.text", name = R"message.name", sent = R"message.sen
       * `bgcolor::String` - Color name (from the Quasar Color Palette) for chat bubble background
       * `textcolor::String` - Color name (from the Quasar Color Palette) for chat bubble text
       * `size::String` - 1-12 out of 12(same as col-*)
-7. Flexgrid
-      * `colsize::Int/Symbol` - replaces the flexgrid parameter `size` as that is used already (see 6. Style)
 """
 function chatmessage(text::Union{Symbol, Vector{<:AbstractString}, AbstractString} = "",
                     args...; kwargs...)
@@ -67,7 +65,7 @@ function chatmessage(text::Union{Symbol, Vector{<:AbstractString}, AbstractStrin
   else
     Symbol("['$(join(replace.(text, "'" => "\\'"), "', '"))']")
   end
-  q__chat__message(args...; kw([:text => text, kwargs...], flexgrid_mappings = Dict(:size => :colsize))...)
+  q__chat__message(args...; kw([:text => text, kwargs...])...)
 end
 
 end

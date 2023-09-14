@@ -62,7 +62,7 @@ function checkbox(label::Union{String,Symbol} = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...; kwargs...)
 
-  q__checkbox(args...; kw([:label => label, :fieldname => fieldname, kwargs...], flexgrid_mappings = Dict(:size => :colsize))...)
+  q__checkbox(args...; kw([:label => label, :fieldname => fieldname, kwargs...])...)
 end
 
 end
