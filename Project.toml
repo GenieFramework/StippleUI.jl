@@ -24,7 +24,7 @@ DataFrames = "1"
 Genie = "5"
 OrderedCollections = "1"
 PrecompileTools = "1"
-Stipple = "0.27.2"
+Stipple = "0.27.5"
 Tables = "1"
 julia = "1.6"
 

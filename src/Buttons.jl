@@ -70,6 +70,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
       * `textcolor::String` - Overrides text color (if needed); Color name from the [Color Palette](https://quasar.dev/style/color-palette) eg. `primary` `teal-10`
       * `dense::Bool` - Dense mode; occupies less space
       * `round::Bool` - Makes a circle shaped button
+
 """
 function btn( label::Union{String,Symbol} = "",
               args...;
