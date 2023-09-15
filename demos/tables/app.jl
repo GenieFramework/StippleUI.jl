@@ -6,14 +6,15 @@ using DataFrames
 @app begin
   NO_OF_ROWS = 10_000
   DATA = sort!(DataFrame(rand(NO_OF_ROWS, 2), ["x1", "x2"]))
+  ROWS_PER_PAGE = 10
 
   @out data = DataTable(DataFrame([]), DataTableOptions(DATA))
-  @out pagination = DataTablePagination(rows_per_page = 10, rows_number = NO_OF_ROWS)
+  @out pagination = DataTablePagination(rows_per_page = ROWS_PER_PAGE, rows_number = NO_OF_ROWS)
   @out loading = false
   @in filter = ""
 
   @onchange isready begin
-    data = DataTable(DATA[1:3, :])
+    data = DataTable(DATA[1:ROWS_PER_PAGE, :])
     filter = ""
   end
 

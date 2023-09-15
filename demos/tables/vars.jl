@@ -2,7 +2,27 @@ using GenieFramework
 @genietools
 
 @app begin
-  const DATA = 101
+  @in number = 0
+  @out double = 0
+  @out triple = 0
+  @out quadruple = 0
 
-  @out data = 2 * $DATA
+  @onchange number begin
+    double, triple, quadruple = compute(number)
+  end
 end
+
+function compute(number)
+  (double = 2number, triple = 3number, quadruple = 4number)
+end
+
+function ui()
+  [
+    textfield("", :number)
+    textfield("", :double)
+    textfield("", :triple)
+    textfield("", :quadruple)
+  ]
+end
+
+@page("/", ui)
