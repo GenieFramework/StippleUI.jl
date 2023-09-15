@@ -20,7 +20,6 @@ using DataFrames
   @event :request begin
     loading = true
     state = process_request(DATA, data, pagination, filter)
-    @show state
     data = state.datatable
     pagination = state.pagination
     loading = false
