@@ -221,7 +221,9 @@ const ATTRIBUTES_MAPPINGS = Dict{String,String}(
 
 function kw(kwargs::Union{Vector{X}, Base.Iterators.Pairs, Dict},
   attributesmappings::Dict{String,String} = Dict{String,String}();
-  merge::Bool = true) where X
+  merge::Bool = true, flexgrid_mappings::Dict{Symbol,Symbol} = Dict{Symbol,Symbol}()) where X
+
+  kwargs = Stipple.flexgrid_kwargs(; flexgrid_mappings, kwargs...)
 
   Stipple.attributes(kwargs, merge ? ( isempty(attributesmappings) ? ATTRIBUTES_MAPPINGS : Base.merge(ATTRIBUTES_MAPPINGS, attributesmappings) ) : attributesmappings)
 end
