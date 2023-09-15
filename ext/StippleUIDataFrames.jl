@@ -1,4 +1,4 @@
-function StippleUI.QTables.DataTable()
+function StippleUI.Tables.DataTable()
   DataTable(DataFrames.DataFrame())
 end
 

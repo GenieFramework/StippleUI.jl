@@ -1,0 +1,1 @@
+table(:data, paginationsync = :pagination, @on("request", :request), loading = :loading, filter = :filter, title = "Random data")

@@ -1,6 +1,6 @@
-module QTables
+module Tables
 
-import Tables
+import Tables as TablesInterface
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
@@ -59,7 +59,7 @@ function Base.Symbol(v::Vector{Column}) :: Vector{Symbol}
 end
 
 """
-    DataTablePagination(sort_by::Symbol, descending::Bool, page::Int, row_per_page::Int)
+    DataTablePagination(sort_by::Symbol, descending::Bool, page::Int, rows_per_page::Int)
 
 ----------
 # Examples
@@ -74,6 +74,8 @@ Base.@kwdef mutable struct DataTablePagination
   descending::Bool = false
   page::Int = 1
   rows_per_page::Int = 10
+  rows_number::Union{Int,Nothing} = nothing
+  _filter::AbstractString = "" # keep track of filter value for improving performance
 end
 
 """
@@ -144,14 +146,16 @@ function DataTable{T}() where {T}
   DataTable{T}(T(), DataTableOptions())
 end
 
-# function DataTableWithSelection() where {T}
-#   DataTable{T}(T(), DataTableOptions())
-# end
-
 #===#
 
+function label_clean(input)
+  uppercasefirst(replace(string(input), '_'=>' '))
+end
+
 function active_columns(t::T)::Vector{Column} where {T<:DataTable}
-  t.opts.columns !== nothing ? t.opts.columns : [Column(string(name)) for name in Tables.columnnames(t.data)]
+  t.opts.columns !== nothing ?
+    t.opts.columns :
+      [Column(string(name), sortable = true, label = label_clean(name)) for name in TablesInterface.columnnames(t.data)]
 end
 
 """
@@ -186,7 +190,7 @@ end
 function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
   rows = []
 
-  for (count, row) in enumerate(Tables.rows(t.data))
+  for (count, row) in enumerate(TablesInterface.rows(t.data))
     r = Dict()
 
     if t.opts.addid
@@ -230,21 +234,40 @@ julia> @vars TableModel begin
 
 ### View
 ```julia-repl
-julia> table(title="Random numbers", :data; pagination=:data_pagination, style="height: 350px;")
+julia> table(:data; pagination=:data_pagination, style="height: 350px;", title="Random numbers")
 ```
 
 """
 function table( fieldname::Symbol,
-                                    args...;
-                                    rowkey::String = ID,
-                                    title::String = "",
-                                    datakey::String = "$fieldname.data",
-                                    columnskey::String = "$fieldname.columns",
-                                    kwargs...) :: ParsedHTMLString
+                args...;
+                rowkey::String = ID,
+                datakey::String = "$fieldname.data",
+                columnskey::String = "$fieldname.columns",
+                filter::Union{Symbol,String,Nothing} = nothing,
+                kwargs...) :: ParsedHTMLString
 
-  q__table(args...; kw(
-    [Symbol(":data") => "$datakey", Symbol(":columns") => "$columnskey", Symbol("row-key") => rowkey,
-    :fieldname => fieldname, kwargs...])...)
+  if filter !== nothing
+    filter_input = """
+    <template v-slot:top-right>
+      <q-input dense debounce="300" v-model="$filter" placeholder="Search">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </template>
+    """
+    args = tuple(pushfirst!([args...], filter_input)...)
+  end
+
+  q__table(args...;
+    kw([
+      Symbol(":data") => "$datakey",
+      Symbol(":columns") => "$columnskey",
+      Symbol("row-key") => rowkey,
+      :fieldname => fieldname,
+      kwargs...
+    ])...
+  )
 end
 
 #===#
@@ -254,7 +277,10 @@ function Stipple.render(t::T) where {T<:DataTable}
 end
 
 function Stipple.render(dtp::DataTablePagination)
-  Dict(:sortBy => dtp.sort_by, :descending => dtp.descending, :page => dtp.page, :rowsPerPage => dtp.rows_per_page)
+  response = Dict(:sortBy => dtp.sort_by, :descending => dtp.descending, :page => dtp.page, :rowsPerPage => dtp.rows_per_page)
+  dtp.rows_number !== nothing && setindex!(response, dtp.rows_number, :rowsNumber)
+
+  response
 end
 
 #===#
@@ -282,6 +308,13 @@ function DataTableOptions(d::AbstractDict)
   DataTableOptions(d["addid"], d["idcolumn"], d["columns"], d["columnspecs"])
 end
 
+function DataTableOptions(data::T) where T
+  dto = DataTableOptions()
+  dto.columns = [Column(string(name), sortable = true, label = label_clean(name)) for name in TablesInterface.columnnames(data)]
+
+  dto
+end
+
 mutable struct DataTableWithSelection
   var""::R{DataTable}
   _pagination::R{DataTablePagination}
@@ -294,7 +327,6 @@ function DataTableWithSelection(data::T) where {T}
 end
 
 Base.getindex(dt::DataTable, args...) = DataTable(dt.data[args...], dt.opts)
-
 Base.getindex(dt::DataTable, row::Int, col) = DataTable(dt.data[[row], col], dt.opts)
 Base.getindex(dt::DataTable, row, col::Int) = DataTable(dt.data[row, col::Int], dt.opts)
 Base.getindex(dt::DataTable, row::Int, col::Int) = DataTable(dt.data[[row], [col]], dt.opts)
@@ -363,7 +395,8 @@ end
     rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, regex::Regex, cols = Colon())
 
 Build a table selection based on a Regex.
-```
+
+```julia
 rowselection(t, "b", r"hello|World")
 ```
 """
@@ -378,7 +411,7 @@ end
 
 Select table rows of a model based on selection criteria. More information on selection syntax can be found in `rowselection`
 
-```
+```julia
 @vars TableDemo begin
     @mixin table::TableWithPaginationSelection
 end
@@ -401,5 +434,61 @@ function selectrows!(model::ReactiveModel, tablefield::Symbol, selectionfield::S
 end
 
 selectrows!(model::ReactiveModel, tablefield::Symbol, args...) = selectrows!(model, tablefield, Symbol(tablefield, "_selection"), args...)
+
+#=== event handlers ===#
+
+export process_request
+
+function process_request(data, datatable::DataTable, pagination::DataTablePagination, filter::AbstractString = "")
+  event = params(:payload, nothing)
+
+  if event !== nothing && isa(get(event, "event", false), AbstractDict) && isa(get(event["event"], "name", false), AbstractString) && event["event"]["name"] == "request"
+    event = event["event"]["event"]["pagination"]
+  else
+    event = Dict()
+    event["sortBy"] = pagination.sort_by
+    event["descending"] = pagination.descending
+    event["page"] = pagination.page
+    event["rowsPerPage"] = pagination.rows_per_page
+  end
+
+  event["rowsPerPage"] == 0 && (event["rowsPerPage"] = TablesInterface.rowcount(data)) # when Quasar sends 0, that means all rows
+
+  if filter !== pagination._filter || filter !== ""
+    pagination._filter = filter
+    collector = []
+    counter = 0
+    for row in eachrow(data)
+      counter += 1
+      if sum(occursin.(filter, string.(Array(row)))) > 0
+        push!(collector, counter)
+      end
+    end
+
+    if ! isempty(collector)
+      fd = data[collector, :]
+      pagination.rows_number = length(collector)
+    else
+      fd = data[!, :]
+    end
+  else
+    fd = data[!, :]
+  end
+
+  if event["sortBy"] === nothing
+    event["sortBy"] = "desc"
+    sort!(fd)
+  elseif event["sortBy"] in names(fd)
+    sort!(fd, event["sortBy"], rev = event["descending"])
+  end
+
+  start_row = (event["page"] - 1) * event["rowsPerPage"] + 1
+  end_row = event["page"] * event["rowsPerPage"]
+
+  datatable = typeof(datatable)(fd[(start_row <= pagination.rows_number ? start_row : pagination.rows_number) : (end_row <= pagination.rows_number ? end_row : pagination.rows_number), :], datatable.opts)
+  pagination = typeof(pagination)(rows_per_page = event["rowsPerPage"], rows_number = pagination.rows_number, page = event["page"], sort_by = event["sortBy"], descending = event["descending"], _filter = pagination._filter)
+
+  return (data = fd, datatable = datatable, pagination = pagination)
+end
 
 end

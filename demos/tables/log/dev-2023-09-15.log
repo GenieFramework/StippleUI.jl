@@ -1,0 +1,932 @@
+┌ Info: 2023-09-15 12:35:54 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 12:35:55 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 12:35:55 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 12:36:42 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:36:55 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 12:36:56 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 12:36:56 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 12:38:50 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 12:40:08 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:41:04 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:41:40 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:45:03 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:48:32 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 12:48:33 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 12:48:34 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 12:49:06 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:49:35 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 12:49:36 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 12:49:37 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 12:52:03 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:52:17 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 12:52:18 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 12:52:18 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 12:54:42 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:55:04 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 12:55:19 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 13:01:45 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 13:03:32 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 13:14:50 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 13:22:21 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl", 18, UndefVarError(Symbol("@onrequest"))), Union{Ptr{Nothing}, Base.InterpreterIP}[])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Warning: 2023-09-15 13:22:22 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Error: 2023-09-15 13:25:51 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl", 19, "\"begin\" at /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:5 expected \"end\", got \"begin\""), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x000000011704b043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 13:36:30 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl", 19, "\"begin\" at /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:5 expected \"end\", got \"begin\""), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x000000011704b043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Info: 2023-09-15 13:46:25 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 13:46:26 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 13:46:26 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 13:46:42 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 13:47:04 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 13:47:05 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 13:47:05 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 13:52:35 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 13:52:36 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 13:52:37 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 13:53:03 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 13:53:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 13:53:31 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 13:53:32 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 13:53:32 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:01:56 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:01:58 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:01:58 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:04:36 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:04:46 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:06:04 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:06:05 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:06:06 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:06:39 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:06:59 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:07:00 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:07:00 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:12:19 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:14:02 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:14:04 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:14:04 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:15:48 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:16:16 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:16:17 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:16:17 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:17:20 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:20:30 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:20:32 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:20:33 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:20:45 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:21:11 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:21:12 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:21:12 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:22:10 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:22:27 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:22:28 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:22:29 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:26:24 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:27:06 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:27:07 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:27:07 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:28:18 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:28:35 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:30:01 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:31:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:31:46 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:31:59 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:32:11 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:32:50 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 14:32:58 UndefVarError(:start_row)
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:54
+┌ Info: 2023-09-15 14:33:19 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:33:23 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:33:44 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:34:17 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:34:35 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:35:18 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:36:25 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:37:41 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:38:26 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:38:53 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:40:00 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:40:01 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:40:01 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:41:02 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:41:06 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:41:12 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:41:40 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:41:44 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:41:44 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:42:08 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 14:43:42 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = (ErrorException("lowering returned an error, \$(Expr(:error, \"\\\"\\\$\\\" expression outside quote around /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:75\"))"), Union{Ptr{Nothing}, Base.InterpreterIP}[])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Warning: 2023-09-15 14:43:43 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Info: 2023-09-15 14:51:01 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 14:51:02 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 14:51:03 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 14:52:59 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 14:53:55 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 14:57:26 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Warning: 2023-09-15 14:57:26 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Error: 2023-09-15 14:58:20 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:58:20 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:58:40 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:58:40 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:58:51 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:58:51 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:59:14 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:59:15 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 14:59:25 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Events.jl", 9, "missing comma or ) in argument list"), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x00000001193a7043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Info: 2023-09-15 15:00:19 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 15:00:20 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 15:00:21 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 15:01:07 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:01:10 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:01:52 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 15:01:53 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 15:01:53 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 15:02:51 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 15:04:08 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl", 17, MethodError(StippleUI.Events.var"@onrequest", (:(#= /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:17 =#), Main), 0xffffffffffffffff)), Union{Ptr{Nothing}, Base.InterpreterIP}[])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Warning: 2023-09-15 15:04:09 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Error: 2023-09-15 15:04:32 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl", 17, UndefVarError(:pagination)), Union{Ptr{Nothing}, Base.InterpreterIP}[])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Error: 2023-09-15 15:04:33 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl", 17, UndefVarError(:pagination)), Union{Ptr{Nothing}, Base.InterpreterIP}[])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Info: 2023-09-15 15:08:12 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 15:08:13 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 15:08:14 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 15:11:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:11:57 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 15:12:08 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│   exception = (ErrorException("lowering returned an error, \$(Expr(:error, \"\\\"\\\$\\\" expression outside quote around /Users/adrian/.julia/dev/StippleUI/src/Events.jl:20\"))"), Union{Ptr{Nothing}, Base.InterpreterIP}[])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Warning: 2023-09-15 15:12:09 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/src/Events.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Info: 2023-09-15 15:14:46 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 15:14:47 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 15:14:48 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 15:15:14 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:15:41 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:15:50 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:15:59 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:16:16 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:17:00 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:18:04 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:19:14 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:19:54 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:20:48 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:21:14 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:23:13 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:23:28 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:23:42 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:25:28 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:25:40 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:26:31 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:26:42 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:26:47 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:27:18 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:27:27 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:27:32 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:28:11 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:28:22 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:29:29 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 15:29:30 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 15:29:30 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 15:30:10 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:30:31 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:31:24 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:31:55 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:32:47 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:32:55 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:34:20 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:34:34 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:34:52 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:35:12 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:35:26 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:35:32 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:35:38 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:35:48 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:36:22 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:36:58 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:37:13 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:37:19 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:37:52 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:37:59 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:38:04 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:38:44 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:38:52 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:38:58 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:40:20 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 15:42:26 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 15:42:26 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 15:42:27 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 16:20:52 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 16:21:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 16:22:47 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 16:22:55 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 16:23:35 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 16:23:56 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 16:24:14 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 16:25:21 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 16:25:22 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 16:25:23 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 17:25:02 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:38:49 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:40:10 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:40:16 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:40:46 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:42:06 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:43:53 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:49:14 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:51:47 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:52:59 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:54:01 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:57:01 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:59:46 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 17:59:55 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:00:16 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:01:13 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:01:59 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:03:29 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:05:54 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:05:55 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 18:05:56 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 18:06:24 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:06:43 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:07:23 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:07:50 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:08:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:09:20 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:10:07 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:10:26 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:11:25 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:12:01 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:12:17 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:12:21 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:13:42 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:14:13 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:14:28 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:14:31 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:14:42 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 18:16:56 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Tables.jl
+│   exception = (LoadError("/Users/adrian/.julia/dev/StippleUI/src/Tables.jl", 454, "\"function\" at /Users/adrian/.julia/dev/StippleUI/src/Tables.jl:441 expected \"end\", got \")\""), Union{Ptr{Nothing}, Base.InterpreterIP}[Ptr{Nothing} @0x000000011eedf043])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:725
+┌ Warning: 2023-09-15 18:16:56 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/src/Tables.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Info: 2023-09-15 18:18:17 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:18:18 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 18:18:18 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 18:21:10 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:21:37 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:21:41 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:22:03 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:23:32 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:24:36 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:24:57 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:25:37 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:25:38 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 18:25:38 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 18:26:08 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:26:21 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:27:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:27:23 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:27:46 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:28:08 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:29:01 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:30:39 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:31:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:31:21 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:34:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:35:47 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:37:03 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:37:39 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:39:33 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:39:54 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:40:15 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:44:11 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:45:46 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:46:47 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:46:56 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:47:02 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 18:52:36 Failed to revise /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│   exception = Revise.ReviseEvalException("/Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:8", UndefVarError(:no_of_rows), Any[(top-level scope at app.jl:8, 1)])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:723
+┌ Warning: 2023-09-15 18:52:37 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Info: 2023-09-15 18:53:02 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:53:03 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 18:53:03 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 18:53:18 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:53:35 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:53:36 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 18:53:36 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 18:53:45 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:55:08 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:55:27 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 18:55:43 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:55:44 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 18:55:44 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 18:57:05 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 18:57:07 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 18:57:07 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 19:02:37 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:03:14 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 19:03:15 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 19:03:15 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 19:03:53 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:05:06 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:05:44 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:06:57 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:07:03 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Error: 2023-09-15 19:10:34 Failed to revise /Users/adrian/.julia/dev/StippleUI/src/Tables.jl
+│   exception = Revise.ReviseEvalException("/Users/adrian/.julia/dev/StippleUI/demos/tables/util.jl:589", ErrorException("invalid redefinition of constant DataTablePagination"), Any[(top-level scope at util.jl:589, 1)])
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:723
+┌ Warning: 2023-09-15 19:10:34 The running code does not match the saved version for the following files:
+│ 
+│   /Users/adrian/.julia/dev/StippleUI/src/Tables.jl
+│ 
+│ If the error was due to evaluation order, it can sometimes be resolved by calling `Revise.retry()`.
+│ Use Revise.errors() to report errors again. Only the first error in each file is shown.
+│ Your prompt color may be yellow until the errors are resolved.
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:833
+┌ Info: 2023-09-15 19:10:57 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 19:10:58 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 19:10:58 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 19:11:28 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:12:46 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 19:12:47 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 19:12:47 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 19:13:17 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:14:44 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:16:02 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:18:09 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:18:58 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:19:06 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:20:29 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:21:28 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:21:49 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:21:52 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:22:38 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:22:41 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:42 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:43 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:43 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:44 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:50 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:52 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:53 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:54 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:55 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:22:55 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:23:14 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:23:25 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:23:40 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:23:50 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:23:51 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:02 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:10 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:12 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:14 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:15 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:16 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:17 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:18 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:28 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:24:29 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:26:37 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:28:35 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:28:51 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:28:53 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:28:55 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:30:18 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:30:30 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:30:35 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:30:36 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:30:37 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:03 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:31:15 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:17 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:18 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:20 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:21 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:25 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:31:46 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:31:53 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:54 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:54 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:55 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:31:57 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:01 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:02 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:03 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:04 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:06 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:07 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:17 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:32:35 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:26
+┌ Info: 2023-09-15 19:42:24 Watching ["/Users/adrian/.julia/dev/StippleUI/demos/tables"]
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:19
+┌ Info: 2023-09-15 19:42:25 
+│ Web Server starting at http://127.0.0.1:8000 
+└ @ Genie.Server /Users/adrian/.julia/dev/Genie/src/Server.jl:161
+┌ Info: 2023-09-15 19:42:25 Listening on: 127.0.0.1:8000, thread id: 1
+└ @ HTTP.Servers /Users/adrian/.julia/packages/HTTP/Y2JKB/src/Servers.jl:366
+┌ Info: 2023-09-15 19:44:33 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:44:37 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:27
+┌ Info: 2023-09-15 19:44:38 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:27
+┌ Info: 2023-09-15 19:44:39 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:27
+┌ Info: 2023-09-15 19:44:40 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:27
+┌ Info: 2023-09-15 19:44:56 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:44:56 OK
+└ @ Main /Users/adrian/.julia/dev/StippleUI/demos/tables/app.jl:27
+┌ Warning: 2023-09-15 19:48:35 /Users/adrian/.julia/dev/StippleUI/src/Events.jl no longer exists, deleted all methods
+└ @ Revise /Users/adrian/.julia/packages/Revise/7HQ7u/src/packagedef.jl:667
+┌ Info: 2023-09-15 19:48:35 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:48:54 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
+┌ Info: 2023-09-15 19:49:02 Autoreloading
+└ @ GenieAutoReload /Users/adrian/.julia/packages/GenieAutoReload/IuBCb/src/GenieAutoReload.jl:22
