@@ -63,6 +63,7 @@ include("Badges.jl")
 include("Banners.jl")
 include("BigNumbers.jl")
 include("Buttons.jl")
+include("ButtonToggles.jl")
 include("Cards.jl")
 include("ChatMessages.jl")
 include("Checkboxes.jl")
@@ -119,6 +120,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 @reexport using .Banners
 @reexport using .BigNumbers
 @reexport using .Buttons
+@reexport using .ButtonToggles
 @reexport using .Cards
 @reexport using .ChatMessages
 @reexport using .Checkboxes
