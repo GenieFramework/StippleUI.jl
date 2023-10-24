@@ -129,7 +129,7 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
 """
 function select(fieldname::Symbol,
                 args...;
-                options::Symbol,
+                options::Union{Symbol, Vector},
                 kwargs...)
 
   q__select(args...; kw(

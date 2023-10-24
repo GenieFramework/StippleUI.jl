@@ -272,7 +272,7 @@ julia> btntoggle(:network, options = :networks, label="Social Networks", rounded
 """
 function btntoggle(fieldname::Symbol,
                 args...;
-                options::Symbol,
+                options::Union{Symbol, Vector{<:AbstractDict}},
                 kwargs...)
 
   q__btn__toggle(args...; kw(
