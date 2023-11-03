@@ -7,6 +7,7 @@ using StippleUI
 makedocs(
     sitename = "SearchLight - Concise, secure, cross-platform query builder and ORM for Julia",
     format = Documenter.HTML(prettyurls = false),
+    warnonly = true,
     pages = [
         "Home" => "index.md",
         "StippleUI API" => [
