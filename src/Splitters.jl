@@ -31,7 +31,7 @@ julia> splitter(:splitterM, style="height: 400px", [
                Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus
                obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.",
               class = "q-my-md",
-              @recur(:"n in 20"), key! = "n")
+              @for(:"n in 20"), key! = "n")
           ])
         ]),
         template("", "v-slot:after", [
@@ -41,7 +41,7 @@ julia> splitter(:splitterM, style="height: 400px", [
                Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus
                obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.",
               class = "q-my-md",
-              @recur(:"n in 20"), key! = "n")
+              @for(:"n in 20"), key! = "n")
           ])
         ])
        ])
