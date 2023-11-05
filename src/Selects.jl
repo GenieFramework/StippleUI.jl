@@ -6,7 +6,7 @@ import Genie.Renderer.Html: HTMLString, normal_element, select, template, regist
 register_normal_element("q__select", context = @__MODULE__)
 
 """
-    select(fieldname::Symbol, args...; options::Symbol, kwargs...)
+    select(fieldname::Symbol, args...; options::Union{Symbol, Vector}, kwargs...)
 
 
 
@@ -75,7 +75,7 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
       * `multiple::Bool` - Allow multiple selection; Model must be Array
       * `emitvalue::Bool` - Update model with the value of the selected option instead of the whole option
 5. Options
-      * `options::Vector` - Available options that the user can select from. For best performance freeze the list of options ex. `options=[ 'BMW', 'Samsung Phone' ]`
+      * `options::Vector` - Available options that the user can select from. For best performance freeze the list of options ex. `options = [ "BMW", "Samsung Phone" ]`
       * `optionvalue::String` - Property of option which holds the 'value'; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optionvalue=modelNumber` `optionvalue="(item) => item === null ? null : item.modelNumber"`
       * `optionlabel::Union{String,Symbol}` - Property of option which holds the 'label'; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optionlabel=itemName` `optionlabel="(item) => item === null ? null : item.itemName"`
       * `optiondisable::String` - Property of option which tells it's disabled; The value of the property must be a Boolean; If using a function then for best performance, reference it from your scope and do not define it inline ex. `optiondisable=cannotSelect` `optiondisable="(item) => item === null ? null : item.cannotSelect"`
@@ -129,7 +129,7 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
 """
 function select(fieldname::Symbol,
                 args...;
-                options::Symbol,
+                options::Union{Symbol, Vector},
                 kwargs...)
 
   q__select(args...; kw(

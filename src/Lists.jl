@@ -102,7 +102,7 @@ end
 # client side iteration
 function list(binding::Symbol, i::Item, args...; kwargs...)
   list(
-    Item(i, ["{{__b__}}"], @recur("__b__ in $binding"), key! = "__b__")
+    Item(i, ["{{__b__}}"], @for("__b__ in $binding"), key! = "__b__")
   )
 end
 

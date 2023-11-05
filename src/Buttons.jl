@@ -212,7 +212,7 @@ function btndropdown(args...; kwargs...)
 end
 
 """
-    btntoggle(fieldname::Symbol, args...; options::Symbol, kwargs...)
+    btntoggle(fieldname::Symbol, args...; options::Union{Symbol, Vector{<:AbstractDict}}, kwargs...)
 
 
 
@@ -249,7 +249,7 @@ julia> btntoggle(:network, options = :networks, label="Social Networks", rounded
       * `stack::Bool`- Stack icon and label vertically instead of on same line (like it is by default)
       * `stretch::Bool`- When used on flexbox parent, button will stretch to parent's height
 3. Model
-      * `options::Vector` - Available options that the user can select from. For best performance freeze the list of options ex. `options=[ 'BMW', 'Samsung Phone' ]`
+      * `options::Vector` - Available options that the user can select from. For best performance freeze the list of options ex. `options=[ "BMW", "Samsung Phone" ]`
       * `clearable::Bool` - Clears model on click of the already selected button
 4. State
       * `disable::Bool` - Put component in disabled mode
@@ -267,12 +267,12 @@ julia> btntoggle(:network, options = :networks, label="Social Networks", rounded
       * `glossy::Boolean` - Applies a glossy effect
       * `size::String` - Button size name or a CSS unit including unit name
       * `padding::String` - Apply custom padding (vertical [horizontal]); Size in CSS units, including unit name or standard size name (none|xs|sm|md|lg|xl); Also removes the min width and height when set
-      * `ripple::Union{Boolean, Dict}`` - Configure material ripple (disable it by setting it to 'false' or supply a Dict with `js_attr`, e.g. `js_attr(Stipple.opts(early = true, center = true, color = 'teal', keyCodes = []))`)
+      * `ripple::Union{Boolean, Dict}`` - Configure material ripple (disable it by setting it to 'false' or supply a Dict , e.g. `Stipple.opts(early = true, center = true, color = "teal", keyCodes = [])`)
       * `dense::Boolean` - Dense mode; occupies less space
 """
 function btntoggle(fieldname::Symbol,
                 args...;
-                options::Symbol,
+                options::Union{Symbol, Vector{<:AbstractDict}},
                 kwargs...)
 
   q__btn__toggle(args...; kw(
