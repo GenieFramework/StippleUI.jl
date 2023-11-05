@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = Layouts
+CurrentModule = StippleUI.Layouts
 ```
 
 ```@docs
