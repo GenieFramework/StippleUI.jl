@@ -41,7 +41,10 @@ julia> radio("Polygon", :shape, val="polygon")
       * `keep-color::Bool` - Should the color (if specified any) be kept when checkbox is unticked?
 2. General
       * `tabindex::Union{Int, String}` - Tabindex HTML attribute value
+3. Model
+      * `fieldname::Symbol` - Name of the variable to bind to.
 4. Label
+      * `label::AbstractString` - Label
       * `leftlabel::Bool` - Label (if any specified) should be displayed on the left side of the checkbox
 5. State
       * `disable::Bool` - Put component in disabled mode
@@ -54,8 +57,10 @@ julia> radio("Polygon", :shape, val="polygon")
 function radio( label::AbstractString = "",
                 fieldname::Union{Symbol,Nothing} = nothing,
                 args...;
+                val = nothing,
                 kwargs...)
-  q__radio(args...; kw([:label => label, :fieldname => fieldname, kwargs...])...)
+  kw_val = val === nothing ? Dict() : Dict(:val => (val isa Bool ? js_attr(val) : val))
+  q__radio(args...; kw([:label => label, :fieldname => fieldname, kw_val..., kwargs...])...)
 end
 
 end
