@@ -3,7 +3,7 @@ module Menus
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
-export qmenu
+export menu
 
 register_normal_element("q__menu", context = @__MODULE__)
 
