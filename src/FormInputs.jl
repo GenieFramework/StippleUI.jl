@@ -25,7 +25,7 @@ julia> @vars TextField begin
 
 ### View
 ```julia-repl
-julia> textfield("What's your name *", :name, name = "name", @iif(:warin), :filled, hint = "Name and surname", "lazy-rules",
+julia> textfield("What's your name *", :name, name = "name", @if(:warin), :filled, hint = "Name and surname", "lazy-rules",
           rules = "[val => val && val.length > 0 || 'Please type something']"
        )
 ```
