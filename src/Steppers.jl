@@ -3,7 +3,7 @@ module Steppers
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
-export  step, stepper, steppernavigation
+export stepper, steppernavigation
 
 register_normal_element("q__stepper", context = @__MODULE__)
 register_normal_element("q__step", context = @__MODULE__)

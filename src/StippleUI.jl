@@ -152,6 +152,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 @reexport using .Spinners
 @reexport using .Splitters
 @reexport using .Steppers
+import .Steppers.step
 @reexport using .Tables
 @reexport using .TabPanels
 @reexport using .Tabs
