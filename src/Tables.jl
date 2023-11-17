@@ -265,6 +265,7 @@ function table( fieldname::Symbol,
       Symbol(":columns") => "$columnskey",
       Symbol("row-key") => rowkey,
       :fieldname => fieldname,
+      :filter => filter,
       kwargs...
     ])...
   )
