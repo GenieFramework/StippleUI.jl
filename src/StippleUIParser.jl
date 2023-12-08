@@ -147,7 +147,7 @@ function function_parser(tag, attrs, context = @__MODULE__)
       delete!(attrs, name_dict[k])
     end
 
-    if is_html_tag
+    if is_html_tag && julia_fn != :div
       # then the function (probably) does not support Symbol values for arguments, so revert to adding a '!' to the key
       # e.g. `a = :test`, `b = R"myarray[1]"`
       index = startswith.(values(attrs), '"')
@@ -163,7 +163,7 @@ function function_parser(tag, attrs, context = @__MODULE__)
   fn_str = if M === nothing || tag_str == "q__input"
     startswith(tag_str, "q__") ? "quasar(:$(tag_str[4:end]), " : startswith(tag_str, "vue__") ? "vue(:$(tag_str[6:end]), " : "xelem(:$tag_str, "
   else
-    julia_fn == :div && (julia_fn = Symbol("Stipple.Html.div"))
+    julia_fn == :div && (julia_fn = :htmldiv)
     "$julia_fn("
   end
    
