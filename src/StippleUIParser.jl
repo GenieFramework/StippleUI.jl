@@ -107,7 +107,7 @@ end
   k => v
 end
 
-function function_parser(tag, attrs; context = @__MODULE__)
+function function_parser(tag, attrs; context = @__MODULE__, flexgrid_parsing = true)
   tag_str = replace(String(typeof(tag).parameters[1]), "-" => "__")
   julia_str = String(typeof(tag).parameters[1])
   julia_fn = Symbol(replace(startswith(julia_str, "q-") ? julia_str[3:end] : julia_str, "-" => ""))
@@ -147,7 +147,7 @@ function function_parser(tag, attrs; context = @__MODULE__)
     end
 
     # parse flexgrid attributes
-    if !is_html_tag || tag_str in ("div", "col", "row", "cell")
+    if (!is_html_tag || tag_str in ("div", "col", "row", "cell")) && flexgrid_parsing
       kk = String.(collect(keys(attrs)))
       pos = findfirst(startswith(r":?class$"), kk)
       if pos !== nothing
@@ -225,7 +225,7 @@ function attr_to_paramstring(attr::Pair)
   "$(attr[1])=\"$(attr[2])\""
 end
 
-function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre::Bool = false, vec_sep::String = ",\n", context = @__MODULE__)
+function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre::Bool = false, vec_sep::String = ",\n", context = @__MODULE__, flexgrid_parsing = true)
   startlevel = level
   level < 0 && (level = 0) 
 
@@ -252,11 +252,11 @@ function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{
   arg_str = ""
   attrs = attr_dict(stipple_attr, el)
 
-  fn_str, arg_str, new_attrs = function_parser(Val(Symbol(el.name)), attrs; context)
+  fn_str, arg_str, new_attrs = function_parser(Val(Symbol(el.name)), attrs; context, flexgrid_parsing)
 
   attr_str = join(attr_to_kwargstring.(collect(new_attrs)), ", ")
 
-  children = node_to_stipple.(nodes(el), startlevel + 1; indent, pre, vec_sep, context)
+  children = node_to_stipple.(nodes(el), startlevel + 1; indent, pre, vec_sep, context, flexgrid_parsing)
   children = children[length.(children) .> 0]
   children_str = join(children, vec_sep)
 
@@ -338,7 +338,7 @@ Parse html code to Julia/StippleUI code with automatic line breaks and indenting
 - `vec_sep`: separator in array listings, reasonable values are `",\\n"`, `"\\n\\n"`, `",\\n\\n"`
 - `context`: context for evaluation
 """
-function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4, vec_sep::String = ",\n", context = @__MODULE__)
+function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4, vec_sep::String = ",\n", context = @__MODULE__, flexgrid_parsing = true)
   startlevel = level
   level < 0 && (level = 0)
 
@@ -368,12 +368,12 @@ function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4
   # remove the html -> body levels
 
   if root == :html
-    node_to_stipple(root_node, startlevel; indent, vec_sep, context)
+    node_to_stipple(root_node, startlevel; indent, vec_sep, context, flexgrid_parsing)
   else
     # remove the html / body levels
     children = nodes(root == :no_root ? root_node.firstelement : root_node)
     is_single = length(children) <= 1
-    children_str = node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep, context)
+    children_str = node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep, context, flexgrid_parsing)
     replace(is_single ? children_str[1] : "$indent_str[\n$(join(filter(!isempty, children_str), vec_sep))$indent_str\n]", AT_MASK => "@")
   end |> ParsedHTMLString
 end
@@ -424,11 +424,11 @@ prettify(doc::EzXML.Document; level::Int = 0, indent::Union{String, Int} = 4) = 
 
 prettify(v::Vector; level::Int = 0, indent::Union{String, Int} = 4) = prettify(join(v); level, indent)
 
-function function_parser(tag::Val{Symbol("q-input")}, attrs; context = @__MODULE__)
+function function_parser(tag::Val{Symbol("q-input")}, attrs; context = @__MODULE__, flexgrid_parsing = true)
   kk = String.(collect(keys(attrs)))
   pos = findfirst(startswith(r"fieldname$|var\"v-model."), kk)
   if pos === nothing
-    function_parser(Val(:q__input), attrs; context)
+    function_parser(Val(:q__input), attrs; context, flexgrid_parsing)
   else
     haskey(attrs, "label") || (attrs["label"] = "\"\"")
     k = kk[pos]
@@ -437,9 +437,9 @@ function function_parser(tag::Val{Symbol("q-input")}, attrs; context = @__MODULE
     attrs["fieldname"] = v
 
     if k == "var\"v-model.number\""
-      function_parser(Val(:numberfield), attrs; context)
+      function_parser(Val(:numberfield), attrs; context, flexgrid_parsing)
     else
-      function_parser(Val(:textfield), attrs; context)
+      function_parser(Val(:textfield), attrs; context, flexgrid_parsing)
     end
   end
 end
@@ -510,11 +510,11 @@ function remove_class(class::String, subclass::Union{String, Regex})
   return c, removed
 end
 
-function function_parser(tag::Val{:div}, attrs, context = @__MODULE__)
+function function_parser(tag::Val{:div}, attrs, context = @__MODULE__, flexgrid_parsing = true)
   kk = String.(collect(keys(attrs)))
   pos = findfirst(startswith(r":?class$"), kk)
   if pos === nothing
-    function_parser(Val(:htmldiv), attrs; context)
+    function_parser(Val(:htmldiv), attrs; context, flexgrid_parsing)
   else
     k = kk[pos]
     v = attrs[k]
@@ -538,10 +538,10 @@ function function_parser(tag::Val{:div}, attrs, context = @__MODULE__)
           attrs[k] = v_new
         end
 
-        return function_parser(Val(tagname), attrs; context)
+        return function_parser(Val(tagname), attrs; context, flexgrid_parsing)
       end
     end
-    function_parser(Val(:htmldiv), attrs; context)
+    function_parser(Val(:htmldiv), attrs; context, flexgrid_parsing)
   end
 end
 
@@ -554,11 +554,11 @@ Indenting can be determined by
 - `indent`: either Integer for number of ' ' characters per level or a string value
 - `context`: context for evaluation
 """
-function test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4, context = @__MODULE__)
+function test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4, context = @__MODULE__, flexgrid_parsing = true)
   println("\nOriginal HTML string:")
   printstyled(html_string, "\n\n", color = :light_red)
   
-  julia_code = parse_vue_html(html_string; level, indent, context)
+  julia_code = parse_vue_html(html_string; level, indent, context, flexgrid_parsing)
 
   println("Julia code:")
   printstyled(julia_code, "\n\n", color = :blue)
