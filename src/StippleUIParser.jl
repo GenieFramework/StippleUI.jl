@@ -107,6 +107,100 @@ end
   k => v
 end
 
+const OPENERS = ('(', '{', '[')
+const CLOSERS = (')', '}', ']')
+const QUOTES = (''', '"')
+
+closer(c) = c == '(' ? ')' : c == '{' ? '}' : c == '[' ? ']' : c
+
+
+function next_js_expr(s, start_index::Int = 1)
+    tracker = Char[]
+    escaped = false
+
+    i = start_index
+    last_index = lastindex(s)
+    while i <= last_index
+        c = s[i]
+        if length(tracker) > 0 && c == tracker[end] && ! escaped
+            pop!(tracker)
+            i = nextind(s, i)
+            continue
+        end
+        if isempty(tracker) && (c ∈ (',', ':') || c ∈ CLOSERS)
+            return strip(s[start_index:prevind(s, i)]), i
+        end
+        quoted = length(tracker) > 0 && tracker[end] in QUOTES
+        if !quoted && (c in OPENERS || c in QUOTES)
+            push!(tracker, closer(c))
+        end
+        escaped = !escaped && quoted && c == '\\'
+        i = nextind(s, i)
+    end
+    return strip(s[start_index:last_index]), i
+end
+
+next_js_expr("function(a, b, ϕ = 'hi') { return this.x }}] and more")
+
+is_jsontext(::JSONText) = true
+is_jsontext(s::String) = startswith(s, "js\"")
+is_jsontext(x) = false
+
+function parse_js_expr(s; code = true)
+    s = strip(s)
+    
+    s == "" && return nothing
+    if s[1] ∈ union('0':'9', '.')
+        x = contains(s, r"[.eE]") ? tryparse(Float64, s) : tryparse(Int, s)
+        x !== nothing && return x
+    end
+    s[1] ∈ QUOTES && s[1] == s[end] && return String(s[2:end-1])
+
+    last_index = lastindex(s)
+    i = 1
+    c = s[i]
+    
+    if c ∈ OPENERS
+        aa = Any[]
+        close_char = closer(c)
+        while c != close_char && i <= last_index
+            k = ""
+            if close_char == '}'
+                k, i = next_js_expr(s, nextind(s, i))
+                length(k) > 1 && k[1] ∈ QUOTES && k[1] == k[end] && (k = k[2:end-1])
+            end
+            v, i = next_js_expr(s, nextind(s, i))
+            k == "" && v == "" && continue
+            if close_char == '}'
+                k_value = parse_js_expr(k; code)
+                k_value isa JSONText && (k_value = k_value.s)
+                push!(aa, k => parse_js_expr(v; code))
+            else
+                push!(aa, parse_js_expr(v; code))
+            end    
+            c = s[i]
+        end
+
+        a_str = ""
+        if code
+            a_str = if close_char == '}'
+                Stipple.join(["$(repr(is_jsontext(a[1]) ? a[1][4:end-1] : repr(a[1])) : a[1])) => $(is_jsontext(a[2]) ? a[2] : repr(a[2]))" for a in aa], ", ")
+            else
+                Stipple.join([is_jsontext(a) ? a : repr(a) for a in aa], ", ")
+            end
+        end
+        return if close_char == ']'
+            code ? "[$a_str]" : aa
+        elseif close_char == ')'
+            code ? "($a_str)" : tuple(aa...)
+        else
+            code ? "Dict($a_str)" : Dict(aa...)
+        end
+    end
+
+    return code ? "js" * repr(s) : JSONText(s)
+end
+
 function function_parser(tag, attrs; context = @__MODULE__, flexgrid_parsing = true)
   tag_str = replace(String(typeof(tag).parameters[1]), "-" => "__")
   julia_str = String(typeof(tag).parameters[1])
