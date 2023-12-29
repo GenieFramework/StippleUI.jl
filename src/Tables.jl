@@ -247,7 +247,7 @@ function table( fieldname::Symbol,
                 kwargs...) :: ParsedHTMLString
 
   if filter !== nothing
-    filter_input = """
+    filter_input = [ParsedHTMLString("""
     <template v-slot:top-right>
       <q-input dense debounce="300" v-model="$filter" placeholder="Search">
         <template v-slot:append>
@@ -255,8 +255,8 @@ function table( fieldname::Symbol,
         </template>
       </q-input>
     </template>
-    """
-    args = tuple(pushfirst!([args...], filter_input)...)
+    """)]
+    args = [args..., filter_input]
   end
 
   q__table(args...;
