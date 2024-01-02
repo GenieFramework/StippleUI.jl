@@ -12,6 +12,7 @@ using Genie.Logging
 using Genie.Renderer.Html.EzXML
 
 const AT_MASK = "__vue-on__"
+const NO_CHILD_ELEMENTS = String["q-input", "q-btn"]
 
 # add a method that doesn't interpret ':' as separator for namespace
 # when a Symbol is passed as index (instead of an AbstractString)
@@ -263,7 +264,7 @@ function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{
   no = length(children)
   sep3, sep4 = if no == 0
     "", ""
-  elseif no == 1
+  elseif no == 1 && tag ∉ NO_CHILD_ELEMENTS
     "\n", "\n$indent_str"
   else
     "[\n", "\n$indent_str]"
