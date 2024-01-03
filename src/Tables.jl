@@ -244,9 +244,10 @@ function table( fieldname::Symbol,
                 datakey::String = "$fieldname.data",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
+                paginationsync::Union{Symbol,String,Nothing} = nothing,
                 kwargs...) :: ParsedHTMLString
 
-  if filter !== nothing
+  if filter !== nothing && paginationsync !== nothing # by convention, assume paginationsync is used only for server side filtering
     filter_input = [ParsedHTMLString("""
     <template v-slot:top-right>
       <q-input dense debounce="300" v-model="$filter" placeholder="Search">
@@ -266,6 +267,7 @@ function table( fieldname::Symbol,
       Symbol("row-key") => rowkey,
       :fieldname => fieldname,
       (filter === nothing ? [] : [:filter => filter])...,
+      (paginationsync === nothing ? [] : [:paginationsync => paginationsync])...,
       kwargs...
     ])...
   )
@@ -443,7 +445,10 @@ export process_request
 function process_request(data, datatable::DataTable, pagination::DataTablePagination, filter::AbstractString = "")
   event = params(:payload, nothing)
 
-  if event !== nothing && isa(get(event, "event", false), AbstractDict) && isa(get(event["event"], "name", false), AbstractString) && event["event"]["name"] == "request"
+  if event !== nothing &&
+    isa(get(event, "event", false), AbstractDict) &&
+      isa(get(event["event"], "name", false), AbstractString) &&
+        event["event"]["name"] == "request"
     event = event["event"]["event"]["pagination"]
   else
     event = Dict()
