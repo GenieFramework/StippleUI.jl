@@ -8,6 +8,7 @@ using DataFrames
   DATA = sort!(DataFrame(rand(NO_OF_ROWS, 2), ["x1", "x2"]))
   ROWS_PER_PAGE = 10
 
+  @out df = DATA
   @out data = DataTable(DataFrame([]), DataTableOptions(DATA))
   @out pagination = DataTablePagination(rows_per_page = ROWS_PER_PAGE, rows_number = NO_OF_ROWS)
   @out loading = false
@@ -19,6 +20,7 @@ using DataFrames
   end
 
   @event :request begin
+    @show "requestt"
     loading = true
     state = process_request(DATA, data, pagination, filter)
     @show state
