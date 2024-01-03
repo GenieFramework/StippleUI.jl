@@ -24,7 +24,7 @@ end
         <p> Vowel count: {{vowels}} vowels.</p>
     </div>"""
     
-    result = """Stipple.Html.div([
+    result = """htmldiv([
         textfield("", :message, ),
         br(),
         p(
@@ -37,7 +37,7 @@ end
     
     @test parse_vue_html(doc_string) == result
     
-    result = """Stipple.Html.div([
+    result = """htmldiv([
         textfield("", :message, )
     
         br()

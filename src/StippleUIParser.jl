@@ -12,6 +12,7 @@ using Genie.Logging
 using Genie.Renderer.Html.EzXML
 
 const AT_MASK = "__vue-on__"
+const NO_CHILD_ELEMENTS = String["q-input", "q-btn"]
 
 # add a method that doesn't interpret ':' as separator for namespace
 # when a Symbol is passed as index (instead of an AbstractString)
@@ -106,23 +107,29 @@ end
 
   k => v
 end
- 
-function function_parser(tag, attrs, context = @__MODULE__)
+
+function function_parser(tag, attrs; context = @__MODULE__, flexgrid_parsing = true)
   tag_str = replace(String(typeof(tag).parameters[1]), "-" => "__")
   julia_str = String(typeof(tag).parameters[1])
   julia_fn = Symbol(replace(startswith(julia_str, "q-") ? julia_str[3:end] : julia_str, "-" => ""))
-  M = if isdefined(Stipple, julia_fn)
-    Stipple
-  elseif isdefined(StippleUI, julia_fn)
+  M = if isdefined(StippleUI, julia_fn)
     StippleUI
+  elseif isdefined(Stipple, julia_fn)
+    Stipple
   elseif isdefined(context, julia_fn)
     context
   else
     nothing
   end
 
+  # if tag_str == "q__layout"
+  #   julia_str = Symbol("StippleUI.layout")
+  #   M = StippleUI
+  # end
+
   arg_str = ""
   is_html_tag = false
+  f = nothing
   if M !== nothing && tag_str != "q__input"
     f = getfield(M, julia_fn)
     attr_names = rstrip.(keys(attrs), '!')
@@ -140,6 +147,34 @@ function function_parser(tag, attrs, context = @__MODULE__)
       end
     end
 
+    # parse flexgrid attributes
+    if (!is_html_tag || tag_str in ("div", "col", "row", "cell")) && flexgrid_parsing
+      kk = String.(collect(keys(attrs)))
+      pos = findfirst(startswith(r":?class$"), kk)
+      if pos !== nothing
+        k = kk[pos]
+        v = attrs[k]
+        v_new, removed = remove_class(v, r"^col(-..)?(-(\d+|auto))?$")
+
+        if ! isempty(removed)
+          if v_new in ("", "''", "R\"''\"")
+            delete!(attrs, k)
+          else
+            attrs[k] = v_new
+          end
+          for r in removed
+            xx = split(r, '-')
+            (length(xx) == 1 || length(xx) == 2 && xx[2][1] ∈ 'a':'z' ) && push!(xx, "0")
+            if length(xx) == 2
+              attrs[:col] = xx[2]
+            else
+              attrs[Symbol(xx[2])] = xx[3]
+            end
+          end
+        end
+      end
+    end
+
     name_dict = LittleDict(zip(attr_names, keys(attrs)))
     # if variable accepts Symbols but no Strings convert to Symbol
     arg_str = join([!(String <: type_dict[k]) && Symbol <: type_dict[k] ? symrepr(attrs[name_dict[k]]) : attrs[name_dict[k]] for k in args], ", ")
@@ -147,13 +182,13 @@ function function_parser(tag, attrs, context = @__MODULE__)
       delete!(attrs, name_dict[k])
     end
 
-    if is_html_tag
+    if is_html_tag && julia_fn != :div
       # then the function (probably) does not support Symbol values for arguments, so revert to adding a '!' to the key
       # e.g. `a = :test`, `b = R"myarray[1]"`
       index = startswith.(values(attrs), '"')
       if ! all(index)
         attrs = LittleDict(startswith(v, '"') ? k => v : 
-          (endswith(k, '"') ? string(k[1:end-1], "!\"") : string(k, '!')) => rawrepr(startswith(v, 'R') ? v[3:end-1] : v[2:end])
+          (endswith("$k", '"') ? string(k[1:end-1], "!\"") : string(k, '!')) => rawrepr(startswith(v, 'R') ? v[3:end-1] : v[2:end])
           for (k, v) in attrs
         )
       end
@@ -163,7 +198,20 @@ function function_parser(tag, attrs, context = @__MODULE__)
   fn_str = if M === nothing || tag_str == "q__input"
     startswith(tag_str, "q__") ? "quasar(:$(tag_str[4:end]), " : startswith(tag_str, "vue__") ? "vue(:$(tag_str[6:end]), " : "xelem(:$tag_str, "
   else
-    julia_fn == :div && (julia_fn = Symbol("Stipple.Html.div"))
+    if julia_fn == :div
+      julia_fn = :htmldiv
+    elseif M == Stipple
+      # if a function is defined in both Stipple and context and if they are not identical, prefix it with `Stipple.`
+      if isdefined(context, julia_fn) && getfield(context, julia_fn) != f
+        julia_fn = Symbol("Stipple.$julia_fn")
+      end
+    elseif M == StippleUI
+      # if a function is defined in both StippleUI and Stipple or context and if they are not identical, prefix it with `StippleUI.`
+      if isdefined(Stipple, julia_fn) && getfield(Stipple, julia_fn) != f ||
+        isdefined(context, julia_fn) && getfield(context, julia_fn) != f
+        julia_fn = Symbol("StippleUI.$julia_fn")
+      end
+    end
     "$julia_fn("
   end
    
@@ -178,7 +226,7 @@ function attr_to_paramstring(attr::Pair)
   "$(attr[1])=\"$(attr[2])\""
 end
 
-function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre::Bool = false, vec_sep::String = ",\n")
+function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int, String} = 4), pre::Bool = false, vec_sep::String = ",\n", context = @__MODULE__, flexgrid_parsing = true)
   startlevel = level
   level < 0 && (level = 0) 
 
@@ -205,18 +253,18 @@ function node_to_stipple(el::EzXML.Node, level = 0; @nospecialize(indent::Union{
   arg_str = ""
   attrs = attr_dict(stipple_attr, el)
 
-  fn_str, arg_str, new_attrs = function_parser(Val(Symbol(el.name)), attrs)
+  fn_str, arg_str, new_attrs = function_parser(Val(Symbol(el.name)), attrs; context, flexgrid_parsing)
 
   attr_str = join(attr_to_kwargstring.(collect(new_attrs)), ", ")
 
-  children = node_to_stipple.(nodes(el), startlevel + 1; indent, pre, vec_sep)
+  children = node_to_stipple.(nodes(el), startlevel + 1; indent, pre, vec_sep, context, flexgrid_parsing)
   children = children[length.(children) .> 0]
   children_str = join(children, vec_sep)
 
   no = length(children)
   sep3, sep4 = if no == 0
     "", ""
-  elseif no == 1
+  elseif no == 1 && tag ∉ NO_CHILD_ELEMENTS
     "\n", "\n$indent_str"
   else
     "[\n", "\n$indent_str]"
@@ -283,14 +331,15 @@ function node_to_html(el::EzXML.Node, level = 0; @nospecialize(indent::Union{Int
 end
  
 """
-    parse_vue_html(html, level = 0; indent::Union{String, Int} = 4, vec_sep::String = ",\n")
+    parse_vue_html(html, level = 0; indent::Union{String, Int} = 4, vec_sep::String = ",\n", context = @__MODULE__)
 
 Parse html code to Julia/StippleUI code with automatic line breaks and indenting. Indenting can be determined by
 - `level: starting level for formatting; negative values are allowed, negative levels are not indented
 - `indent`: either Integer for number of ' ' characters per level or a string value
 - `vec_sep`: separator in array listings, reasonable values are `",\\n"`, `"\\n\\n"`, `",\\n\\n"`
+- `context`: context for evaluation
 """
-function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4, vec_sep::String = ",\n")
+function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4, vec_sep::String = ",\n", context = @__MODULE__, flexgrid_parsing = true)
   startlevel = level
   level < 0 && (level = 0)
 
@@ -320,12 +369,12 @@ function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4
   # remove the html -> body levels
 
   if root == :html
-    node_to_stipple(root_node, startlevel; indent, vec_sep)
+    node_to_stipple(root_node, startlevel; indent, vec_sep, context, flexgrid_parsing)
   else
     # remove the html / body levels
     children = nodes(root == :no_root ? root_node.firstelement : root_node)
     is_single = length(children) <= 1
-    children_str = node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep)
+    children_str = node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep, context, flexgrid_parsing)
     replace(is_single ? children_str[1] : "$indent_str[\n$(join(filter(!isempty, children_str), vec_sep))$indent_str\n]", AT_MASK => "@")
   end |> ParsedHTMLString
 end
@@ -376,11 +425,11 @@ prettify(doc::EzXML.Document; level::Int = 0, indent::Union{String, Int} = 4) = 
 
 prettify(v::Vector; level::Int = 0, indent::Union{String, Int} = 4) = prettify(join(v); level, indent)
 
-function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE__)
+function function_parser(tag::Val{Symbol("q-input")}, attrs; context = @__MODULE__, flexgrid_parsing = true)
   kk = String.(collect(keys(attrs)))
   pos = findfirst(startswith(r"fieldname$|var\"v-model."), kk)
   if pos === nothing
-    function_parser(Val(:q__input), attrs)
+    function_parser(Val(:q__input), attrs; context, flexgrid_parsing)
   else
     haskey(attrs, "label") || (attrs["label"] = "\"\"")
     k = kk[pos]
@@ -389,32 +438,134 @@ function function_parser(tag::Val{Symbol("q-input")}, attrs, context = @__MODULE
     attrs["fieldname"] = v
 
     if k == "var\"v-model.number\""
-      function_parser(Val(:numberfield), attrs)
+      function_parser(Val(:numberfield), attrs; context, flexgrid_parsing)
     else
-      function_parser(Val(:textfield), attrs)
+      function_parser(Val(:textfield), attrs; context, flexgrid_parsing)
     end
   end
 end
 
+function contains_class(class::String, subclass::Union{String, Regex})
+  # removes any quotation ("<...>", R"<...>") and stores the captured parts for concatentation at the end
+  m = match(r"^(R?\"+)?(.*?)(\"+)?$", class)
+  class = m.captures[2]
+  isreactive = m.captures[1] !== nothing && contains(m.captures[1], "R")
+  
+  classes = isreactive ? split(class, r"\s*\+\s*") : [class]
+  for (n, class) in enumerate(classes)
+    isreactive && first(class) != ''' && continue
+    # only evaluate explicit terms when they are at the beginning or when their first character is a whitespace
+    n > 1 && length(class) > 1 && !contains(class[2:2], r"\s") && continue
+    cc = split(strip(class, '''))
+    for c in cc
+      (subclass isa String ? subclass == c : contains(c, subclass)) && return true
+    end
+  end
+  false
+end
+
+function remove_class(class::String, subclass::Union{String, Regex})
+  removed = String[]
+  # removes any quotation ("<...>", R"<...>") and stores the captured parts for concatentation at the end
+  m = match(r"^(R?\"+)?(.*?)(\"+)?$", class)
+  class = m.captures[2]
+  isquoted = m.captures[1] !== nothing
+
+  isreactive = m.captures[1] !== nothing && contains(m.captures[1], "R")
+  classes = isreactive ? split(class, r"\s*\+\s*") : [class]
+  for n in length(classes):-1:1
+    class = classes[n]
+    isreactive && first(class) != ''' && continue
+    # only evaluate explicit terms when they are at the beginning or when their first character is a whitespace
+    n > 1 && length(class) > 1 && !contains(class[2:2], r"\s") && continue
+    cc = split(strip(class, '''))
+    remove_outer = false
+    for i in length(cc):-1:1
+      remove = false
+      c = cc[i]
+      if subclass isa String ? subclass == c : contains(c, subclass)
+        pushfirst!(removed, c) # because of inverted
+        deleteat!(cc, i)
+        remove_outer = remove = true
+      end
+    end
+
+    if remove_outer
+      classes[n] = join(cc, ' ')
+      first(class) == ''' && (classes[n] =  "' " * classes[n] * ''')
+    end
+    classes[n] in ("", "''", "' '") && deleteat!(classes, n)
+  end
+
+  c = join(classes, " + ")
+  c == "" && isreactive && (c = "''")
+  
+  if isquoted
+    c = m.captures[1] * c * m.captures[3]
+    if c[1] == 'R'
+      x = repr(Symbol(c[3:end-1]))
+      startswith(x, ":") && (c = x)
+    end
+  end
+  
+  return c, removed
+end
+
+function function_parser(tag::Val{:div}, attrs, context = @__MODULE__, flexgrid_parsing = true)
+  kk = String.(collect(keys(attrs)))
+  pos = findfirst(startswith(r":?class$"), kk)
+  if pos === nothing
+    function_parser(Val(:htmldiv), attrs; context, flexgrid_parsing)
+  else
+    k = kk[pos]
+    v = attrs[k]
+    if k == "class"
+      for c in ("row", "column", r"^col(-..)?(-(\d+|auto))?$")
+        tagname = c isa Regex ? :cell : Symbol(c)
+        v_new, removed = remove_class(v, c)
+        isempty(removed) && continue
+
+        if c isa Regex && ! isempty(removed)
+          # if there is at least one col element check if "st-col" is part of the class
+          v_new, removed = remove_class(v, "st-col")
+          isempty(removed) && continue
+          # remove "col" from the class
+          v_new, removed = remove_class(v_new, "col")
+        end
+
+        if v_new[2:end-1] in  ("", "''")
+          delete!(attrs, k)
+        else
+          attrs[k] = v_new
+        end
+
+        return function_parser(Val(tagname), attrs; context, flexgrid_parsing)
+      end
+    end
+    function_parser(Val(:htmldiv), attrs; context, flexgrid_parsing)
+  end
+end
+
 """
-    test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4)
+    test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4, context = @__MODULE__)
 
 Parse html code with automatic line breaks and indentingto Julia/StippleUI code, execute the code and prettify the result.
 Indenting can be determined by
-- level: starting level for formatting; negative values are allowed, negative levels are not indented
-- indent: either Integer for number of ' ' characters per level or a string value    
+- `level`: starting level for formatting; negative values are allowed, negative levels are not indented
+- `indent`: either Integer for number of ' ' characters per level or a string value
+- `context`: context for evaluation
 """
-function test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4)
+function test_vue_parsing(html_string; prettify::Bool = true, level = 0, indent = 4, context = @__MODULE__, flexgrid_parsing = true)
   println("\nOriginal HTML string:")
   printstyled(html_string, "\n\n", color = :light_red)
   
-  julia_code = parse_vue_html(html_string; level, indent)
+  julia_code = parse_vue_html(html_string; level, indent, context, flexgrid_parsing)
 
   println("Julia code:")
   printstyled(julia_code, "\n\n", color = :blue)
 
   println("Produced HTML:")
-  new_html = eval(Meta.parse(julia_code))
+  new_html = Core.eval(context, Meta.parse(julia_code))
   printstyled(prettify ? StippleUIParser.prettify(new_html; level, indent) : new_html, "\n", color = :green)
 end
 

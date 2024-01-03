@@ -8,7 +8,7 @@ export menu
 register_normal_element("q__menu", context = @__MODULE__)
 
 """
-      menu(fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector} = "", kwargs...)
+      menu(fieldname::Union{Symbol,Nothing}, args...; content::Union{String,Vector} = "", kwargs...)
 
 The `menu` component is a convenient way to show menus. Goes very well with `list` as dropdown content, but it’s by no means limited to it.   
 
@@ -19,7 +19,7 @@ The `menu` component is a convenient way to show menus. Goes very well with `lis
 ### View
 
 ```julia-repl
-julia> btn("Basic Menu", color="primary", [StippleUI.menu( [p("Hello")])
+julia> btn("Basic Menu", color="primary", [StippleUI.menu(nothing, [p("Hello")])])
 ```
 
 -----------
@@ -46,7 +46,7 @@ julia> btn("Basic Menu", color="primary", [StippleUI.menu( [p("Hello")])
       * `maxwidth::String` - The maximum width of the menu; Size in CSS units, including unit name ex. `16px` `2rem`
 """
 function menu(
-              fieldname::Union{Symbol,Nothing} = nothing,
+              fieldname::Symbol,
               args...;
               content::Union{String,Vector} = "",
               kwargs...)
@@ -56,11 +56,22 @@ function menu(
   end
 end
 
+function menu(
+      args...;
+      content::Union{String,Vector} = "",
+      kwargs...)
+
+  q__menu(args...; kw(kwargs)...) do
+    join(content)
+  end
+end
+
 function menu(content::Function,
-              fieldname::Union{Symbol,Nothing} = nothing,
               args...;
               kwargs...)
-  menu(label, fieldname, args...; content = content(), kwargs...)
+  menu(args...; content = content(), kwargs...)
 end
+
+const qmenu = menu
 
 end

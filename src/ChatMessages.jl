@@ -32,7 +32,7 @@ julia> @app begin
 julia> chatmessage("This is static text", name="stella", sent = true)
 julia> chatmessage(:textmsg1, name="dave", sent = true)
 julia> chatmessage(Symbol("[textmsg2]"), name="stella")
-julia> chatmessage(R"message.text", name = R"message.name", sent = R"message.sent", "", @recur("message in messages"))
+julia> chatmessage(R"message.text", name = R"message.name", sent = R"message.sent", "", @for("message in messages"))
 ```
 
 -----------

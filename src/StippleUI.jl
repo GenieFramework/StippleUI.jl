@@ -94,6 +94,7 @@ include("Skeletons.jl")
 include("Spaces.jl")
 include("Spinners.jl")
 include("Splitters.jl")
+include("Steppers.jl")
 include("Tables.jl")
 include("TabPanels.jl")
 include("Tabs.jl")
@@ -109,7 +110,7 @@ include("Videos.jl")
 #===#
 
 import .API: quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
-
+import .Steppers: step
 export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 
 @reexport using .StippleUIParser
@@ -150,6 +151,8 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 @reexport using .Spaces
 @reexport using .Spinners
 @reexport using .Splitters
+@reexport using .Steppers
+import .Steppers.step
 @reexport using .Tables
 @reexport using .TabPanels
 @reexport using .Tabs

@@ -29,7 +29,7 @@ julia> @vars FormModel begin
 ### View
 ```julia-repl
 julia> StippleUI.form(action = "/sub", method = "POST", [
-          textfield("What's your name *", :name, name = "name", @iif(:warin), :filled, hint = "Name and surname", "lazy-rules",
+          textfield("What's your name *", :name, name = "name", @if(:warin), :filled, hint = "Name and surname", "lazy-rules",
             rules = "[val => val && val.length > 0 || 'Please type something']"
           ),
           numberfield("Your age *", :age, name = "age", "filled", :lazy__rules,
