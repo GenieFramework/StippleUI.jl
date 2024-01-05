@@ -12,6 +12,8 @@ uploader( multiple = true,
           square = false,
           flat = false,
           bordered = false,
+          # url = "/upload",
+          # url! = "'foo' + 'bar'",
 
           # @on("rejected", :rejected),
           # @on("added", :added),

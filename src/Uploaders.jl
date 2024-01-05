@@ -125,10 +125,25 @@ julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="PO
       * `sendraw::Union{Bool, String}` - Send raw files without wrapping into a Form(); Takes boolean or factory function for Boolean; Function is called right before upload; If using a function then for best performance, reference it from your scope and do not define it inline ex. `sendraw` `sendraw!="files => ...."`
       * `batch::Union{Bool, String}` - Upload files in batch (in one XHR request); Takes boolean or factory function for Boolean; Function is called right before upload; If using a function then for best performance, reference it from your scope and do not define it inline ex. `"files => files.length > 10"`
 """
-function uploader(url::Union{String,Nothing} = nothing, args...; kwargs...)
-  url === nothing && (url = "'/____/upload/' + channel_")
+function uploader(args...;
+                  url::Union{AbstractString,Nothing} = nothing,
+                  url!::Union{AbstractString,Nothing} = nothing,
+                  method::AbstractString = "POST",
+                  kwargs...)
+  kws = []
+  if url === nothing && url! === nothing && method == "POST"
+    url! = "'/____/upload/' + channel_"
+    push!(kws, :url! => url!)
+  elseif url! !== nothing
+    push!(kws, :url! => url!)
+  end
 
-  q__uploader(url! = url, args...; kw(kwargs)...)
+  if url !== nothing
+    push!(kws, :url => url)
+  end
+
+
+  q__uploader(args...; kw([kws..., kwargs...])...)
 end
 
 end
