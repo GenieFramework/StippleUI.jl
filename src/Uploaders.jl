@@ -127,21 +127,18 @@ julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="PO
 """
 function uploader(args...;
                   url::Union{AbstractString,Nothing} = nothing,
-                  url!::Union{AbstractString,Nothing} = nothing,
                   method::AbstractString = "POST",
                   kwargs...)
   kws = []
-  if url === nothing && url! === nothing && method == "POST"
-    url! = "'/____/upload/' + channel_"
-    push!(kws, :url! => url!)
-  elseif url! !== nothing
-    push!(kws, :url! => url!)
+
+  # use default upload url if none is provided and method is POST
+  if url === nothing && method == "POST"
+    url = Symbol("'/____/upload/' + channel_")
   end
 
   if url !== nothing
     push!(kws, :url => url)
   end
-
 
   q__uploader(args...; kw([kws..., kwargs...])...)
 end
