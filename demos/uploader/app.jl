@@ -12,7 +12,7 @@ using GenieFramework
 
   @event rejected begin
     @info "rejected"
-    notify("File rejected. Please make sure it is a valid image file.")
+    notify(__model__,"File rejected. Please make sure it is a valid image file.")
   end
 
   # @event added begin
@@ -45,7 +45,7 @@ using GenieFramework
 
   @event failed begin
     @info "failed"
-    notify("File upload failed. Please try again.")
+    notify(__model__,"File upload failed. Please try again.")
   end
 
   @onchange fileuploads begin
@@ -58,7 +58,7 @@ using GenieFramework
         mv(fileuploads["path"], joinpath("public", "uploads", filename))
       catch e
         @error "Error processing file: $e"
-        notify("Error processing file: $(fileuploads["name"])")
+        notify(__model__,"Error processing file: $(fileuploads["name"])")
       end
 
       imgsrc = "/uploads/$filename"
