@@ -3,7 +3,7 @@ module FormInputs
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
-export textfield, numberfield, textarea, filefield, datefield
+export textfield, numberfield, textarea, filefield, datefield, timefield
 
 register_normal_element("q__input", context = @__MODULE__)
 register_normal_element("q__file", context = @__MODULE__)
@@ -153,12 +153,17 @@ end
 """
     datefield(args...; kwargs...)
 
-Complex input type that combines a textfield with an icon, a datepicker and a popup proxy.
+Complex input type that combines a textfield with an icon, a datepicker and a popup.
 The datepicker is hidden by default and is shown when the icon is clicked.
-The popup proxy is used to hide the datepicker when the user clicks outside of it.
-A number of common arguments are defined and are passed to the textfield, the icon, the popup proxy and the datepicker.
+The popup is used to hide the datepicker when the user clicks outside of it.
+A number of common arguments are defined and are passed to the textfield, the icon, the popup and the datepicker.
 In addition, keyword arguments can be passed to each of these components individually by using the `textfield_props`,
 `icon_props`, `popup_proxy_props` and `datepicker_props` keyword arguments.
+
+# Examples
+```julia
+datefield("Start date", :start_date, datepicker_props = Dict(:todaybtn => true, :nounset => true), textfield_props = Dict(:bgcolor => "green-1"))
+```
 """
 function datefield( label::Union{String,Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing;
@@ -176,14 +181,47 @@ function datefield( label::Union{String,Symbol} = "",
   textfield(label, fieldname, [
     icon([
       popup_proxy([
-          datepicker(fieldname; mask = mask, kw(datepicker_props)...)
-        ];
-        cover = true, transitionshow = transitionshow, transitionhide = transitionhide, kw(popup_proxy_props)...
-      )];
-      name = icon_name, class = icon_class, style = icon_style, kw(icon_props)...
-    )];
-    clearable = true, filled = true, kw(textfield_props)..., kwargs...
-  )
+        datepicker(fieldname; mask = mask, kw(datepicker_props)...)
+      ]; cover = true, transitionshow = transitionshow, transitionhide = transitionhide, kw(popup_proxy_props)...)
+    ]; name = icon_name, class = icon_class, style = icon_style, kw(icon_props)...)
+  ]; clearable = true, filled = true, kw(textfield_props)..., kwargs...)
+end
+
+"""
+    timefield(args...; kwargs...)
+
+Complex input type that combines a textfield with an icon, a timepicker and a popup.
+The timepicker is hidden by default and is shown when the icon is clicked.
+The popup is used to hide the timepicker when the user clicks outside of it.
+A number of common arguments are defined and are passed to the textfield, the icon, the popup and the timepicker.
+In addition, keyword arguments can be passed to each of these components individually by using the `textfield_props`,
+`icon_props`, `popup_proxy_props` and `timepicker_props` keyword arguments.
+
+# Examples
+```julia
+
+```
+"""
+function timefield( label::Union{String,Symbol} = "",
+                    fieldname::Union{Symbol,Nothing} = nothing;
+                    icon_name::Union{Symbol,String,Nothing} = "alarm",
+                    icon_class::Union{Symbol,String,Nothing} = "cursor-pointer",
+                    icon_style::Union{Symbol,String,Nothing} = "height: 100%;",
+                    transitionshow::Union{Symbol,String,Nothing} = "scale",
+                    transitionhide::Union{Symbol,String,Nothing} = "scale",
+                    mask::Union{String,Nothing} = "HH:mm:ss",
+                    textfield_props::Dict = Dict(),
+                    icon_props::Dict = Dict(),
+                    popup_proxy_props::Dict = Dict(),
+                    timepicker_props::Dict = Dict(),
+                    kwargs...)
+  textfield(label, fieldname, [
+    icon([
+      popup_proxy([
+        timepicker(fieldname; mask = mask, kw(timepicker_props)...)
+      ]; cover = true, transitionshow = transitionshow, transitionhide = transitionhide, kw(popup_proxy_props)...)
+    ]; name = icon_name, class = icon_class, style = icon_style, kw(icon_props)...)
+  ]; clearable = true, filled = true, kw(textfield_props)..., kwargs...)
 end
 
 end

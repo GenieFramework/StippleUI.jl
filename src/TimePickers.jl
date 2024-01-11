@@ -13,7 +13,7 @@ register_normal_element("q__time", context= @__MODULE__)
     tabpanelgroup(args...; kwargs...)
 
 The `timepicker` component provides a method to input time.
-  
+
 ----------
 # Examples
 ----------
