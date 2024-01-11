@@ -7,7 +7,7 @@ export uploader
 
 register_normal_element("q__uploader", context = @__MODULE__)
 
-@kwdef mutable struct UploadedFile
+Base.@kwdef mutable struct UploadedFile
   tmppath::String
   name::String
   channel::String
@@ -37,7 +37,7 @@ function __init__()
 
       for h in upload_handlers
         try
-          uf = uf |> h
+          uf::UploadedFile = uf |> h
         catch e
           @error "Error in upload handler: $e"
           if Genie.Configuration.isdev()
