@@ -1,8 +1,6 @@
 using GenieFramework
 @genietools
 
-
-
 @app begin
     @in start_date = today()
     @out start_date_has_errors = false
