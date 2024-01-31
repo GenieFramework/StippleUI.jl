@@ -197,10 +197,6 @@ A number of common arguments are defined and are passed to the textfield, the ic
 In addition, keyword arguments can be passed to each of these components individually by using the `textfield_props`,
 `icon_props`, `popup_proxy_props` and `timepicker_props` keyword arguments.
 
-# Examples
-```julia
-
-```
 """
 function timefield( label::Union{String,Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing;
