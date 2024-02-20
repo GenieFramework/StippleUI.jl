@@ -262,7 +262,7 @@ function table( fieldname::Symbol,
 
   q__table(args...;
     kw([
-      Symbol(":data") => "$datakey",
+      Symbol(":rows") => "$datakey",
       Symbol(":columns") => "$columnskey",
       Symbol("row-key") => rowkey,
       :fieldname => fieldname,
