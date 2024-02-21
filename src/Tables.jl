@@ -208,7 +208,7 @@ function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
   rows
 end
 
-function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
+function data(t::T; datakey = "rows", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
   Dict(
     columnskey  => columns(t),
     datakey     => rows(t)
@@ -241,7 +241,7 @@ julia> table(:data; pagination=:data_pagination, style="height: 350px;", title="
 function table( fieldname::Symbol,
                 args...;
                 rowkey::String = ID,
-                datakey::String = "$fieldname.data",
+                datakey::String = "$fieldname.rows",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
