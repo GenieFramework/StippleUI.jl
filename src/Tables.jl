@@ -303,6 +303,12 @@ function Stipple.js_created_auto(::M) where M<:ReactiveModel
   String(take!(io))
 end
 
+function Stipple.js_watch_auto(::M) where M<:ReactiveModel
+  [fieldname => "function() {this.$fieldname.data = this.$fieldname.rows}"
+    for (fieldname, fieldtype) in zip(fieldnames(M), fieldtypes(M))
+    if fieldtype <: DataTable || fieldtype <: Reactive{<:DataTable}
+  ]
+end
 #===#
 
 function Stipple.watch(vue_app_name::String, fieldtype::R{T}, fieldname::Symbol, channel::String, model::M)::String where {M<:ReactiveModel,T<:DataTable}
