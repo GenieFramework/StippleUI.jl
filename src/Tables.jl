@@ -288,6 +288,21 @@ function Stipple.render(dtp::DataTablePagination)
   response
 end
 
+# function to autogenerate entries for js_mounted to make Tables from Quasar1 compatible with tables from Quasar2
+# Background: the field 'data' has been renamed to 'rows' in Quasar 2
+# This function autogenerates entries that set the 'data' field of tables to the 'rows' field. As Vue3's mechanism
+# for watchers relies on getter and setter functions any get or set operation on 'data' will be reflected in rows
+# and the respective watchers will be triggered.
+function Stipple.js_created_auto(::M) where M<:ReactiveModel
+  io = IOBuffer()
+  for (fieldname, fieldtype) in zip(fieldnames(M), fieldtypes(M))
+    if fieldtype <: DataTable || fieldtype <: Reactive{<:DataTable}
+      print(io, "\nthis.$fieldname.data = this.$fieldname.rows")
+    end
+  end
+  String(take!(io))
+end
+
 #===#
 
 function Stipple.watch(vue_app_name::String, fieldtype::R{T}, fieldname::Symbol, channel::String, model::M)::String where {M<:ReactiveModel,T<:DataTable}
