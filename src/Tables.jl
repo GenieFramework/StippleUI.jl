@@ -212,8 +212,6 @@ function data(t::T; datakey = "rows", columnskey = "columns")::Dict{String,Any} 
   Dict(
     columnskey  => columns(t),
     datakey     => rows(t),
-    "data"     => rows(t) # add legacy name 'data' for easier migration
-    # TODO: remove "data" key at a later point
   )
 end
 
