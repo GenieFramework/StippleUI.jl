@@ -73,7 +73,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
       * `round::Bool` - Makes a circle shaped button
 
 """
-function btn( label::Union{String,Symbol} = "",
+function btn( label::Union{String,Symbol,Nothing} = nothing,
               args...;
               content::Union{String,Vector,Function} = "",
               kwargs...)
@@ -84,14 +84,14 @@ function btn( label::Union{String,Symbol} = "",
 end
 
 function btn( content::Union{Function,Vector},
-              label::Union{String,Symbol} = "",
+              label::Union{String,Symbol,Nothing} = nothing,
               args...;
               kwargs...)
   btn(label, args...; content = content, kwargs...)
 end
 
 function btn( args...;
-              label::Union{String,Symbol} = "",
+              label::Union{String,Symbol,Nothing} = nothing,
               content::Union{String,Vector,Function} = "",
               kwargs...)
   btn(label, args...; content = content, kwargs...)
@@ -105,7 +105,7 @@ mutable struct Btn
   content
   kwargs
 
-  Btn(label::Union{String,Symbol} = "",
+  Btn(label::Union{String,Symbol,Nothing} = nothing,
       args...;
       content::Union{String,Vector,Function} = "",
       kwargs...) = new(fieldname, args, mask, kwargs)

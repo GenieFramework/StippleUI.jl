@@ -36,9 +36,9 @@ julia> StippleUI.form( autocorrect="off", autocapitalize="off", autocomplete="of
 ----------
 # Arguments
 ----------
-
+]
 1. Behaviour
-      * `fullscreen::Bool` - Fullscreen mode (Note".sync" modifier required!) Example. `:fullscreen.sync="isFullscreen"`
+      * `fullscreen::Bool` - Fullscreen mode. Example: `fullscreen = :isFullscreen`
       * `noroutefullscreenexit::Bool` - Changing route app won't exit fullscreen
       * `paragraphtag::String` - Paragraph tag to be used Example. `div`, `p`
 2. Content
@@ -62,7 +62,7 @@ julia> StippleUI.form( autocorrect="off", autocapitalize="off", autocomplete="of
        * `contentclass::Union{Dict, Vector, String}` - CSS classes for the input area ex. `my-special-class` `contentclass!="{ 'my-special-class': <condition> }"`
 """
 function editor(fieldname::Symbol, args...; kwargs...)
-  q__editor(args...; kw([:fieldname => fieldname, kwargs...])...)
+  q__editor(args...; kw([:fieldname => fieldname, kwargs...], Dict("fullscreen" => "v-model:fullscreen"))...)
 end
 
 end
