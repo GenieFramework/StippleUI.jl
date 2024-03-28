@@ -344,9 +344,10 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
 
   cell_templates = ParsedHTMLString[]
   div_style = "display: flex; align-items: center; height: 100%"#; padding-top: 11px; padding-bottom: 2px"
+  inner_style = inner_style === nothing ? div_style : [div_style, inner_style]
+  inner_class === nothing && (inner_class = "")
   for column in columns
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
-    inner_style = inner_style === nothing ? div_style : [div_style, inner_style]
     t = template("", "v-slot:$slotname=\"props\"", [td(
       htmldiv("{{ props.value }}"; class = inner_class, style = inner_style, inner_kwargs...);
         class, style, kwargs...
@@ -403,7 +404,6 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
   n = type isa Vector ? length(type) : 1
   for (index, column) in enumerate(edit_columns)
     typ = type isa Vector ? type[(index - 1) % n + 1] : type
-    @show typ type index n
     qinput = "$typ" == "number" ? numberfield : textfield
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
     t = template("", "v-slot:$slotname=\"props\"", [
