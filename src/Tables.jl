@@ -235,7 +235,7 @@ end
         change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
 
         rowkey::String = ID,
-        datakey::String = "$table.rows",
+        datakey::String = "$table.data",
         columnskey::String = "$table.columns",
         kwargs...)
 
@@ -316,7 +316,7 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
   change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   rowkey::String = ID,
-  datakey::String = "$table.rows",
+  datakey::String = "$table.data",
   columnskey::String = "$table.columns",
   kwargs...)
 
@@ -521,7 +521,7 @@ function table( fieldname::Symbol, args...;
                 ref_table::Union{Nothing,Symbol} = nothing,
                 edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
                 rowkey::String = ID,
-                datakey::String = "$fieldname.rows",
+                datakey::String = "$fieldname.data",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
