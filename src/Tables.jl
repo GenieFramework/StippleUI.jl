@@ -5,6 +5,7 @@ using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
+export cell_template, qtd, qtr
 
 register_normal_element("q__table", context = @__MODULE__)
 
@@ -215,6 +216,218 @@ function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} 
   )
 end
 
+
+"""
+    cell_template(
+        table::Symbol,
+        ref_table::Union{Nothing,Symbol} = nothing;
+
+        edit::Union{Bool, Integer, AbstractString, Vector{<:AbstractString}, Vector{<:Integer}} = false,
+        columns::Union{Nothing, Bool, AbstractString, Vector{<:AbstractString}} = nothing,
+        class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+        style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+        inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+        inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+        type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+        change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
+        change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+        change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+        change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+
+        rowkey::String = ID,
+        datakey::String = "$table.rows",
+        columnskey::String = "$table.columns",
+        kwargs...)
+
+Create a cell template by passing `class` and `style` for styling and an `edit`-attribute for determining whether a cell can be edited.
+Furthermore the columns to be styled and/or edited can be specified via the `edit` and `columns` attributes.
+The attribute `type` determines the type of input and can be a vector, which is cycled when iterating the editable columns.
+A single cell template to a table can be defined by forwarding (almost) the same keywords to `table()`. The only slight modification is that the`
+keyowrds `style` and `class` `type` are replaced by `cell_style` and `cell_class` `cell_type` in order not to interfere with the tables class and style.
+
+Two locations can be addressed by `class` and `style`
+- the full cell (td-element)
+- the inner element (div/input)
+
+If a cell is editable, a reference table can be specified to monitor, whether a cell has been modified. For modified cells a separate set of class and style can be specified.
+
+### Table of format specifiers
+| Name                    | Description                  |
+|-------------------------|------------------------------|
+| `cell` and `style`      | full cell (td)               |
+| `inner_class` and `inner_style` | inner cell (div/input) |
+| `change_class` and `change_style` | modified full cell (td) |
+| `change_inner_class` and `change_inner_style` | modified inner cell (div/input) |
+Note that some formatting attributes cannot be changed by setting a class because some other css classes have higher precedence. Use the style attribute in such cases.
+
+### Table of column specifiers
+| edit           | columns                  | Description                                                                                    |
+|----------------|--------------------------|------------------------------------------------------------------------------------------------|
+| `true`/`false` |           -              | all cells                                                                                      |
+| `true`/`false` | `"<column name>"` or `["<column name>", "<column name 2>", ...]` | specific columns, all of them editable or non-editable |
+| `"<column name>"` or `["<column name 1>", "<column name 2>", ...]` | -            | specific columns, all of them editable                 |
+| `"<column name>"` or `["<column name 1>", "<column name 2>", ...]` | ""           | specific columns editable, all others non-editable     |
+| `"<edit column>"` or `["<edit column 1>", "<edit column 2>", ...]` | `"<column name>"` or `["<column name 1>", "<column name 2>", ...]`    | specific editable and non-editable columns |
+
+### Example 1
+All cells styled identically, column "name" editable, changing to indigo when a cell is modified
+```julia
+
+cell_template(edit = "name", :table, :ref_table, columns = "",
+    cell_class = "text-blue-10 bg-blue-1",
+    change_class = "text-indigo-10 bg-indigo-1"
+)
+```
+### Example 2
+Application of three templates to a table
+```julia
+df = DataFrame(name = ["Panda", "Lily"], email = ["panda@chihuahua.com", "lily@merckgroup.com"], age = ["", ""])
+
+ui() = table(:table, cell_class = "text-blue-10 bg-blue-2",
+    # column "name" blue but editable, with the inner cell highlighted and slightly padded, changing to indigo, if modified
+    cell_template(:table, edit = "email", :ref_table,
+        class = "text-blue-10 bg-blue-1", inner_class = "q-px-sm bg-blue-2",
+        change_class = "bg-indigo-1", change_inner_class = "q-px-sm bg-indigo-2 text-indigo-10"
+    ),
+    # column "age" red (hint for entry to be filled), changing to green if filled)
+    cell_template(:table, edit = "age", :ref_table, type = "number",
+        class = "bg-red-1", inner_class = "q-px-sm bg-red-2",
+        change_class = "bg-green-1", change_inner_class = "q-px-sm bg-green-2 text-green-8"
+    )
+)
+```
+Note that the general template for all cells is achieved via keyword forwarding from `table()`.
+
+### Example 3
+```julia
+ui() = table(:table, edit = ["name", "email", "age"], cell_type = ["text", "text", "number"])
+```
+"""
+function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing;
+  edit::Union{Bool, Integer, AbstractString, Vector{<:AbstractString}, Vector{<:Integer}} = false,
+  columns::Union{Nothing, Bool, AbstractString, Vector{<:AbstractString}} = nothing,
+  class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+  change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
+  change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  rowkey::String = ID,
+  datakey::String = "$table.rows",
+  columnskey::String = "$table.columns",
+  kwargs...)
+
+  # filter kwargs that start with 'inner_' to forward them to the inner div or input element
+  inner_kwargs, kwargs = filter_kwargs(kwargs) do p
+    startswith(String(p[1]), "inner_") ? Symbol(String(p[1])[7:end]) => p[2] : nothing
+  end
+
+  columns isa Vector || columns === nothing || (columns = [columns])
+  if edit isa Bool
+    # `columns` decides on which columns should be editable
+    # 
+    columns === nothing && (columns = [""])
+    if edit
+      edit_columns = columns
+      columns = String[]
+    else
+      edit_columns = String[]
+    end
+  else
+    # `edit` decides on which columns should be editable and `columns` decides on which columns should be non-editable
+    columns === nothing && (columns = String[])
+    edit_columns = edit isa Vector ? edit : [edit]
+  end
+
+  cell_templates = ParsedHTMLString[]
+  div_style = "display: flex; align-items: center; height: 100%"#; padding-top: 11px; padding-bottom: 2px"
+  for column in columns
+    slotname = isempty(column) ? "body-cell" : "body-cell-$column"
+    inner_style = inner_style === nothing ? div_style : [div_style, inner_style]
+    t = template("", "v-slot:$slotname=\"props\"", [td(
+      htmldiv("{{ props.value }}"; class = inner_class, style = inner_style, inner_kwargs...);
+        class, style, kwargs...
+    )])
+    push!(cell_templates, t)
+  end 
+
+  isempty(edit_columns) && return cell_templates
+
+  # set change_class to nothing if change_style is set and change_class has not been set explicitly
+  if change_class == "text-red "
+      change_class = change_style === nothing ? "text-red" : nothing
+  end
+  
+  # in contrast to `props.value` `props.row[props.col.name]` can be written to
+  value = "props.row[props.col.name]"
+  # in the reference table we first need to find the correct row
+  key = String(split(datakey, ".")[end])
+  ref_value = "(x=>{const row = $ref_table.$key.find(x=>x.$rowkey==props.key); return (row == undefined) ? undefined : row[props.col.name]})()"
+  # define a js expression that indicates whether a change happened
+  changed = "($value != $ref_value)"
+
+  if ref_table !== nothing && change_class !== nothing && !isempty(change_class)
+    class === nothing && (class = "")
+    class = [JSONText("""$changed ? "$change_class" : "$class\"""")]
+  end
+  if class !== nothing && isempty(class)
+      class = nothing
+  end
+
+  if ref_table !== nothing && change_inner_class !== nothing && !isempty(change_inner_class)
+    inner_class === nothing && (inner_class = "")
+    inner_class = [JSONText("""$changed ? "$change_inner_class" : "$inner_class\"""")]
+  end
+  if inner_class !== nothing && isempty(inner_class)
+    inner_class = nothing
+  end
+  
+  # add standard settings from stipplecore.css
+  table_style = Dict("font-weight" => 400, "font-size" => "0.9rem", "padding-top" => 0, "padding-bottom" => 0)
+  inner_style = inner_style === nothing ? table_style : [table_style, inner_style]
+  
+  # add custom style for changed entries
+  if ref_table !== nothing && change_style !== nothing
+    change_style_js = JSON3.write(render(change_style))
+    style = Stipple.Layout.append_class(style, JSONText("$changed ? $change_style_js : {}"))
+  end
+
+  if ref_table !== nothing && change_inner_style !== nothing
+    change_inner_style_js = JSON3.write(render(change_inner_style))
+    inner_style = Stipple.Layout.append_class(style, JSONText("$changed ? $change_inner_style_js : {}"))
+  end
+
+  n = type isa Vector ? length(type) : 1
+  for (index, column) in enumerate(edit_columns)
+    typ = type isa Vector ? type[(index - 1) % n + 1] : type
+    @show typ type index n
+    qinput = "$typ" == "number" ? numberfield : textfield
+    slotname = isempty(column) ? "body-cell" : "body-cell-$column"
+    t = template("", "v-slot:$slotname=\"props\"", [
+      StippleUI.td(
+        qinput("", Symbol(value), :dense, :borderless, type = typ,
+          input__class = inner_class,
+          input__style = inner_style;
+          inner_kwargs...
+        ); class, style, kwargs...
+      )
+    ])
+    push!(cell_templates, t)
+  end
+
+  return cell_templates
+end
+
+function filter_kwargs(f::Function, kwargs)
+  kwargs = collect(kwargs)
+  new_kwargs = f.(kwargs)
+  index = new_kwargs .!== nothing
+  new_kwargs[index], kwargs[.! index]
+end
+
 """
     table(fieldname::Symbol, args...; kwargs...)
 
@@ -239,13 +452,44 @@ julia> table(:data; pagination=:data_pagination, style="height: 350px;", title="
 
 """
 function table( fieldname::Symbol,
+                ref_table::Union{Nothing,Symbol},
                 args...;
+                edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
                 rowkey::String = ID,
                 datakey::String = "$fieldname.data",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
+
+                columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
+                cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+                inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
+                change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+              
                 kwargs...) :: ParsedHTMLString
+
+  if !isa(edit, Bool) || edit || cell_class !== nothing || cell_style !== nothing
+    cell_kwargs, kwargs = filter_kwargs(kwargs) do p
+      startswith(String(p[1]), "cell_") ? Symbol(String(p[1])[6:end]) => p[2] : nothing
+    end
+    inner_kwargs, kwargs = filter_kwargs(kwargs) do p
+      startswith(String(p[1]), "inner_") ? p : nothing
+    end
+
+    table_template = cell_template(fieldname, ref_table;
+      rowkey, datakey, columnskey,
+      edit, columns, class = cell_class, style = cell_style, type = cell_type, inner_class, inner_style,
+      change_class, change_style, change_inner_class, change_inner_style, cell_kwargs..., inner_kwargs...
+    )
+    args = [args..., table_template]
+
+  end
 
   if filter !== nothing && paginationsync !== nothing # by convention, assume paginationsync is used only for server side filtering
     filter_input = [ParsedHTMLString("""
@@ -270,6 +514,33 @@ function table( fieldname::Symbol,
       (paginationsync === nothing ? [] : [:paginationsync => paginationsync])...,
       kwargs...
     ])...
+  )
+end
+
+function table( fieldname::Symbol, args...;
+                ref_table::Union{Nothing,Symbol} = nothing,
+                edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
+                rowkey::String = ID,
+                datakey::String = "$fieldname.rows",
+                columnskey::String = "$fieldname.columns",
+                filter::Union{Symbol,String,Nothing} = nothing,
+                paginationsync::Union{Symbol,String,Nothing} = nothing,
+
+                columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
+                cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+                inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
+                change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+
+                kwargs...) :: ParsedHTMLString
+
+  table(fieldname, ref_table, args...; edit, rowkey, datakey, columnskey, filter, paginationsync, columns,
+    cell_class, cell_style, cell_type, change_class, change_style, change_inner_class, change_inner_style, kwargs...
   )
 end
 
@@ -496,5 +767,39 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
 
   return (data = fd, datatable = datatable, pagination = pagination)
 end
+
+register_normal_element("q__td", context = @__MODULE__)
+register_normal_element("q__tr", context = @__MODULE__)
+
+function td(args...; kwargs...)
+  q__td(args...; kw(kwargs)...)
+end
+
+const qtd = td
+
+mutable struct Td
+  args
+  kwargs
+
+  Td(args...; kwargs...) = new(args, kwargs)
+end
+
+Base.string(td::Td) = td(td.args...; td.kwargs...)
+
+
+function tr(args...; kwargs...)
+  q__tr(args...; kw(kwargs)...)
+end
+
+const qtr = tr
+
+mutable struct Tr
+  args
+  kwargs
+
+  Tr(args...; kwargs...) = new(args, kwargs)
+end
+
+Base.string(tr::Tr) = tr(tr.args...; tr.kwargs...)
 
 end
