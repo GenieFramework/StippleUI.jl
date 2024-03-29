@@ -10,6 +10,7 @@ export cell_template, qtd, qtr
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
+const DATAKEY = "data" # has to be changed to `rows` for Quasar 2 
 const DataTableSelection = Vector{Dict{String, Any}}
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
@@ -235,7 +236,7 @@ end
         change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
 
         rowkey::String = ID,
-        datakey::String = "$table.data",
+        datakey::String = "$table.$DATAKEY",
         columnskey::String = "$table.columns",
         kwargs...)
 
@@ -316,7 +317,7 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
   change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   rowkey::String = ID,
-  datakey::String = "$table.data",
+  datakey::String = "$table.$DATAKEY",
   columnskey::String = "$table.columns",
   kwargs...)
 
@@ -348,10 +349,12 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
   inner_class === nothing && (inner_class = "")
   for column in columns
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
-    t = template("", "v-slot:$slotname=\"props\"", [td(
-      htmldiv("{{ props.value }}"; class = inner_class, style = inner_style, inner_kwargs...);
+    t = template("", "v-slot:$slotname=\"props\"", [
+      td(props = :props,
+        htmldiv("{{ props.value }}"; class = inner_class, style = inner_style, inner_kwargs...);
         class, style, kwargs...
-    )])
+      )
+    ])
     push!(cell_templates, t)
   end 
 
@@ -407,7 +410,7 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
     qinput = "$typ" == "number" ? numberfield : textfield
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
     t = template("", "v-slot:$slotname=\"props\"", [
-      StippleUI.td(
+      StippleUI.td(props = :props,
         qinput("", Symbol(value), :dense, :borderless, type = typ,
           input__class = inner_class,
           input__style = inner_style;
@@ -456,7 +459,7 @@ function table( fieldname::Symbol,
                 args...;
                 edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
                 rowkey::String = ID,
-                datakey::String = "$fieldname.data",
+                datakey::String = "$fieldname.$DATAKEY",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
@@ -521,7 +524,7 @@ function table( fieldname::Symbol, args...;
                 ref_table::Union{Nothing,Symbol} = nothing,
                 edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
                 rowkey::String = ID,
-                datakey::String = "$fieldname.data",
+                datakey::String = "$fieldname.$DATAKEY",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
