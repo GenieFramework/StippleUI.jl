@@ -450,7 +450,26 @@ julia> @vars TableModel begin
 ```julia-repl
 julia> table(:data; pagination=:data_pagination, style="height: 350px;", title="Random numbers")
 ```
+Styling can be achieved by the use of the attributes `cell_class`, `cell_style`, `inner_class`, `inner_style`,
+`change_class`, `change_style`, `inner_change_class`, `inner_change_style`.
+```julia
+ui() = table(:table, edit = ["name", "email", "age"], cell_type = ["text", "text", "number"])
 
+ui() = table(:table, cell_class = "text-blue-10 bg-blue-2")
+```
+More info on styling and more complex styling can be found under `cell_templates`.
+
+Manual styling can also be applied as follows:
+```julia
+table(:table, template(@slot(:body-cell, :props), [
+  StippleUI.td(
+    textfield("", R"props.row[props.col.name]", :dense, :borderless,
+      inputstyle = "font-weight: 400; font-size: 0.9rem; padding-top: 0; padding-bottom: 0"
+    )
+  )
+]))
+```
+Note the `@slot` macro, which is available from Stipple v0.29.1 on. Otherwise use `var"v-slot:body-cell" = "props"`.
 """
 function table( fieldname::Symbol,
                 args...;
