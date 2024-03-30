@@ -219,10 +219,7 @@ end
 
 
 """
-    cell_template(
-        table::Symbol,
-        ref_table::Union{Nothing,Symbol} = nothing;
-
+    cell_template(;
         edit::Union{Bool, Integer, AbstractString, Vector{<:AbstractString}, Vector{<:Integer}} = false,
         columns::Union{Nothing, Bool, AbstractString, Vector{<:AbstractString}} = nothing,
         class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
@@ -230,14 +227,14 @@ end
         inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+        ref_table::Union{Nothing,Symbol} = nothing,
+        ref_rows::Union{Nothing,Symbol} = nothing, # alternative way of referencing table data
         change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
         change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
 
         rowkey::String = ID,
-        datakey::String = "$table.$DATAKEY",
-        columnskey::String = "$table.columns",
         kwargs...)
 
 Create a cell template by passing `class` and `style` for styling and an `edit`-attribute for determining whether a cell can be edited.
@@ -274,7 +271,7 @@ Note that some formatting attributes cannot be changed by setting a class becaus
 All cells styled identically, column "name" editable, changing to indigo when a cell is modified
 ```julia
 
-cell_template(edit = "name", :table, :ref_table, columns = "",
+cell_template(edit = "name", ref_table = :ref_table, columns = "",
     cell_class = "text-blue-10 bg-blue-1",
     change_class = "text-indigo-10 bg-indigo-1"
 )
@@ -286,12 +283,12 @@ df = DataFrame(name = ["Panda", "Lily"], email = ["panda@chihuahua.com", "lily@m
 
 ui() = table(:table, cell_class = "text-blue-10 bg-blue-2",
     # column "name" blue but editable, with the inner cell highlighted and slightly padded, changing to indigo, if modified
-    cell_template(:table, edit = "email", :ref_table,
+    cell_template(edit = "email", ref_table = :ref_table,
         class = "text-blue-10 bg-blue-1", inner_class = "q-px-sm bg-blue-2",
         change_class = "bg-indigo-1", change_inner_class = "q-px-sm bg-indigo-2 text-indigo-10"
     ),
     # column "age" red (hint for entry to be filled), changing to green if filled)
-    cell_template(:table, edit = "age", :ref_table, type = "number",
+    cell_template(edit = "age", type = "number", ref_table = :ref_table,
         class = "bg-red-1", inner_class = "q-px-sm bg-red-2",
         change_class = "bg-green-1", change_inner_class = "q-px-sm bg-green-2 text-green-8"
     )
@@ -304,7 +301,7 @@ Note that the general template for all cells is achieved via keyword forwarding 
 ui() = table(:table, edit = ["name", "email", "age"], cell_type = ["text", "text", "number"])
 ```
 """
-function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing;
+function cell_template(;
   edit::Union{Bool, Integer, AbstractString, Vector{<:AbstractString}, Vector{<:Integer}} = false,
   columns::Union{Nothing, Bool, AbstractString, Vector{<:AbstractString}} = nothing,
   class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
@@ -312,13 +309,13 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
   inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+  ref_table::Union{Nothing,Symbol} = nothing,
+  ref_rows::Union{Nothing,Symbol} = nothing,
   change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
   change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   rowkey::String = ID,
-  datakey::String = "$table.$DATAKEY",
-  columnskey::String = "$table.columns",
   kwargs...)
 
   # filter kwargs that start with 'inner_' to forward them to the inner div or input element
@@ -367,21 +364,22 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
   
   # in contrast to `props.value` `props.row[props.col.name]` can be written to
   value = "props.row[props.col.name]"
+  # ref_rows are calculated from ref_table, if not defined explicitly
+  ref_rows === nothing && ref_table !== nothing && (ref_rows = "$ref_table.$DATAKEY")
   # in the reference table we first need to find the correct row
-  key = String(split(datakey, ".")[end])
-  ref_value = "(x=>{const row = $ref_table.$key.find(x=>x.$rowkey==props.key); return (row == undefined) ? undefined : row[props.col.name]})()"
+  ref_value = "(x=>{const row = $ref_rows.find(x=>x.$rowkey==props.key); return (row == undefined) ? undefined : row[props.col.name]})()"
+
   # define a js expression that indicates whether a change happened
   changed = "($value != $ref_value)"
 
-  if ref_table !== nothing && change_class !== nothing && !isempty(change_class)
+  if ref_rows !== nothing && change_class !== nothing && !isempty(change_class)
     class === nothing && (class = "")
     class = [JSONText("""$changed ? "$change_class" : "$class\"""")]
   end
   if class !== nothing && isempty(class)
       class = nothing
   end
-
-  if ref_table !== nothing && change_inner_class !== nothing && !isempty(change_inner_class)
+  if ref_rows !== nothing && change_inner_class !== nothing && !isempty(change_inner_class)
     inner_class === nothing && (inner_class = "")
     inner_class = [JSONText("""$changed ? "$change_inner_class" : "$inner_class\"""")]
   end
@@ -394,12 +392,12 @@ function cell_template(table::Symbol, ref_table::Union{Nothing,Symbol} = nothing
   inner_style = inner_style === nothing ? table_style : [table_style, inner_style]
   
   # add custom style for changed entries
-  if ref_table !== nothing && change_style !== nothing
+  if ref_rows !== nothing && change_style !== nothing
     change_style_js = JSON3.write(render(change_style))
     style = Stipple.Layout.append_class(style, JSONText("$changed ? $change_style_js : {}"))
   end
 
-  if ref_table !== nothing && change_inner_style !== nothing
+  if ref_rows !== nothing && change_inner_style !== nothing
     change_inner_style_js = JSON3.write(render(change_inner_style))
     inner_style = Stipple.Layout.append_class(style, JSONText("$changed ? $change_inner_style_js : {}"))
   end
@@ -455,7 +453,6 @@ julia> table(:data; pagination=:data_pagination, style="height: 350px;", title="
 
 """
 function table( fieldname::Symbol,
-                ref_table::Union{Nothing,Symbol},
                 args...;
                 edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
                 rowkey::String = ID,
@@ -463,13 +460,15 @@ function table( fieldname::Symbol,
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
-
+                
                 columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
                 cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 cell_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 cell_type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
                 inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                ref_table::Union{Nothing,Symbol} = nothing,
+                ref_rows::Union{Nothing,Symbol} = nothing, # alternative way of referencing table data
                 change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
                 change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
@@ -485,8 +484,7 @@ function table( fieldname::Symbol,
       startswith(String(p[1]), "inner_") ? p : nothing
     end
 
-    table_template = cell_template(fieldname, ref_table;
-      rowkey, datakey, columnskey,
+    table_template = cell_template(; ref_table, ref_rows, rowkey, 
       edit, columns, class = cell_class, style = cell_style, type = cell_type, inner_class, inner_style,
       change_class, change_style, change_inner_class, change_inner_style, cell_kwargs..., inner_kwargs...
     )
@@ -520,8 +518,9 @@ function table( fieldname::Symbol,
   )
 end
 
-function table( fieldname::Symbol, args...;
-                ref_table::Union{Nothing,Symbol} = nothing,
+function table( fieldname::Symbol,
+                ref_table::Union{Nothing,Symbol},
+                args...;
                 edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
                 rowkey::String = ID,
                 datakey::String = "$fieldname.$DATAKEY",
@@ -542,7 +541,7 @@ function table( fieldname::Symbol, args...;
 
                 kwargs...) :: ParsedHTMLString
 
-  table(fieldname, ref_table, args...; edit, rowkey, datakey, columnskey, filter, paginationsync, columns,
+  table(fieldname, args...; edit, ref_table, rowkey, datakey, columnskey, filter, paginationsync, columns,
     cell_class, cell_style, cell_type, change_class, change_style, change_inner_class, change_inner_style, kwargs...
   )
 end
