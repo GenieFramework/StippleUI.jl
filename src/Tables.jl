@@ -469,7 +469,7 @@ table(:table, template(@slot(:body-cell, :props), [
   )
 ]))
 ```
-Note the `@slot` macro, which is available from Stipple v0.29.1 on. Otherwise use `var"v-slot:body-cell" = "props"`.
+Note the use of the `@slot` macro, which is available from Stipple v0.28.8 on. Otherwise use `var"v-slot:body-cell" = "props"`.
 """
 function table( fieldname::Symbol,
                 args...;
