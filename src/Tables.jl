@@ -7,13 +7,13 @@ import Genie.Renderer.Html: HTMLString, normal_element, table, template, registe
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 export cell_template, qtd, qtr
 
-register_normal_element("q__table", context=@__MODULE__)
+register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
 const DATAKEY = "data" # has to be changed to `rows` for Quasar 2 
-const DataTableSelection = Vector{Dict{String,Any}}
+const DataTableSelection = Vector{Dict{String, Any}}
 
-struct2dict(s::T) where {T} = Dict{Symbol,Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
+struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
 #===#
 
@@ -49,14 +49,14 @@ julia> Column("x2", align = :right)
 
 """
 function Column(name::String; args...)
-  Column(name=name; args...)
+  Column(name = name; args...)
 end
 
-function Column(names::Vector{String})::Vector{Column}
+function Column(names::Vector{String}) :: Vector{Column}
   Column[Column(name) for name in names]
 end
 
-function Base.Symbol(v::Vector{Column})::Vector{Symbol}
+function Base.Symbol(v::Vector{Column}) :: Vector{Symbol}
   [Symbol(c.name) for c in v]
 end
 
@@ -107,7 +107,7 @@ Base.@kwdef mutable struct DataTableOptions
   addid::Bool = false
   idcolumn::String = "ID"
   columns::Union{Vector{Column},Nothing} = nothing
-  columnspecs::Dict{Union{String,Regex},Dict{Symbol,Any}} = Dict()
+  columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}} = Dict()
 end
 
 
@@ -148,10 +148,11 @@ function DataTable{T}() where {T}
   DataTable{T}(T(), DataTableOptions())
 end
 
+#===#
 function active_columns(t::T)::Vector{Column} where {T<:DataTable}
   t.opts.columns !== nothing ?
-  t.opts.columns :
-  [Column(string(name), sortable=true, label=string(name)) for name in TablesInterface.columnnames(t.data)]
+    t.opts.columns :
+      [Column(string(name), sortable = true, label = string(name)) for name in TablesInterface.columnnames(t.data)]
 end
 
 """
@@ -161,7 +162,7 @@ end
 julia> columns = [Column("x1"), Column("x2", align = :right)]
 ```
 """
-function columns(t::T)::Vector{<:Union{Column,Dict}} where {T<:DataTable}
+function columns(t::T)::Vector{<:Union{Column, Dict}} where {T<:DataTable}
   columns = active_columns(t) |> copy
 
   if t.opts.addid
@@ -171,7 +172,7 @@ function columns(t::T)::Vector{<:Union{Column,Dict}} where {T<:DataTable}
   if isempty(t.opts.columnspecs)
     columns
   else
-    coldicts = Dict{Symbol,Any}[]
+    coldicts = Dict{Symbol, Any}[]
     for col in columns
       coldict = struct2dict(col)
       for (k, v) in t.opts.columnspecs
@@ -204,10 +205,10 @@ function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
   rows
 end
 
-function data(t::T; datakey="data", columnskey="columns")::Dict{String,Any} where {T<:DataTable}
+function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
   Dict(
-    columnskey => columns(t),
-    datakey => rows(t)
+    columnskey  => columns(t),
+    datakey     => rows(t)
   )
 end
 
@@ -296,20 +297,20 @@ ui() = table(:table, edit = ["name", "email", "age"], cell_type = ["text", "text
 ```
 """
 function cell_template(;
-  edit::Union{Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}}=false,
-  columns::Union{Nothing,Bool,AbstractString,Vector{<:AbstractString}}=nothing,
-  class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  inner_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  inner_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  type::Union{Nothing,Symbol,AbstractString,Vector}=nothing,
-  ref_table::Union{Nothing,Symbol}=nothing,
-  ref_rows::Union{Nothing,Symbol}=nothing,
-  change_class::Union{Nothing,AbstractString,AbstractDict,Vector}="text-red ",
-  change_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  rowkey::String=ID,
+  edit::Union{Bool, Integer, AbstractString, Vector{<:AbstractString}, Vector{<:Integer}} = false,
+  columns::Union{Nothing, Bool, AbstractString, Vector{<:AbstractString}} = nothing,
+  class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+  ref_table::Union{Nothing,Symbol} = nothing,
+  ref_rows::Union{Nothing,Symbol} = nothing,
+  change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
+  change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  rowkey::String = ID,
   kwargs...)
 
   # filter kwargs that start with 'inner_' to forward them to the inner div or input element
@@ -341,21 +342,21 @@ function cell_template(;
   for column in columns
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
     t = template("", "v-slot:$slotname=\"props\"", [
-      td(props=:props,
-        htmldiv("{{ props.value }}"; class=inner_class, style=inner_style, inner_kwargs...);
+      td(props = :props,
+        htmldiv("{{ props.value }}"; class = inner_class, style = inner_style, inner_kwargs...);
         class, style, kwargs...
       )
     ])
     push!(cell_templates, t)
-  end
+  end 
 
   isempty(edit_columns) && return cell_templates
 
   # set change_class to nothing if change_style is set and change_class has not been set explicitly
   if change_class == "text-red "
-    change_class = change_style === nothing ? "text-red" : nothing
+      change_class = change_style === nothing ? "text-red" : nothing
   end
-
+  
   # in contrast to `props.value` `props.row[props.col.name]` can be written to
   value = "props.row[props.col.name]"
   # ref_rows are calculated from ref_table, if not defined explicitly
@@ -371,7 +372,7 @@ function cell_template(;
     class = [JSONText("""$changed ? "$change_class" : "$class\"""")]
   end
   if class !== nothing && isempty(class)
-    class = nothing
+      class = nothing
   end
   if ref_rows !== nothing && change_inner_class !== nothing && !isempty(change_inner_class)
     inner_class === nothing && (inner_class = "")
@@ -380,11 +381,11 @@ function cell_template(;
   if inner_class !== nothing && isempty(inner_class)
     inner_class = nothing
   end
-
+  
   # add standard settings from stipplecore.css
   table_style = Dict("font-weight" => 400, "font-size" => "0.9rem", "padding-top" => 0, "padding-bottom" => 0)
   inner_style = inner_style === nothing ? table_style : [table_style, inner_style]
-
+  
   # add custom style for changed entries
   if ref_rows !== nothing && change_style !== nothing
     change_style_js = JSON3.write(render(change_style))
@@ -398,14 +399,14 @@ function cell_template(;
 
   n = type isa Vector ? length(type) : 1
   for (index, column) in enumerate(edit_columns)
-    typ = type isa Vector ? type[(index-1)%n+1] : type
+    typ = type isa Vector ? type[(index - 1) % n + 1] : type
     qinput = "$typ" == "number" ? numberfield : textfield
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
     t = template("", "v-slot:$slotname=\"props\"", [
-      StippleUI.td(props=:props,
-        qinput("", Symbol(value), :dense, :borderless, type=typ,
-          input__class=inner_class,
-          input__style=inner_style;
+      StippleUI.td(props = :props,
+        qinput("", Symbol(value), :dense, :borderless, type = typ,
+          input__class = inner_class,
+          input__style = inner_style;
           inner_kwargs...
         ); class, style, kwargs...
       )
@@ -420,7 +421,7 @@ function filter_kwargs(f::Function, kwargs)
   kwargs = collect(kwargs)
   new_kwargs = f.(kwargs)
   index = new_kwargs .!== nothing
-  new_kwargs[index], kwargs[.!index]
+  new_kwargs[index], kwargs[.! index]
 end
 
 """
@@ -465,25 +466,29 @@ table(:table, template(@slot(:body-cell, :props), [
 ```
 Note the use of the `@slot` macro, which is available from Stipple v0.28.7 on. Otherwise use `var"v-slot:body-cell" = "props"`.
 """
-function table(fieldname::Symbol,
-  args...;
-  edit::Union{Bool,AbstractString,Vector{<:AbstractString}}=false,
-  rowkey::String=ID,
-  datakey::String="$fieldname.$DATAKEY",
-  columnskey::String="$fieldname.columns",
-  filter::Union{Symbol,String,Nothing}=nothing,
-  paginationsync::Union{Symbol,String,Nothing}=nothing, columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}}=nothing,
-  cell_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  cell_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  cell_type::Union{Nothing,Symbol,AbstractString,Vector}=nothing,
-  inner_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  inner_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  ref_table::Union{Nothing,Symbol}=nothing,
-  ref_rows::Union{Nothing,Symbol}=nothing, # alternative way of referencing table data
-  change_class::Union{Nothing,AbstractString,AbstractDict,Vector}="text-red ",
-  change_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing, kwargs...)::ParsedHTMLString
+function table( fieldname::Symbol,
+                args...;
+                edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
+                rowkey::String = ID,
+                datakey::String = "$fieldname.$DATAKEY",
+                columnskey::String = "$fieldname.columns",
+                filter::Union{Symbol,String,Nothing} = nothing,
+                paginationsync::Union{Symbol,String,Nothing} = nothing,
+                
+                columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
+                cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+                inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                ref_table::Union{Nothing,Symbol} = nothing,
+                ref_rows::Union{Nothing,Symbol} = nothing, # alternative way of referencing table data
+                change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
+                change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+              
+                kwargs...) :: ParsedHTMLString
 
   if !isa(edit, Bool) || edit || cell_class !== nothing || cell_style !== nothing
     cell_kwargs, kwargs = filter_kwargs(kwargs) do p
@@ -493,8 +498,8 @@ function table(fieldname::Symbol,
       startswith(String(p[1]), "inner_") ? p : nothing
     end
 
-    table_template = cell_template(; ref_table, ref_rows, rowkey,
-      edit, columns, class=cell_class, style=cell_style, type=cell_type, inner_class, inner_style,
+    table_template = cell_template(; ref_table, ref_rows, rowkey, 
+      edit, columns, class = cell_class, style = cell_style, type = cell_type, inner_class, inner_style,
       change_class, change_style, change_inner_class, change_inner_style, cell_kwargs..., inner_kwargs...
     )
     args = [args..., table_template]
@@ -527,24 +532,28 @@ function table(fieldname::Symbol,
   )
 end
 
-function table(fieldname::Symbol,
-  ref_table::Union{Nothing,Symbol},
-  args...;
-  edit::Union{Bool,AbstractString,Vector{<:AbstractString}}=false,
-  rowkey::String=ID,
-  datakey::String="$fieldname.$DATAKEY",
-  columnskey::String="$fieldname.columns",
-  filter::Union{Symbol,String,Nothing}=nothing,
-  paginationsync::Union{Symbol,String,Nothing}=nothing, columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}}=nothing,
-  cell_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  cell_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  cell_type::Union{Nothing,Symbol,AbstractString,Vector}=nothing,
-  inner_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  inner_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  change_class::Union{Nothing,AbstractString,AbstractDict,Vector}="text-red ",
-  change_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing,
-  change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector}=nothing, kwargs...)::ParsedHTMLString
+function table( fieldname::Symbol,
+                ref_table::Union{Nothing,Symbol},
+                args...;
+                edit::Union{Bool, AbstractString, Vector{<:AbstractString}} = false,
+                rowkey::String = ID,
+                datakey::String = "$fieldname.$DATAKEY",
+                columnskey::String = "$fieldname.columns",
+                filter::Union{Symbol,String,Nothing} = nothing,
+                paginationsync::Union{Symbol,String,Nothing} = nothing,
+
+                columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
+                cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                cell_type::Union{Nothing,Symbol,AbstractString,Vector} = nothing,
+                inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_class::Union{Nothing,AbstractString,AbstractDict,Vector} = "text-red ",
+                change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+
+                kwargs...) :: ParsedHTMLString
 
   table(fieldname, args...; edit, ref_table, rowkey, datakey, columnskey, filter, paginationsync, columns,
     cell_class, cell_style, cell_type, change_class, change_style, change_inner_class, change_inner_style, kwargs...
@@ -567,14 +576,9 @@ end
 #===#
 
 function Stipple.watch(vue_app_name::String, fieldtype::R{T}, fieldname::Symbol, channel::String, model::M)::String where {M<:ReactiveModel,T<:DataTable}
-  string(
-    vue_app_name,
-    raw".\$watch('",
-    fieldname,
-    "', function(newVal, oldVal){
+  string(vue_app_name, raw".\$watch('", fieldname, "', function(newVal, oldVal){
 
-});\n\n"
-  )
+  });\n\n")
 end
 
 #===#
@@ -594,9 +598,9 @@ function DataTableOptions(d::AbstractDict)
   DataTableOptions(d["addid"], d["idcolumn"], d["columns"], d["columnspecs"])
 end
 
-function DataTableOptions(data::T) where {T}
+function DataTableOptions(data::T) where T
   dto = DataTableOptions()
-  dto.columns = [Column(string(name), sortable=true, label=string(name)) for name in TablesInterface.columnnames(data)]
+  dto.columns = [Column(string(name), sortable = true, label = string(name)) for name in TablesInterface.columnnames(data)]
 
   dto
 end
@@ -609,7 +613,7 @@ end
 
 function DataTableWithSelection(data::T) where {T}
   dt = DataTable{T}(data, DataTableOptions())
-  DataTableWithSelection(dt, DataTablePagination(), DataTableSelection())
+  DataTableWithSelection(dt,  DataTablePagination(), DataTableSelection())
 end
 
 Base.getindex(dt::DataTable, args...) = DataTable(dt.data[args...], dt.opts)
@@ -636,14 +640,14 @@ rowselection(dt, :, nothing)
 ```
 
 """
-function rowselection(dt::DataTable, rows, cols=Colon(), idcolumn=dt.opts.addid ? dt.opts.idcolumn : "__id")
+function rowselection(dt::DataTable, rows, cols = Colon(), idcolumn = dt.opts.addid ? dt.opts.idcolumn : "__id")
   if isnothing(cols)
-    [Dict{String,Any}(union([idcolumn, "__id"]) .=> row) for row in (rows == Colon() ? (1:nrow(dt.data)) : rows)]
+      [Dict{String, Any}(union([idcolumn, "__id"]) .=> row) for row in (rows == Colon() ? (1:nrow(dt.data)) : rows)]
   else
-    dd = Stipple.render(dt[rows, cols])["data"]
-    setindex!.(dd, rows, "__id")
-    dt.opts.addid && setindex!.(dd, rows, dt.opts.idcolumn)
-    dd |> Vector{Dict{String,Any}}
+      dd = Stipple.render(dt[rows, cols])["data"]
+      setindex!.(dd, rows, "__id")
+      dt.opts.addid && setindex!.(dd, rows, dt.opts.idcolumn)
+      dd |> Vector{Dict{String, Any}}
   end
 end
 
@@ -656,10 +660,10 @@ rowselection(dt, "a", [1, 3])
 rowselection(dt, "a", 2:9)
 ```
 """
-function rowselection(dt::DataTable, idcolumn::Union{String,Symbol}, values, cols=Colon())
-  vals = values isa AbstractString ? [values] : [values...]
-  rows = findall(x -> x ∈ vals, dt.data[:, idcolumn])
-  rowselection(dt, rows, cols)
+function rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, values, cols = Colon())
+    vals = values isa AbstractString ? [values] : [values...]
+    rows = findall(x -> x ∈ vals, dt.data[:, idcolumn])
+    rowselection(dt, rows, cols)
 end
 
 """
@@ -671,9 +675,9 @@ rowselection(dt, "a", iseven)
 rowselection(dt, "a", x -> x > 3)
 ```
 """
-function rowselection(dt::DataTable, idcolumn::Union{String,Symbol}, f::Function, cols=Colon())
-  rows = findall(f, dt.data[:, idcolumn])
-  rowselection(dt, rows, cols)
+function rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, f::Function, cols = Colon())
+    rows = findall(f, dt.data[:, idcolumn])
+    rowselection(dt, rows, cols)
 end
 
 
@@ -686,9 +690,9 @@ Build a table selection based on a Regex.
 rowselection(t, "b", r"hello|World")
 ```
 """
-function rowselection(dt::DataTable, idcolumn::Union{String,Symbol}, regex::Regex, cols=Colon())
-  rows = findall(x -> occursin(regex, x), dt.data[:, idcolumn])
-  rowselection(dt, rows, cols)
+function rowselection(dt::DataTable, idcolumn::Union{String, Symbol}, regex::Regex, cols = Colon())
+    rows = findall(x -> occursin(regex, x), dt.data[:, idcolumn])
+    rowselection(dt, rows, cols)
 end
 
 """
@@ -725,13 +729,13 @@ selectrows!(model::ReactiveModel, tablefield::Symbol, args...) = selectrows!(mod
 
 export process_request
 
-function process_request(data, datatable::DataTable, pagination::DataTablePagination, filter::AbstractString="")
+function process_request(data, datatable::DataTable, pagination::DataTablePagination, filter::AbstractString = "")
   event = params(:payload, nothing)
 
   if event !== nothing &&
-     isa(get(event, "event", false), AbstractDict) &&
-     isa(get(event["event"], "name", false), AbstractString) &&
-     event["event"]["name"] == "request"
+    isa(get(event, "event", false), AbstractDict) &&
+      isa(get(event["event"], "name", false), AbstractString) &&
+        event["event"]["name"] == "request"
     event = event["event"]["event"]["pagination"]
   else
     event = Dict()
@@ -754,7 +758,7 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
       end
     end
 
-    if !isempty(collector)
+    if ! isempty(collector)
       fd = data[collector, :]
       pagination.rows_number = length(collector)
     else
@@ -768,20 +772,20 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
     event["sortBy"] = "desc"
     sort!(fd)
   elseif event["sortBy"] in names(fd)
-    sort!(fd, event["sortBy"], rev=event["descending"])
+    sort!(fd, event["sortBy"], rev = event["descending"])
   end
 
   start_row = (event["page"] - 1) * event["rowsPerPage"] + 1
   end_row = event["page"] * event["rowsPerPage"]
 
-  datatable = typeof(datatable)(fd[(start_row <= pagination.rows_number ? start_row : pagination.rows_number):(end_row <= pagination.rows_number ? end_row : pagination.rows_number), :], datatable.opts)
-  pagination = typeof(pagination)(rows_per_page=event["rowsPerPage"], rows_number=pagination.rows_number, page=event["page"], sort_by=event["sortBy"], descending=event["descending"], _filter=pagination._filter)
+  datatable = typeof(datatable)(fd[(start_row <= pagination.rows_number ? start_row : pagination.rows_number) : (end_row <= pagination.rows_number ? end_row : pagination.rows_number), :], datatable.opts)
+  pagination = typeof(pagination)(rows_per_page = event["rowsPerPage"], rows_number = pagination.rows_number, page = event["page"], sort_by = event["sortBy"], descending = event["descending"], _filter = pagination._filter)
 
-  return (data=fd, datatable=datatable, pagination=pagination)
+  return (data = fd, datatable = datatable, pagination = pagination)
 end
 
-register_normal_element("q__td", context=@__MODULE__)
-register_normal_element("q__tr", context=@__MODULE__)
+register_normal_element("q__td", context = @__MODULE__)
+register_normal_element("q__tr", context = @__MODULE__)
 
 function td(args...; kwargs...)
   q__td(args...; kw(kwargs)...)
