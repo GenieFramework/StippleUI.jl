@@ -1,0 +1,7 @@
+[deps]
+Base64 = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+GenieAutoReload = "c6228e60-a24f-11e9-1776-c313472ebacc"
+GenieFramework = "a59fdf5c-6bf0-4f5d-949c-a137c9e2f353"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
+StippleUI = "a3c5d34a-b254-4859-a8fa-b86abb7e84a3"

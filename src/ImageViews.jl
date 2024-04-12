@@ -51,7 +51,7 @@ julia> imageview(src = :url, style = "height: 140px; max-width: 150px", [
        * `sizes::String` - Same syntax as <img> sizes attribute. ex. `(max-width: 320px) 280px, (max-width: 480px) 440px, 800px`
        * `width::String` - Forces image width; Must also include the unit (px or %) ex. `280px` `70%`
        * `height::String` - Forces image height; Must also include the unit (px or %) ex. `280px` `70%`
-       * `placeholdersrc::String` - While waiting for your image to load, you can use a placeholder image ex. `(public folder) src="img/something.png"` `(assets folder) src="~assets/my-img.gif"` `(URL) src="https://placeimg.com/500/300/nature"`  
+       * `placeholdersrc::String` - While waiting for your image to load, you can use a placeholder image ex. `(public folder) src="img/something.png"` `(assets folder) src="~assets/my-img.gif"` `(URL) src="https://placeimg.com/500/300/nature"`
 4. Style
       * `color::String` - Color name for component from the [Color Palette](https://quasar.dev/style/color-palette) eg. `primary` `teal-10`
       * `imgclass::Union{Vector, String, Dict}` - Class definitions to be attributed to the container of image; Does not apply to the caption ex. `my-special-class` `imgclass!="{ 'my-special-class': <condition> }"`

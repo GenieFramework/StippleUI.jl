@@ -1,9 +1,6 @@
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Genie = "c43c736e-a2d1-11e8-161f-af95117fbd1e"
-GenieDevTools = "4e5d9629-6565-4102-a9ff-45c707eb060e"
 GenieFramework = "a59fdf5c-6bf0-4f5d-949c-a137c9e2f353"
 Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
-StipplePlotly = "ec984513-233d-481d-95b0-a3b58b97af2b"
 StippleUI = "a3c5d34a-b254-4859-a8fa-b86abb7e84a3"
-Tables = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"

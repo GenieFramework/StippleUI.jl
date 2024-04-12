@@ -3,7 +3,7 @@ module FormInputs
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
-export textfield, numberfield, textarea, filefield
+export textfield, numberfield, textarea, filefield, datefield, timefield
 
 register_normal_element("q__input", context = @__MODULE__)
 register_normal_element("q__file", context = @__MODULE__)
@@ -89,7 +89,7 @@ julia> textfield("What's your name *", :name, name = "name", @if(:warin), :fille
        * `debounce::Union{String, Int}` - Debounce amount (in milliseconds) when updating model ex. `0` `500`
        * `maxlength::Union{String, Int}` - Specify a max length of model ex. `12`
 """
-function textfield( label::Union{String, Symbol} = "",
+function textfield( label::Union{String,Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     content::Union{String,Vector,Function} = "",
@@ -109,7 +109,7 @@ textfield(content::Union{Vector,Function},
 """
     numberfield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function numberfield( label::Union{String, Symbol} = "",
+function numberfield( label::Union{String,Symbol} = "",
                       fieldname::Union{Symbol,Nothing} = nothing,
                       args...;
                       content::Union{String,Vector,Function} = "",
@@ -125,7 +125,7 @@ end
 """
     textarea(label::Union{String,Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function textarea(label::Union{String, Symbol} = "",
+function textarea(label::Union{String,Symbol} = "",
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
                   content::Union{String,Vector,Function} = "",
@@ -136,7 +136,7 @@ end
 """
 filefield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
 """
-function filefield( label::Union{String, Symbol} = "",
+function filefield( label::Union{String,Symbol} = "",
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     kwargs...)
@@ -145,9 +145,79 @@ function filefield( label::Union{String, Symbol} = "",
           kw(
             [:label => label, :fieldname => fieldname, kwargs...],
             Dict("maxfiles" => "max-files", "maxfilesize" => "max-file-size",
-                 "counterlabel" => "counter-label", "maxtotalsize" => "max-total-size"
+                  "counterlabel" => "counter-label", "maxtotalsize" => "max-total-size"
             )
           )...)
+end
+
+"""
+    datefield(args...; kwargs...)
+
+Complex input type that combines a textfield with an icon, a datepicker and a popup.
+The datepicker is hidden by default and is shown when the icon is clicked.
+The popup is used to hide the datepicker when the user clicks outside of it.
+A number of common arguments are defined and are passed to the textfield, the icon, the popup and the datepicker.
+In addition, keyword arguments can be passed to each of these components individually by using the `textfield_props`,
+`icon_props`, `popup_proxy_props` and `datepicker_props` keyword arguments.
+
+# Examples
+```julia
+datefield("Start date", :start_date, datepicker_props = Dict(:todaybtn => true, :nounset => true), textfield_props = Dict(:bgcolor => "green-1"))
+```
+"""
+function datefield( label::Union{String,Symbol} = "",
+                    fieldname::Union{Symbol,Nothing} = nothing;
+                    icon_name::Union{Symbol,String,Nothing} = "event",
+                    icon_class::Union{Symbol,String,Nothing} = "cursor-pointer",
+                    icon_style::Union{Symbol,String,Nothing} = "height: 100%;",
+                    transitionshow::Union{Symbol,String,Nothing} = "scale",
+                    transitionhide::Union{Symbol,String,Nothing} = "scale",
+                    mask::Union{String,Nothing} = "YYYY-MM-DD",
+                    textfield_props::Dict = Dict(),
+                    icon_props::Dict = Dict(),
+                    popup_proxy_props::Dict = Dict(),
+                    datepicker_props::Dict = Dict(),
+                    kwargs...)
+  textfield(label, fieldname, [
+    icon([
+      popup_proxy([
+        datepicker(fieldname; mask = mask, kw(datepicker_props)...)
+      ]; cover = true, transitionshow = transitionshow, transitionhide = transitionhide, kw(popup_proxy_props)...)
+    ]; name = icon_name, class = icon_class, style = icon_style, kw(icon_props)...)
+  ]; clearable = true, filled = true, kw(textfield_props)..., kwargs...)
+end
+
+"""
+    timefield(args...; kwargs...)
+
+Complex input type that combines a textfield with an icon, a timepicker and a popup.
+The timepicker is hidden by default and is shown when the icon is clicked.
+The popup is used to hide the timepicker when the user clicks outside of it.
+A number of common arguments are defined and are passed to the textfield, the icon, the popup and the timepicker.
+In addition, keyword arguments can be passed to each of these components individually by using the `textfield_props`,
+`icon_props`, `popup_proxy_props` and `timepicker_props` keyword arguments.
+
+"""
+function timefield( label::Union{String,Symbol} = "",
+                    fieldname::Union{Symbol,Nothing} = nothing;
+                    icon_name::Union{Symbol,String,Nothing} = "alarm",
+                    icon_class::Union{Symbol,String,Nothing} = "cursor-pointer",
+                    icon_style::Union{Symbol,String,Nothing} = "height: 100%;",
+                    transitionshow::Union{Symbol,String,Nothing} = "scale",
+                    transitionhide::Union{Symbol,String,Nothing} = "scale",
+                    mask::Union{String,Nothing} = "HH:mm:ss",
+                    textfield_props::Dict = Dict(),
+                    icon_props::Dict = Dict(),
+                    popup_proxy_props::Dict = Dict(),
+                    timepicker_props::Dict = Dict(),
+                    kwargs...)
+  textfield(label, fieldname, [
+    icon([
+      popup_proxy([
+        timepicker(fieldname; mask = mask, kw(timepicker_props)...)
+      ]; cover = true, transitionshow = transitionshow, transitionhide = transitionhide, kw(popup_proxy_props)...)
+    ]; name = icon_name, class = icon_class, style = icon_style, kw(icon_props)...)
+  ]; clearable = true, filled = true, kw(textfield_props)..., kwargs...)
 end
 
 end
