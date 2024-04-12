@@ -16,7 +16,7 @@ end
 
 function Stipple.convertvalue(target::Stipple.R{<:DataTable{DataFrames.DataFrame}}, d::AbstractDict)
   df = Stipple.stipple_parse(DataFrames.DataFrame, d["data"])
-  DataTable(df[:, names(df) .!== "__id"], target.opts)
+  DataTable(df[:, getfield.(target.opts.columns, :name)], target.opts)
 end
 
 end
