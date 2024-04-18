@@ -189,11 +189,11 @@ function columns(t::T)::Vector{<:Union{Column, Dict}} where {T<:DataTable}
   end
 end
 
-function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
-  rows = []
+function rows(t::T)::Vector{OrderedDict{String,Any}} where {T<:DataTable}
+  rows = OrderedDict{String,Any}[]
 
   for (count, row) in enumerate(TablesInterface.rows(t.data))
-    r = Dict()
+    r = OrderedDict{String, Any}()
 
     if t.opts.addid
       r[t.opts.idcolumn] = count
@@ -210,7 +210,7 @@ function rows(t::T)::Vector{Dict{String,Any}} where {T<:DataTable}
   rows
 end
 
-function data(t::T; datakey = "rows", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
+function data(t::T; datakey = DATAKEY, columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
   Dict(
     columnskey  => columns(t),
     datakey     => rows(t),
@@ -526,7 +526,7 @@ function table( fieldname::Symbol,
 
   q__table(args...;
     kw([
-      Symbol(":rows") => "$datakey",
+      Symbol(":", DATAKEY) => "$datakey",
       Symbol(":columns") => "$columnskey",
       Symbol("row-key") => rowkey,
       :fieldname => fieldname,
