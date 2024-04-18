@@ -16,10 +16,12 @@ end
 
 function Stipple.convertvalue(target::Stipple.R{<:DataTable{DataFrames.DataFrame}}, d::AbstractDict)
   df = Stipple.stipple_parse(DataFrames.DataFrame, d[StippleUI.Tables.DATAKEY])
-  oldnames = names(df)
-  newnames = getindex.(d["columns"], "name")
-  # the following line guarantees that the order of the columns is preserved
-  newnames = intersect(union(oldnames, newnames), newnames)
+  oldnames = names(target.data)
+  newnames = names(df)
+  idcolumns = ["__id"]
+  target.opts.addid && push!(idcolumns, target.opts.idcolumn)
+  # preserve order of the columns and remove automatically added idcolumns
+  newnames = setdiff(intersect(union(oldnames, newnames), newnames), idcolumns)
   DataTable(df[:, newnames], target.opts)
 end
 
