@@ -15,8 +15,14 @@ function StippleUI.DataTableWithSelection()
 end
 
 function Stipple.convertvalue(target::Stipple.R{<:DataTable{DataFrames.DataFrame}}, d::AbstractDict)
-  df = Stipple.stipple_parse(DataFrames.DataFrame, d["data"])
-  DataTable(df[:, getfield.(target.opts.columns, :name)], target.opts)
+  df = Stipple.stipple_parse(DataFrames.DataFrame, d[StippleUI.Tables.DATAKEY])
+  oldnames = names(target.data)
+  newnames = names(df)
+  idcolumns = ["__id"]
+  target.opts.addid && push!(idcolumns, target.opts.idcolumn)
+  # preserve order of the columns and remove automatically added idcolumns
+  newnames = setdiff(intersect(union(oldnames, newnames), newnames), idcolumns)
+  DataTable(df[:, newnames], target.opts)
 end
 
 end
