@@ -10,7 +10,7 @@ export cell_template, qtd, qtr
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
-const DATAKEY = "data" # has to be changed to `rows` for Quasar 2 
+const DATAKEY = "rows"
 const DataTableSelection = Vector{Dict{String, Any}}
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
