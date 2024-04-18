@@ -150,6 +150,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 @reexport using .Steppers
 import .Steppers.step
 @reexport using .Tables
+import .Tables: tr, td
 @reexport using .TabPanels
 @reexport using .Tabs
 @reexport using .Timelines
