@@ -13,9 +13,26 @@ beautiful, responsive, reactive, high performance interactive data dashboards in
 `StippleUI` provides over 30 UI elements, including forms and form inputs (button, slider, checkbox, radio, toggle, range), lists, data tables,
 higher level components (badges, banners, cards, dialogs, chips, icons), and layout elements (row, col, dashboard, heading, space) from the [Quasar Framework](https://quasar.dev).
 
-**New**: [StippleUIParser](#stippleuiparser)
-- conversion of html code to julia code
-- pretty-printing of html
+## News: Vue 3 / Quasar 2
+
+From version 0.24 on StippleUI has upgraded the front-end libraries to Vue3 / Quasar 2, as Vue-2 has reached its end-of-life.
+
+We have put lots of effort in making migration as easy as possible. Nevertheless, there are some places where advanced user interfaces might need a little tweeking.
+
+## Main Changes for version >= v0.24
+
+### Components
+- General: Syncing of additional fields is no longer done with the syntax `fieldname.sync` but rather with `v-model:fieldname`. This is already taken care of by the components' API, e.g. `paginationsync` in `table()`. If you have manually added such fields you need to adapt your code.
+- Quasars's Table component has changed the naming of the content attribute from `data` to `rows`.
+  Accordingly, all references in templates should be changed to `rows` in the long run, e.g.
+  `table(:mytable, @showif("mytable.data.length"))` should be changed to `table(:mytable, @showif("mytable.data.length"))`.
+  However, we have introduced a watcher that sets a second field named 'data' to the 'rows' field, which will keep old code running in most cases. The only disadvantage of that solution is that syncing the table content back to the server sends the double amount of data; so that helper might be deprecated in the future.
+
+### More Migration Support
+- Stipple's README https://github.com/GenieFramework/Stipple.jl/blob/master/README.md
+- Quasar upgrade guide: site: https://quasar.dev/start/upgrade-guide/
+- Vue migration guide: https://v3-migration.vuejs.org/
+
 ## Installation
 
 ```julia
