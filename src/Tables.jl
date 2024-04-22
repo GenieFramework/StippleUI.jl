@@ -478,6 +478,8 @@ function table( fieldname::Symbol,
                 datakey::String = "$fieldname.$DATAKEY",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
+                selected::Union{Symbol,String,Nothing} = nothing,
+                pagination::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
                 
                 columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
@@ -530,8 +532,10 @@ function table( fieldname::Symbol,
       Symbol(":columns") => "$columnskey",
       Symbol("row-key") => rowkey,
       :fieldname => fieldname,
-      (filter === nothing ? [] : [:filter => filter])...,
-      (paginationsync === nothing ? [] : [:paginationsync => paginationsync])...,
+      :filter => filter,
+      selected === nothing ?  (:selected => nothing) : (Symbol("v-model:selected") => selected),
+      :pagination => pagination,
+      paginationsync === nothing ?  (:paginationsync => nothing) : (Symbol("v-model:paginationsync") => paginationsync),
       kwargs...
     ])...
   )
