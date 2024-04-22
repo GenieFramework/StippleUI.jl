@@ -112,6 +112,31 @@ julia> span(@click(:mybutton))
 "<span v-on:click=\"mybutton = true\"></span>"
 ```
 
+### Quasar's Flexgrid
+Quasar implements a grid system called "Flexgrid" that allows for easy definition of UIs by classes.
+
+A grid can be either vertical (`class = "column"`) or horizontal (`class = "row"`). The child elements receive their size within that container by setting the class `"col"` for equally spaced children, or `"col-6"` for a fixed multiple of 1/12 of the container size (here `6` so 50%).
+Moreover, Quasar allows for varying child sizes depending on the size of the container, by adding a size-condition after the col class, e.g. `"col-md-3"`, or simply `"col-md"`.
+In the StippleUI-API we define the attributes `col`, `xs`, `sm`, `md`, `lg`, `xl` to make this class definition more convenient, e.g.
+```julia
+row(htmldiv(col = 2, md = 4)) |> println
+# <div class="row"><div class="col-2 col-md-4"></div></div>
+```
+
+Furthermore, spacings between child elements are added by setting the class="gutter-md". In case of children in flex containers (`row` or `column`) the setting needs to be `class = "gutter-col-md"`. Again, we have defined an attribute that takes care of the difference and automatically choses the correct setting.
+```julia-repl
+julia> row(gutter = "md", htmldiv(col = 2, md = 4), "Hello World") |> println
+<div class="row q-col-gutter-md" Hello World><div class="col-2 col-md-4"></div></div>
+```
+
+Furthermore, children might badly display if they have a background setting, which is due to the way, Quasar sets margins and padding. The way out is to wrap the children in an extra `div` element, which can conveniently done by using the `@gutter`macro.
+```julia-repl
+julia> row(gutter = "md", @gutter htmldiv(col = 2, md = 4, "Hello World")) |> println
+<div class="row q-col-gutter-md"><div class="col-2 col-md-4"><div>Hello World</div></div></div>
+```
+
+More details can be found in the docstrings.
+
 ### Javascript code
 
 Vue.js offers the possibility of embedding javascript functions that are called ither manually (`methods`) or automatically when certain events occur, e.g. `watch`, `mounted`, `created`, `computed`. Such code can easily be defined by the respective macros `@methods`, `@watch`, `@mounted`, `@created`, `@computed`, e.g.
