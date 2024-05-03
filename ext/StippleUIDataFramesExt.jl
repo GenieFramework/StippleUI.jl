@@ -1,10 +1,9 @@
 module StippleUIDataFramesExt
 
-@static if isdefined(Base, :get_extension)
-  using DataFrames
-  using StippleUI
-  using StippleUI.Stipple
-end
+using StippleUI
+using StippleUI.Stipple
+
+isdefined(Base, :get_extension) ? (using DataFrames) : (using ..DataFrames)
 
 function StippleUI.Tables.DataTable()
   DataTable(DataFrames.DataFrame())

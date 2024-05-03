@@ -182,7 +182,7 @@ function __init__()
   @static if !isdefined(Base, :get_extension)
     @require DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0" begin
       # evaluate the code of the extension without the surrounding module
-      include(joinpath(@__DIR__, "..", "ext", "StippleUIDataFrames.jl"))
+      include(joinpath(@__DIR__, "..", "ext", "StippleUIDataFramesExt.jl"))
     end
   end
 end
