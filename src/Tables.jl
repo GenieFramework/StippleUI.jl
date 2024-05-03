@@ -10,7 +10,7 @@ export cell_template, qtd, qtr
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
-const DATAKEY = "data" # has to be changed to `rows` for Quasar 2 
+const DATAKEY = "rows"
 const DataTableSelection = Vector{Dict{String, Any}}
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
@@ -210,10 +210,10 @@ function rows(t::T)::Vector{OrderedDict{String,Any}} where {T<:DataTable}
   rows
 end
 
-function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
+function data(t::T; datakey = DATAKEY, columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
   OrderedDict(
     columnskey  => columns(t),
-    datakey     => rows(t)
+    datakey     => rows(t),
   )
 end
 
@@ -478,6 +478,8 @@ function table( fieldname::Symbol,
                 datakey::String = "$fieldname.$DATAKEY",
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
+                selected::Union{Symbol,String,Nothing} = nothing,
+                pagination::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
                 
                 columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
@@ -526,12 +528,14 @@ function table( fieldname::Symbol,
 
   q__table(args...;
     kw([
-      Symbol(":data") => "$datakey",
+      Symbol(":", DATAKEY) => "$datakey",
       Symbol(":columns") => "$columnskey",
       Symbol("row-key") => rowkey,
       :fieldname => fieldname,
-      (filter === nothing ? [] : [:filter => filter])...,
-      (paginationsync === nothing ? [] : [:paginationsync => paginationsync])...,
+      :filter => filter,
+      selected === nothing ?  (:selected => nothing) : (Symbol("v-model:selected") => selected),
+      :pagination => pagination,
+      paginationsync === nothing ?  (:paginationsync => nothing) : (Symbol("v-model:paginationsync") => paginationsync),
       kwargs...
     ])...
   )
@@ -578,6 +582,27 @@ function Stipple.render(dtp::DataTablePagination)
   response
 end
 
+# function to autogenerate entries for js_mounted to make Tables from Quasar1 compatible with tables from Quasar2
+# Background: the field 'data' has been renamed to 'rows' in Quasar 2
+# This function autogenerates entries that set the 'data' field of tables to the 'rows' field. As Vue3's mechanism
+# for watchers relies on getter and setter functions any get or set operation on 'data' will be reflected in rows
+# and the respective watchers will be triggered.
+function Stipple.js_created_auto(::M) where M<:ReactiveModel
+  io = IOBuffer()
+  for (fieldname, fieldtype) in zip(fieldnames(M), fieldtypes(M))
+    if fieldtype <: DataTable || fieldtype <: Reactive{<:DataTable}
+      print(io, "\nthis.$fieldname.data = this.$fieldname.rows")
+    end
+  end
+  String(take!(io))
+end
+
+function Stipple.js_watch_auto(::M) where M<:ReactiveModel
+  [fieldname => "function() {this.$fieldname.data = this.$fieldname.rows}"
+    for (fieldname, fieldtype) in zip(fieldnames(M), fieldtypes(M))
+    if fieldtype <: DataTable || fieldtype <: Reactive{<:DataTable}
+  ]
+end
 #===#
 
 function Stipple.watch(vue_app_name::String, fieldtype::R{T}, fieldname::Symbol, channel::String, model::M)::String where {M<:ReactiveModel,T<:DataTable}

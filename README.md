@@ -13,9 +13,26 @@ beautiful, responsive, reactive, high performance interactive data dashboards in
 `StippleUI` provides over 30 UI elements, including forms and form inputs (button, slider, checkbox, radio, toggle, range), lists, data tables,
 higher level components (badges, banners, cards, dialogs, chips, icons), and layout elements (row, col, dashboard, heading, space) from the [Quasar Framework](https://quasar.dev).
 
-**New**: [StippleUIParser](#stippleuiparser)
-- conversion of html code to julia code
-- pretty-printing of html
+## News: Vue 3 / Quasar 2
+
+From version 0.24 on StippleUI has upgraded the front-end libraries to Vue3 / Quasar 2, as Vue-2 has reached its end-of-life.
+
+We have put lots of effort in making migration as easy as possible. Nevertheless, there are some places where advanced user interfaces might need a little tweeking.
+
+## Main Changes for version >= v0.24
+
+### Components
+- General: Syncing of additional fields is no longer done with the syntax `fieldname.sync` but rather with `v-model:fieldname`. This is already taken care of by the components' API, e.g. `paginationsync` in `table()`. If you have manually added such fields you need to adapt your code.
+- Quasars's Table component has changed the naming of the content attribute from `data` to `rows`.
+  Accordingly, all references in templates should be changed to `rows` in the long run, e.g.
+  `table(:mytable, @showif("mytable.data.length"))` should be changed to `table(:mytable, @showif("mytable.data.length"))`.
+  However, we have introduced a watcher that sets a second field named 'data' to the 'rows' field, which will keep old code running in most cases. The only disadvantage of that solution is that syncing the table content back to the server sends the double amount of data; so that helper might be deprecated in the future.
+
+### More Migration Support
+- Stipple's README https://github.com/GenieFramework/Stipple.jl/blob/master/README.md
+- Quasar upgrade guide: site: https://quasar.dev/start/upgrade-guide/
+- Vue migration guide: https://v3-migration.vuejs.org/
+
 ## Installation
 
 ```julia
@@ -94,6 +111,31 @@ julia> span(@showif(true))
 julia> span(@click(:mybutton))
 "<span v-on:click=\"mybutton = true\"></span>"
 ```
+
+### Quasar's Flexgrid
+Quasar implements a grid system called "Flexgrid" that allows for easy definition of UIs by classes.
+
+A grid can be either vertical (`class = "column"`) or horizontal (`class = "row"`). The child elements receive their size within that container by setting the class `"col"` for equally spaced children, or `"col-6"` for a fixed multiple of 1/12 of the container size (here `6` so 50%).
+Moreover, Quasar allows for varying child sizes depending on the size of the container, by adding a size-condition after the col class, e.g. `"col-md-3"`, or simply `"col-md"`.
+In the StippleUI-API we define the attributes `col`, `xs`, `sm`, `md`, `lg`, `xl` to make this class definition more convenient, e.g.
+```julia
+row(htmldiv(col = 2, md = 4)) |> println
+# <div class="row"><div class="col-2 col-md-4"></div></div>
+```
+
+Furthermore, spacings between child elements are added by setting the class="gutter-md". In case of children in flex containers (`row` or `column`) the setting needs to be `class = "gutter-col-md"`. Again, we have defined an attribute that takes care of the difference and automatically choses the correct setting.
+```julia-repl
+julia> row(gutter = "md", htmldiv(col = 2, md = 4), "Hello World") |> println
+<div class="row q-col-gutter-md" Hello World><div class="col-2 col-md-4"></div></div>
+```
+
+Furthermore, children might badly display if they have a background setting, which is due to the way, Quasar sets margins and padding. The way out is to wrap the children in an extra `div` element, which can conveniently done by using the `@gutter`macro.
+```julia-repl
+julia> row(gutter = "md", @gutter htmldiv(col = 2, md = 4, "Hello World")) |> println
+<div class="row q-col-gutter-md"><div class="col-2 col-md-4"><div>Hello World</div></div></div>
+```
+
+More details can be found in the docstrings.
 
 ### Javascript code
 
