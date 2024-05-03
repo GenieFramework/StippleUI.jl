@@ -211,7 +211,7 @@ function rows(t::T)::Vector{OrderedDict{String,Any}} where {T<:DataTable}
 end
 
 function data(t::T; datakey = DATAKEY, columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
-  Dict(
+  OrderedDict(
     columnskey  => columns(t),
     datakey     => rows(t),
   )
