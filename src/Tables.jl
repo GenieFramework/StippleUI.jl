@@ -479,8 +479,8 @@ function table( fieldname::Symbol,
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 selected::Union{Symbol,String,Nothing} = nothing,
-                pagination::Union{Symbol,String,Nothing} = nothing,
-                paginationsync::Union{Symbol,String,Nothing} = nothing,
+                pagination::Union{Symbol,String,Nothing,DataTablePagination} = nothing,
+                paginationsync::Union{Symbol,String,Nothing,DataTablePagination} = nothing,
                 
                 columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
                 cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
@@ -535,7 +535,7 @@ function table( fieldname::Symbol,
       :filter => filter,
       selected === nothing ?  (:selected => nothing) : (Symbol("v-model:selected") => selected),
       :pagination => pagination,
-      paginationsync === nothing ?  (:paginationsync => nothing) : (Symbol("v-model:paginationsync") => paginationsync),
+      paginationsync === nothing ?  (:paginationsync => nothing) : (Symbol("v-model:pagination") => paginationsync),
       kwargs...
     ])...
   )
