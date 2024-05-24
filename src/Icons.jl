@@ -15,7 +15,7 @@ Stipple supports out of the box: [Material Icons](https://fonts.google.com/icons
 Furthermore you can [add support by yourself](https://v1.quasar.dev/vue-components/icon#custom-mapping) for any icon lib.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -30,7 +30,7 @@ julia> icon("style", style="font-size: 3em;")
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content

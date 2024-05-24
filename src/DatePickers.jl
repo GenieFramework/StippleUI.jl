@@ -32,7 +32,7 @@ If the `fieldname` references a `DateRange`, the `range` keyword parameter must 
 If the `fieldname` references a `Vector{DateRange}`, both the `multiple` and the `range` keyword parameters must be passed as `true`.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -62,7 +62,7 @@ julia> datepicker(:dateranges, range = true, multiple = true)
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behavior

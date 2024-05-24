@@ -15,7 +15,7 @@ The `chip` component is basically a simple UI block entity, representing for exa
 Chips can contain entities such as an avatar, text or an icon, optionally having a pointer too. They can also be closed or removed if configured so.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -25,7 +25,7 @@ julia> chip("Add to calendar", icon="event")
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content

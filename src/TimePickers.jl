@@ -15,7 +15,7 @@ register_normal_element("q__time", context= @__MODULE__)
 The `timepicker` component provides a method to input time.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -36,7 +36,7 @@ julia> Html.div(class="q-gutter-md", [
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

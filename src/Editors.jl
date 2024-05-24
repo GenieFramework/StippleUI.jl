@@ -13,7 +13,7 @@ register_normal_element("q__editor", context = @__MODULE__)
 Component is a WYSIWYG (“what you see is what you get”) editor component that enables the user to write and even paste HTML.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -34,7 +34,7 @@ julia> StippleUI.form( autocorrect="off", autocapitalize="off", autocomplete="of
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 ]
 1. Behaviour

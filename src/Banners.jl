@@ -15,7 +15,7 @@ The `banner` component creates a banner element to display a prominent message a
 According to the Material Design spec, the banner should be “displayed at the top of the screen, below a top app bar” - but of course you can put one anywhere that makes sense, even in a `dialog`
 
 -----------
-# Examples
+### Examples
 -----------
 
 ### View
@@ -38,7 +38,7 @@ julia> banner("Could not retrieve travel data.", rounded=true, class="bg-grey-3"
        ])
 ```
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content

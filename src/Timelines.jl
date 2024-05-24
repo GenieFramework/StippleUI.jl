@@ -14,7 +14,7 @@ register_normal_element("q__timeline__entry", context = @__MODULE__)
 The `timeline` component displays a list of events in chronological order. It is typically a graphic design showing a long bar labelled with dates alongside itself and usually events. Timelines can use any time scale, depending on the subject and data.      
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -57,7 +57,7 @@ julia> Html.div(class="q-px-lg q-pb-md", [
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behavior
@@ -75,7 +75,7 @@ end
       timelineentry(args...; kwargs...)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -93,7 +93,7 @@ julia> timelineentry(title="Event Title", subtitle="February 21, 1986", icon="de
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behavior

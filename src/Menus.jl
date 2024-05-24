@@ -13,7 +13,7 @@ register_normal_element("q__menu", context = @__MODULE__)
 The `menu` component is a convenient way to show menus. Goes very well with `list` as dropdown content, but it’s by no means limited to it.   
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -23,7 +23,7 @@ julia> btn("Basic Menu", color="primary", [StippleUI.menu(nothing, [p("Hello")])
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

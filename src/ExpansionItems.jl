@@ -15,7 +15,7 @@ The `expansionitem` component allows the hiding of content that is not immediate
 
 They are basically `item` components wrapped with additional functionality. So they can be included in `list` and inherit `item` component properties.
 
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -54,7 +54,7 @@ julia> list(bordered=true, class="rounded-borders", [
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

@@ -13,7 +13,7 @@ register_normal_element("q__rating", context = @__MODULE__)
 Rating is a Component which allows users to rate items, usually known as “Star Rating”.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -33,7 +33,7 @@ julia> rating(:myrating, size="2.5em", color="purple-4", icon="create")
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

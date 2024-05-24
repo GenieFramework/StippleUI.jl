@@ -13,7 +13,7 @@ register_normal_element("q__radio", context = @__MODULE__)
 The `radio` component is another basic element for user input. You can use this to supply a way for the user to pick an option from multiple choices.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -33,7 +33,7 @@ julia> radio("Polygon", :shape, val="polygon")
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

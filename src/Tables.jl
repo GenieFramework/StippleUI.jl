@@ -30,7 +30,7 @@ end
     Column(name::String, args...)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ```julia-repl
@@ -38,7 +38,7 @@ julia> Column("x2", align = :right)
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 * `required::Bool` - if we use `visiblecolumns`, this col will always be visible
@@ -64,7 +64,7 @@ end
     DataTablePagination(sort_by::Symbol, descending::Bool, page::Int, rows_per_page::Int)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ```julia-repl
@@ -84,7 +84,7 @@ end
     DataTableOptions(addid::Bool, idcolumn::String, columns::Union{Vector{Column},Nothing}, columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}})
 
 ----------
-# Examples
+### Examples
 ----------
 
 ```julia-repl
@@ -120,7 +120,7 @@ end
     DataTable(data::T, opts::DataTableOptions)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ```julia-repl
@@ -434,7 +434,7 @@ end
 
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model

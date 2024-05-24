@@ -12,7 +12,7 @@ register_normal_element("st__big__number", context = @__MODULE__)
 
 Renders a Big Number UI element.
 
-# Arguments
+### Arguments
 * label::Union{String,Symbol}
 * number::Union{String,Symbol,Nothing,String}
 * icon::Union{String,Symbol}

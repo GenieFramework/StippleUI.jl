@@ -15,7 +15,7 @@ The `dialog`` component is a great way to offer the user the ability to choose a
 > TIP: Dialogs can also be used as a globally available method for more basic use cases, like the native JS `alert()`, `prompt()`, etc.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -42,7 +42,7 @@ julia> Html.div(class="q-pa-md q-gutter-sm", [
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 1. Behaviour
       * `persistent::Bool` - User cannot dismiss Dialog if clicking outside of it or hitting ESC key; Also, an app route change won't dismiss it

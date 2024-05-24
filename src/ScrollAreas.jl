@@ -13,7 +13,7 @@ register_normal_element("q__scroll__area", context = @__MODULE__)
 The `scrollarea` component offers a neat way of customizing the scrollbars by encapsulating your content. Think of it as a DOM element which has `overflow: auto`, but with your own custom styled scrollbar instead of browser’s default one and a few nice features on top.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -31,7 +31,7 @@ julia> StippleUI.scrollarea(style="height: 200px; max-width: 300px;", [
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

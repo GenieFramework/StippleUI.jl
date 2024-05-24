@@ -12,7 +12,7 @@ register_normal_element("q__file", context = @__MODULE__)
     textfield(fieldname, args...; kwargs...)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -31,7 +31,7 @@ julia> textfield("What's your name *", :name, name = "name", @if(:warin), :fille
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 1. General
        * `type::String` - Must be one of the following: `text (default)`, `textarea`, `email`, `tel`, `number`, `password` and `url`. This is important as it determines the keyboard type popping up on mobile devices.
@@ -160,7 +160,7 @@ A number of common arguments are defined and are passed to the textfield, the ic
 In addition, keyword arguments can be passed to each of these components individually by using the `textfield_props`,
 `icon_props`, `popup_proxy_props` and `datepicker_props` keyword arguments.
 
-# Examples
+### Examples
 ```julia
 datefield("Start date", :start_date, datepicker_props = Dict(:todaybtn => true, :nounset => true), textfield_props = Dict(:bgcolor => "green-1"))
 ```

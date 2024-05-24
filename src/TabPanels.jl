@@ -14,7 +14,7 @@ register_normal_element("q__tab__panel", context = @__MODULE__)
 `tabpanelgroup` are a way of displaying more information using less window real estate.
   
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -51,7 +51,7 @@ julia> Html.div(class="q-pa-md", [
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour
@@ -78,7 +78,7 @@ end
 Tab panels are a way of displaying more information using less window real estate.
   
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -93,7 +93,7 @@ julia>
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. General

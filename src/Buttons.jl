@@ -17,7 +17,7 @@ The button component also comes with a spinner or loading effect. You would use 
 
 When not disabled or spinning, `btn` emits a `@click` event, as soon as it is clicked or tapped.
 
-# Examples
+### Examples
 ```
 julia> btn("Move Left", color = "primary", icon = "mail", @click("press_btn = true"))
 
@@ -30,7 +30,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behavior
@@ -117,7 +117,7 @@ Base.string(bt::Btn) = btn(bt.label, bt.args...; bt.content, bt.kwargs...)
 You can conveniently group `btn` and `btndropdown` using `btngroup`. Be sure to check those component’s respective pages to see their props and methods.
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content
@@ -140,7 +140,7 @@ end
 
 In case you are looking for a dropdown “input” instead of “button” use Select instead.
 
-# Examples
+### Examples
 
 ```
 julia> btndropdown(label = "Dropdown Button", color = "primary", [
@@ -153,7 +153,7 @@ julia> btndropdown(label = "Dropdown Button", color = "primary", [
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behavior
@@ -217,7 +217,7 @@ end
 
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -236,7 +236,7 @@ julia> btntoggle(:network, options = :networks, label="Social Networks", rounded
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

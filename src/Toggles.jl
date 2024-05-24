@@ -13,7 +13,7 @@ register_normal_element("q__toggle", context = @__MODULE__)
 The `toggle` component is another basic element for user input. You can use this for turning settings, features or true/false inputs on and off.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -34,7 +34,7 @@ julia> toggle("Red", color="red", :selection, val="red")
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

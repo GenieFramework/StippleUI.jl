@@ -17,7 +17,7 @@ register_normal_element("q__card__actions", context = @__MODULE__)
 `Card` component is a great way to display important pieces of grouped content. The `Card` component is intentionally lightweight and essentially a containing element that is capable of “hosting” any other component that is appropriate.
 
 -----------
-# Examples
+### Examples
 -----------
 
 ### Model
@@ -40,7 +40,7 @@ julia> card(class="my-card", [
        ])
 ```
 -----------
-# Arguments
+### Arguments
 -----------
 1. Content
        * `tag::String` - HTML tag to render default `"div"` ex. `"div"` `"form"`
@@ -58,7 +58,7 @@ end
 """
       card_section(args...; kwargs...)
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -71,7 +71,7 @@ julia> card(class="text-white", style="background: radial-gradient(circle, #35a2
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 * `tag::String` - HTML tag to render ex. `"div"`, `"form"`
@@ -86,7 +86,7 @@ const cardsection = card_section
 """
 
 ----------
-# Examples
+### Examples
 ----------
     card_actions()
 
@@ -114,7 +114,7 @@ julia> card(class="my-card bg-secondary text-white", [
         ])
 ```
 -----------
-# Arguments
+### Arguments
 -----------
 
 * `align::String` - Specify how to align the actions ("left", "center", "right", "between", "around", "evenly", "stretch")
