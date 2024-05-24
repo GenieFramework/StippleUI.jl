@@ -13,7 +13,7 @@ register_normal_element("q__badge", context = @__MODULE__)
 The `badge` component allows you to create a small badge for adding information like contextual data that needs to stand out and get noticed. It is also often useful in combination with other elements like a user avatar to show a number of new messages.
 
 -----------
-# Examples
+### Examples
 -----------
 
 ### Model
@@ -32,7 +32,7 @@ julia> Html.div("Badge", class="text-h6", [
        ])
 ```
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content

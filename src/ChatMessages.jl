@@ -13,7 +13,7 @@ register_normal_element("q__chat__message", context = @__MODULE__)
 The `chatmessage` which is really a chat entry that renders the data given by the reactive model
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -36,7 +36,7 @@ julia> chatmessage(R"message.text", name = R"message.name", sent = R"message.sen
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

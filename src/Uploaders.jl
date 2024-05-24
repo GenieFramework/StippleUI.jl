@@ -89,7 +89,7 @@ end
 Stipple supplies a way for you to upload files through the `uploader` component.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -99,7 +99,7 @@ julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="PO
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

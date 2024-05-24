@@ -15,7 +15,7 @@ register_normal_element("q__popup__proxy", context = @__MODULE__)
 `popupproxy` should be used when you need either a `menu` (on bigger screens) or a `dialog` (on smaller screens) to be displayed. It acts as a proxy which picks either of the two components to use. `popupproxy` also handles context-menus.
       
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -33,7 +33,7 @@ julia> btn("Handles click", push=true, color="primary", [
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

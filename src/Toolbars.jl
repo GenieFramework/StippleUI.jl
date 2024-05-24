@@ -14,7 +14,7 @@ register_normal_element("q__toolbar__title", context = @__MODULE__)
 `toolbar` is a component usually part of Layout Header and Footer, but it can be used anywhere on the page.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -27,7 +27,7 @@ julia> toolbar(class="text-primary", [
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 * `inset::Bool` - Apply an inset to content (useful for subsequent toolbars)
@@ -40,7 +40,7 @@ end
     toolbartitle(args...; kwargs...)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -49,7 +49,7 @@ julia> toolbartitle("Menu")
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 * `shrink::Bool` -  By default, `toolbartitle` is set to grow to the available space. However, you can reverse that with this prop

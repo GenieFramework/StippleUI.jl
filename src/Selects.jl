@@ -11,7 +11,7 @@ register_normal_element("q__select", context = @__MODULE__)
 
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -29,7 +29,7 @@ julia> select(:model, options= :networks, useinput=true, multiple=true, clearabl
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

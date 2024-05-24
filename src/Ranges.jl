@@ -44,7 +44,7 @@ Base.:(:)(start::Real, stop::Union{Symbol, String}) = QRange(start, 1, stop)
 The `range` component is a great way to offer the user the selection of a sub-range of values between a minimum and maximum value, with optional steps to select those values. An example use case for the Range component would be to offer a price range selection
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -68,7 +68,7 @@ julia> range(18:1:90,
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour
@@ -135,7 +135,7 @@ end
 
 The `slider` is a great way for the user to specify a number value between a minimum and maximum value, with optional steps between valid values. The slider also has a focus indicator (highlighted slider button), which allows for keyboard adjustments of the slider.
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -144,7 +144,7 @@ julia> slider(1:5:100)
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

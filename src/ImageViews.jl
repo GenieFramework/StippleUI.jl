@@ -13,7 +13,7 @@ register_normal_element("q__img", context = @__MODULE__)
 The `imageview` component makes working with images (any picture format) easy and also adds a nice loading effect to it along with many other features (example: the ability to set an aspect ratio).
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -34,7 +34,7 @@ julia> imageview(src = :url, style = "height: 140px; max-width: 150px", [
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

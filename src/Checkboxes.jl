@@ -13,7 +13,7 @@ register_normal_element("q__checkbox", context = @__MODULE__)
 The `checkbox` component is another basic element for user input. You can use this to supply a way for the user to toggle an option.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -31,7 +31,7 @@ julia> checkbox(label = "Apples", fieldname = :valone, dense = true, size = "xl"
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour
