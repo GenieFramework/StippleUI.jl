@@ -202,7 +202,7 @@ using Stipple, StippleUI
 @vars Inverter begin
   process = false
   input = ""
-  output::String, READONLY
+  output::String = "", READONLY
 end
 
 function handlers(model)
