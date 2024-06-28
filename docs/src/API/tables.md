@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = Tables
+CurrentModule = StippleUI.Tables
 ```
 
 ```@docs
