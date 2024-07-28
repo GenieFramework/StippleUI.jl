@@ -38,7 +38,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
       * `percentage::Union{Int, Float64}` - Percentage (0.0 < x < 100.0); To be used along 'loading' prop; Display a progress bar on the background ex. `23`
       * `darkpercentage::Bool` - Progress bar on the background should have dark color; To be used along with 'percentage' and 'loading' props
 2. Content
-      * `label::Union{String, Int}` - The text that will be shown on the button ex. `Button Label`
+      * `label::Union{String, Symbol, Nothing}` - The text that will be shown on the button ex. `Button Label`
       * `icon::String` - Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it) ex. `map` `ion-add` `img:https://cdn.quasar.dev/logo/svg/quasar-logo.svg` `img:path/to/some_image.png`
       * `iconright::String` - Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it) ex. `map` `ion-add` `img:https://cdn.quasar.dev/logo/svg/quasar-logo.svg` `img:path/to/some_image.png`
       * `nocaps::Bool` - Avoid turning label text into caps (which happens by default)

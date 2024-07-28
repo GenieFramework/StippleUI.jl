@@ -113,7 +113,7 @@ julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="PO
       * `autoupload::Bool` - Upload files immediately when added
       * `hideuploadbtn::Bool` - Don't show the upload button
 2. Content
-      * `label::Union{String,Symbol}` - Label for the uploader ex. `Upload photo here`
+      * `label::Union{String,Symbol,Nothing}` - Label for the uploader ex. `Upload photo here`
       * `nothumbnails::Bool` - Don't display thumbnails for image files
 3. State
       * `disable::Bool` - Put component in disabled mode
