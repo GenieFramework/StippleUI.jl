@@ -1,5 +1,6 @@
 module Tables
 
+using Base: @kwdef
 import Tables as TablesInterface
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
@@ -10,14 +11,14 @@ export cell_template, qtd, qtr
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
-const DATAKEY = "data" # has to be changed to `rows` for Quasar 2 
+const DATAKEY = "data" # has to be changed to `rows` for Quasar 2
 const DataTableSelection = Vector{Dict{String, Any}}
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
 #===#
 
-Base.@kwdef mutable struct Column
+@kwdef mutable struct Column
   name::String
   required::Bool = false
   label::String = name
@@ -71,7 +72,7 @@ end
 julia> DataTablePagination(rows_per_page=50)
 ```
 """
-Base.@kwdef mutable struct DataTablePagination
+@kwdef mutable struct DataTablePagination
   sort_by::Symbol = :desc
   descending::Bool = false
   page::Int = 1
@@ -103,18 +104,13 @@ julia> dt.opts.columnspecs[r"^(a|b)\$"] = opts(format = jsfunction(raw"(val, row
 julia> model.table[] = dt
 ```
 """
-Base.@kwdef mutable struct DataTableOptions
+@kwdef mutable struct DataTableOptions
   addid::Bool = false
   idcolumn::String = "ID"
   columns::Union{Vector{Column},Nothing} = nothing
   columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}} = Dict()
 end
 
-
-mutable struct DataTable{T}
-  data::T
-  opts::DataTableOptions
-end
 
 """
     DataTable(data::T, opts::DataTableOptions)
@@ -140,12 +136,53 @@ julia> Tables.table([1 2 3; 3 4 5], header = ["a", "b", "c"])
 julia> dt = DataTable(t1)
 ```
 """
+mutable struct DataTable{T}
+  data::T
+  opts::DataTableOptions
+  filter::AbstractString
+  pagination::DataTablePagination
+end
+
+# function DataTable{T}() where {T}
+#   DataTable{T}(T(), DataTableOptions(), "", DataTablePagination())
+# end
+
+function DataTable{T}(data::T, opts::DataTableOptions) where {T}
+  DataTable{T}(data, opts, "", DataTablePagination())
+end
+function DataTable(data::T, opts::DataTableOptions) where {T}
+  DataTable{T}(data, opts)
+end
+
 function DataTable(data::T) where {T}
   DataTable{T}(data, DataTableOptions())
 end
+function DataTable{T}(
+  data::T
 
-function DataTable{T}() where {T}
-  DataTable{T}(T(), DataTableOptions())
+  ;
+  filter::AbstractString = "",
+
+  # DataTableOptions
+  addid::Bool = false,
+  idcolumn::String = "ID",
+  columns::Union{Vector{Column},Nothing} = nothing,
+  columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}} = Dict(),
+
+  # DataTablePagination
+  sort_by::Symbol = :desc,
+  descending::Bool = false,
+  page::Int = 1,
+  rows_per_page::Int = 10,
+  rows_number::Union{Int,Nothing} = nothing,
+
+  _filter::AbstractString = filter
+) where {T}
+  DataTable{T}( data,
+                DataTableOptions(addid, idcolumn, columns, columnspecs),
+                filter,
+                DataTablePagination(sort_by, descending, page, rows_per_page, rows_number, _filter)
+            )
 end
 
 #===#
@@ -326,7 +363,7 @@ function cell_template(;
   columns isa Vector || columns === nothing || (columns = [columns])
   if edit isa Bool
     # `columns` decides on which columns should be editable
-    # 
+    #
     columns === nothing && (columns = [""])
     if edit
       edit_columns = columns
@@ -353,7 +390,7 @@ function cell_template(;
       )
     ])
     push!(cell_templates, t)
-  end 
+  end
 
   isempty(edit_columns) && return cell_templates
 
@@ -361,7 +398,7 @@ function cell_template(;
   if change_class == "text-red "
       change_class = change_style === nothing ? "text-red" : nothing
   end
-  
+
   # in contrast to `props.value` `props.row[props.col.name]` can be written to
   value = "props.row[props.col.name]"
   # ref_rows are calculated from ref_table, if not defined explicitly
@@ -386,11 +423,11 @@ function cell_template(;
   if inner_class !== nothing && isempty(inner_class)
     inner_class = nothing
   end
-  
+
   # add standard settings from stipplecore.css
   table_style = Dict("font-weight" => 400, "font-size" => "0.9rem", "padding-top" => 0, "padding-bottom" => 0)
   inner_style = inner_style === nothing ? table_style : [table_style, inner_style]
-  
+
   # add custom style for changed entries
   if ref_rows !== nothing && change_style !== nothing
     change_style_js = JSON3.write(render(change_style))
@@ -479,7 +516,7 @@ function table( fieldname::Symbol,
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
-                
+
                 columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
                 cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 cell_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
@@ -492,7 +529,7 @@ function table( fieldname::Symbol,
                 change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
-              
+
                 kwargs...) :: ParsedHTMLString
 
   if !isa(edit, Bool) || edit || cell_class !== nothing || cell_style !== nothing
@@ -503,7 +540,7 @@ function table( fieldname::Symbol,
       startswith(String(p[1]), "inner_") ? p : nothing
     end
 
-    table_template = cell_template(; ref_table, ref_rows, rowkey, 
+    table_template = cell_template(; ref_table, ref_rows, rowkey,
       edit, columns, class = cell_class, style = cell_style, type = cell_type, inner_class, inner_style,
       change_class, change_style, change_inner_class, change_inner_style, cell_kwargs..., inner_kwargs...
     )

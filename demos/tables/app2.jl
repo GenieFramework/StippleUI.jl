@@ -31,7 +31,7 @@ using DataFrames
   @onchange filter begin
     loading = true
     pagination.page = 1
-    state = process_request(DATA, dt, pagination, filter)
+    state = process_request(DATA, dt, pagination[], filter)
     dt = state.datatable
     pagination = state.pagination
     loading = false
