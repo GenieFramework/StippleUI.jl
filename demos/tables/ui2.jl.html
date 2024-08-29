@@ -1,0 +1,11 @@
+<q-table row-key="__id" :loading="loading" :columns="dt.columns" title="Random data" :data="dt.data"
+  v-on:request="function(event) { handle_event(event, 'request') }" :filter.sync="dt.filter"
+  :pagination.sync="dt.pagination">
+  <template v-slot:top-right>
+    <q-input dense debounce="300" v-model="dt.filter" placeholder="Search">
+      <template v-slot:append>
+        <q-icon name="search" />
+      </template>
+    </q-input>
+  </template>
+</q-table>

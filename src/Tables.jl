@@ -13,6 +13,7 @@ register_normal_element("q__table", context = @__MODULE__)
 const ID = "__id"
 const DATAKEY = "data" # has to be changed to `rows` for Quasar 2
 const DataTableSelection = Vector{Dict{String, Any}}
+const DEFAULT_ROWS_PER_PAGE = 50
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
@@ -76,7 +77,7 @@ julia> DataTablePagination(rows_per_page=50)
   sort_by::Symbol = :desc
   descending::Bool = false
   page::Int = 1
-  rows_per_page::Int = 10
+  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE
   rows_number::Union{Int,Nothing} = nothing
   _filter::AbstractString = "" # keep track of filter value for improving performance
 end
@@ -139,23 +140,26 @@ julia> dt = DataTable(t1)
 mutable struct DataTable{T}
   data::T
   opts::DataTableOptions
-  filter::AbstractString
   pagination::DataTablePagination
+  filter::AbstractString
 end
 
-# function DataTable{T}() where {T}
-#   DataTable{T}(T(), DataTableOptions(), "", DataTablePagination())
-# end
+function DataTable{T}(data::T, opts::DataTableOptions, pagination::DataTablePagination) where {T}
+  DataTable{T}(data, opts, pagination, "")
+end
+function DataTable(data::T, opts::DataTableOptions, pagination::DataTablePagination) where {T}
+  DataTable{T}(data, opts, pagination)
+end
 
 function DataTable{T}(data::T, opts::DataTableOptions) where {T}
-  DataTable{T}(data, opts, "", DataTablePagination())
+  DataTable{T}(data, opts, DataTablePagination(), "")
 end
 function DataTable(data::T, opts::DataTableOptions) where {T}
   DataTable{T}(data, opts)
 end
 
-function DataTable(data::T) where {T}
-  DataTable{T}(data, DataTableOptions())
+function DataTable(data::T; kwargs...) where {T}
+  DataTable{T}(data; kwargs...)
 end
 function DataTable{T}(
   data::T
@@ -167,21 +171,26 @@ function DataTable{T}(
   addid::Bool = false,
   idcolumn::String = "ID",
   columns::Union{Vector{Column},Nothing} = nothing,
-  columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}} = Dict(),
+  columnspecs::Dict = Dict(),
 
   # DataTablePagination
   sort_by::Symbol = :desc,
   descending::Bool = false,
   page::Int = 1,
-  rows_per_page::Int = 10,
+  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE,
   rows_number::Union{Int,Nothing} = nothing,
-
-  _filter::AbstractString = filter
 ) where {T}
+  try
+    isnothing(rows_number) && (rows_number = length(TablesInterface.rows(data)))
+  catch ex
+    @error ex
+    rows_number = nothing
+  end
+
   DataTable{T}( data,
                 DataTableOptions(addid, idcolumn, columns, columnspecs),
-                filter,
-                DataTablePagination(sort_by, descending, page, rows_per_page, rows_number, _filter)
+                DataTablePagination(sort_by, descending, page, rows_per_page, rows_number, filter),
+                filter
             )
 end
 
@@ -249,8 +258,10 @@ end
 
 function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
   OrderedDict(
-    columnskey  => columns(t),
-    datakey     => rows(t)
+    columnskey    => columns(t),
+    datakey       => rows(t),
+    "pagination"  => render(t.pagination),
+    "filter"      => t.filter
   )
 end
 
@@ -631,9 +642,18 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp.sort_by = get!(d, "sortBy", "desc") |> Symbol
   dtp.page = get!(d, "page", 1)
   dtp.descending = get!(d, "descending", false)
-  dtp.rows_per_page = get!(d, "rowsPerPage", 10)
+  dtp.rows_per_page = get!(d, "rowsPerPage", DEFAULT_ROWS_PER_PAGE)
 
   dtp
+end
+
+function Base.parse(::Type{DataTable}, d::Dict{String,Any})
+  DataTable(
+    d["data"],
+    DataTableOptions(d["opts"]),
+    DataTablePagination(d["pagination"]),
+    d["filter"]
+  )
 end
 
 function DataTableOptions(d::AbstractDict)
@@ -658,6 +678,7 @@ function DataTableWithSelection(data::T) where {T}
   DataTableWithSelection(dt,  DataTablePagination(), DataTableSelection())
 end
 
+Base.getindex(dt::DataTable) = dt
 Base.getindex(dt::DataTable, args...) = DataTable(dt.data[args...], dt.opts)
 Base.getindex(dt::DataTable, row::Int, col) = DataTable(dt.data[[row], col], dt.opts)
 Base.getindex(dt::DataTable, row, col::Int) = DataTable(dt.data[row, col::Int], dt.opts)
@@ -778,6 +799,7 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
     isa(get(event, "event", false), AbstractDict) &&
       isa(get(event["event"], "name", false), AbstractString) &&
         event["event"]["name"] == "request"
+    filter = get(event["event"]["event"], "filter", "")
     event = event["event"]["event"]["pagination"]
   else
     event = Dict()
@@ -820,10 +842,19 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
   start_row = (event["page"] - 1) * event["rowsPerPage"] + 1
   end_row = event["page"] * event["rowsPerPage"]
 
-  datatable = typeof(datatable)(fd[(start_row <= pagination.rows_number ? start_row : pagination.rows_number) : (end_row <= pagination.rows_number ? end_row : pagination.rows_number), :], datatable.opts)
   pagination = typeof(pagination)(rows_per_page = event["rowsPerPage"], rows_number = pagination.rows_number, page = event["page"], sort_by = event["sortBy"], descending = event["descending"], _filter = pagination._filter)
 
-  return (data = fd, datatable = datatable, pagination = pagination)
+  datatable = typeof(datatable)(fd[(start_row <= pagination.rows_number ? start_row : pagination.rows_number) : (end_row <= pagination.rows_number ? end_row : pagination.rows_number), :], datatable.opts)
+  datatable.pagination = pagination
+  datatable.filter = filter
+
+  return (data = fd, datatable = datatable, pagination = pagination, filter = filter)
+end
+
+export DataTable!
+
+function DataTable!(datatable::DataTable; data = datatable.data, pagination = datatable.pagination, filter = "")::DataTable
+  process_request(data, datatable, pagination, filter).datatable
 end
 
 register_normal_element("q__td", context = @__MODULE__)

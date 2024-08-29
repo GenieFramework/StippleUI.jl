@@ -5,9 +5,9 @@ using DataFrames
 @genietools
 
 @app begin
-  NO_OF_ROWS = 1000
+  NO_OF_ROWS = 1_000_000
   DATA = sort!(DataFrame(rand(NO_OF_ROWS, 2), ["x1", "x2"]))::DataFrame # we only sort so that the changes are more visible when filtering and paginating
-  ROWS_PER_PAGE = 10
+  ROWS_PER_PAGE = 100
 
   @out df = DATA
   @out dt = DataTable(DataFrame([]), DataTableOptions(DATA))
