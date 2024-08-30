@@ -7,6 +7,7 @@ import Genie.Renderer.Html: HTMLString, normal_element, table, template, registe
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 export cell_template, qtd, qtr
+export DataTable!, @paginate
 
 register_normal_element("q__table", context = @__MODULE__)
 
@@ -14,6 +15,9 @@ const ID = "__id"
 const DATAKEY = "data" # has to be changed to `rows` for Quasar 2
 const DataTableSelection = Vector{Dict{String, Any}}
 const DEFAULT_ROWS_PER_PAGE = 50
+const DEFAULT_MAX_ROWS_CLIENT_SIDE = Ref(1000)
+
+set_max_rows_client_side(n) = (DEFAULT_MAX_ROWS_CLIENT_SIDE[] = n)
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
@@ -179,9 +183,30 @@ function DataTable{T}(
   page::Int = 1,
   rows_per_page::Int = DEFAULT_ROWS_PER_PAGE,
   rows_number::Union{Int,Nothing} = nothing,
+
+  # options
+  server_side::Bool = true
 ) where {T}
+  if (isnothing(rows_number) && ! server_side) && size(data, 1) > DEFAULT_MAX_ROWS_CLIENT_SIDE[]
+    @warn """
+          The number of rows exceeds the maximum number of rows that can be displayed client side.
+          This can have negative effects on performance, both in terms of loading time and responsiveness.
+          Automatically truncating your data to $(DEFAULT_MAX_ROWS_CLIENT_SIDE[]) rows.
+
+          If you want to display more rows client side,
+          call `StippleUI.Tables.set_max_rows_client_side(n)` with `n` the number of rows you want to display.
+          Current maximum number of client side rows is: $(DEFAULT_MAX_ROWS_CLIENT_SIDE[])
+          """
+    try
+      data = data[1:DEFAULT_MAX_ROWS_CLIENT_SIDE[], :]
+    catch ex
+      @error "Failed to truncate data to $(DEFAULT_MAX_ROWS_CLIENT_SIDE[]) rows. Warning, this can have negative effects on performance."
+      @error ex
+    end
+  end
+
   try
-    isnothing(rows_number) && (rows_number = length(TablesInterface.rows(data)))
+    isnothing(rows_number) && server_side && (rows_number = length(TablesInterface.rows(data)))
   catch ex
     @error ex
     rows_number = nothing
@@ -257,9 +282,15 @@ function rows(t::T)::Vector{OrderedDict{String,Any}} where {T<:DataTable}
 end
 
 function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
+  total_rows = size(t.data)[1]
+  max_rows = total_rows > t.pagination.rows_per_page && t.pagination.rows_number !== nothing ?
+                t.pagination.rows_per_page :
+                total_rows + 1
+  data = total_rows >= max_rows ? t[1:max_rows, :] : t
+
   OrderedDict(
     columnskey    => columns(t),
-    datakey       => rows(t),
+    datakey       => data |> rows,
     "pagination"  => render(t.pagination),
     "filter"      => t.filter
   )
@@ -798,7 +829,9 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
   if event !== nothing &&
     isa(get(event, "event", false), AbstractDict) &&
       isa(get(event["event"], "name", false), AbstractString) &&
-        event["event"]["name"] == "request"
+        isa(get(event["event"], "event", false), AbstractDict) &&
+          isa(get(event["event"]["event"], "pagination", false), AbstractDict) &&
+            isa(get(event["event"]["event"], "filter", false), AbstractString)
     filter = get(event["event"]["event"], "filter", "")
     event = event["event"]["event"]["pagination"]
   else
@@ -851,8 +884,6 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
   return (data = fd, datatable = datatable, pagination = pagination, filter = filter)
 end
 
-export DataTable!
-
 function DataTable!(datatable::DataTable; data = datatable.data, pagination = datatable.pagination, filter = "")::DataTable
   process_request(data, datatable, pagination, filter).datatable
 end
@@ -890,5 +921,12 @@ mutable struct Tr
 end
 
 Base.string(tr::Tr) = tr(tr.args...; tr.kwargs...)
+
+
+macro paginate(varname, data)
+  quote
+    $varname = DataTable!($varname[]; data = $data)
+  end |> esc
+end
 
 end
