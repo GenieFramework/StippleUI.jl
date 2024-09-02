@@ -14,10 +14,15 @@ register_normal_element("q__table", context = @__MODULE__)
 const ID = "__id"
 const DATAKEY = "data" # has to be changed to `rows` for Quasar 2
 const DataTableSelection = Vector{Dict{String, Any}}
-const DEFAULT_ROWS_PER_PAGE = 50
-const DEFAULT_MAX_ROWS_CLIENT_SIDE = Ref(1000)
+
+const DEFAULT_ROWS_PER_PAGE = Ref(50)
+const DEFAULT_MAX_ROWS_CLIENT_SIDE = Ref(10_000)
+
+set_default_rows_per_page(n) = (DEFAULT_ROWS_PER_PAGE[] = n)
+get_default_rows_per_page() = DEFAULT_ROWS_PER_PAGE[]
 
 set_max_rows_client_side(n) = (DEFAULT_MAX_ROWS_CLIENT_SIDE[] = n)
+get_max_rows_client_side() = DEFAULT_MAX_ROWS_CLIENT_SIDE[]
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
@@ -81,7 +86,7 @@ julia> DataTablePagination(rows_per_page=50)
   sort_by::Symbol = :desc
   descending::Bool = false
   page::Int = 1
-  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE
+  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE[]
   rows_number::Union{Int,Nothing} = nothing
   _filter::AbstractString = "" # keep track of filter value for improving performance
 end
@@ -181,16 +186,16 @@ function DataTable{T}(
   sort_by::Symbol = :desc,
   descending::Bool = false,
   page::Int = 1,
-  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE,
+  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE[],
   rows_number::Union{Int,Nothing} = nothing,
 
   # options
-  server_side::Bool = true
+  server_side::Bool = false
 ) where {T}
   if (isnothing(rows_number) && ! server_side) && size(data, 1) > DEFAULT_MAX_ROWS_CLIENT_SIDE[]
     @warn """
           The number of rows exceeds the maximum number of rows that can be displayed client side.
-          This can have negative effects on performance, both in terms of loading time and responsiveness.
+          Loading too many rows can have a negative effects on performance, both in terms of loading time and responsiveness.
           Automatically truncating your data to $(DEFAULT_MAX_ROWS_CLIENT_SIDE[]) rows.
 
           If you want to display more rows client side,
@@ -572,7 +577,16 @@ function table( fieldname::Symbol,
                 change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
 
+                filter_placeholder::Union{Symbol,String,Nothing} = "Search",
+
+                server_side::Bool = false, # if true, the table data, pagination and filtering is rendered server side
+                server_side_event::Union{Symbol,String,Nothing} = nothing, # event name for server side handling
+
                 kwargs...) :: ParsedHTMLString
+
+  server_side && server_side_event === nothing && (server_side_event = "$(fieldname)_request")
+  paginationsync === nothing && (paginationsync = "$fieldname.pagination")
+  filter === nothing && (filter = Symbol("$fieldname.filter"))
 
   if !isa(edit, Bool) || edit || cell_class !== nothing || cell_style !== nothing
     cell_kwargs, kwargs = filter_kwargs(kwargs) do p
@@ -590,10 +604,10 @@ function table( fieldname::Symbol,
 
   end
 
-  if filter !== nothing && paginationsync !== nothing # by convention, assume paginationsync is used only for server side filtering
+  if filter !== nothing && paginationsync !== nothing
     filter_input = [ParsedHTMLString("""
     <template v-slot:top-right>
-      <q-input dense debounce="300" v-model="$filter" placeholder="Search">
+      <q-input dense debounce="300" v-model="$filter" placeholder="$filter_placeholder">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -611,6 +625,7 @@ function table( fieldname::Symbol,
       :fieldname => fieldname,
       (filter === nothing ? [] : [:filter => filter])...,
       (paginationsync === nothing ? [] : [:paginationsync => paginationsync])...,
+      (server_side_event === nothing ? [] : [Symbol("v-on:request") => "function(event){handle_event(event,'$server_side_event')}"])...,
       kwargs...
     ])...
   )
@@ -673,7 +688,7 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp.sort_by = get!(d, "sortBy", "desc") |> Symbol
   dtp.page = get!(d, "page", 1)
   dtp.descending = get!(d, "descending", false)
-  dtp.rows_per_page = get!(d, "rowsPerPage", DEFAULT_ROWS_PER_PAGE)
+  dtp.rows_per_page = get!(d, "rowsPerPage", DEFAULT_ROWS_PER_PAGE[])
 
   dtp
 end
@@ -825,6 +840,7 @@ export process_request
 
 function process_request(data, datatable::DataTable, pagination::DataTablePagination, filter::AbstractString = "")
   event = params(:payload, nothing)
+  # @show event
 
   if event !== nothing &&
     isa(get(event, "event", false), AbstractDict) &&
