@@ -1,23 +1,34 @@
 module Tables
 
+using Base: @kwdef
 import Tables as TablesInterface
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 export cell_template, qtd, qtr
+export DataTable!, @paginate
 
 register_normal_element("q__table", context = @__MODULE__)
 
 const ID = "__id"
-const DATAKEY = "data" # has to be changed to `rows` for Quasar 2 
+const DATAKEY = "data" # has to be changed to `rows` for Quasar 2
 const DataTableSelection = Vector{Dict{String, Any}}
+
+const DEFAULT_ROWS_PER_PAGE = Ref(50)
+const DEFAULT_MAX_ROWS_CLIENT_SIDE = Ref(10_000)
+
+set_default_rows_per_page(n) = (DEFAULT_ROWS_PER_PAGE[] = n)
+get_default_rows_per_page() = DEFAULT_ROWS_PER_PAGE[]
+
+set_max_rows_client_side(n) = (DEFAULT_MAX_ROWS_CLIENT_SIDE[] = n)
+get_max_rows_client_side() = DEFAULT_MAX_ROWS_CLIENT_SIDE[]
 
 struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
 #===#
 
-Base.@kwdef mutable struct Column
+@kwdef mutable struct Column
   name::String
   required::Bool = false
   label::String = name
@@ -71,11 +82,11 @@ end
 julia> DataTablePagination(rows_per_page=50)
 ```
 """
-Base.@kwdef mutable struct DataTablePagination
+@kwdef mutable struct DataTablePagination
   sort_by::Symbol = :desc
   descending::Bool = false
   page::Int = 1
-  rows_per_page::Int = 10
+  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE[]
   rows_number::Union{Int,Nothing} = nothing
   _filter::AbstractString = "" # keep track of filter value for improving performance
 end
@@ -103,18 +114,13 @@ julia> dt.opts.columnspecs[r"^(a|b)\$"] = opts(format = jsfunction(raw"(val, row
 julia> model.table[] = dt
 ```
 """
-Base.@kwdef mutable struct DataTableOptions
+@kwdef mutable struct DataTableOptions
   addid::Bool = false
   idcolumn::String = "ID"
   columns::Union{Vector{Column},Nothing} = nothing
   columnspecs::Dict{Union{String, Regex}, Dict{Symbol, Any}} = Dict()
 end
 
-
-mutable struct DataTable{T}
-  data::T
-  opts::DataTableOptions
-end
 
 """
     DataTable(data::T, opts::DataTableOptions)
@@ -140,12 +146,82 @@ julia> Tables.table([1 2 3; 3 4 5], header = ["a", "b", "c"])
 julia> dt = DataTable(t1)
 ```
 """
-function DataTable(data::T) where {T}
-  DataTable{T}(data, DataTableOptions())
+mutable struct DataTable{T}
+  data::T
+  opts::DataTableOptions
+  pagination::DataTablePagination
+  filter::AbstractString
 end
 
-function DataTable{T}() where {T}
-  DataTable{T}(T(), DataTableOptions())
+function DataTable{T}(data::T, opts::DataTableOptions, pagination::DataTablePagination) where {T}
+  DataTable{T}(data, opts, pagination, "")
+end
+function DataTable(data::T, opts::DataTableOptions, pagination::DataTablePagination) where {T}
+  DataTable{T}(data, opts, pagination)
+end
+
+function DataTable{T}(data::T, opts::DataTableOptions) where {T}
+  DataTable{T}(data, opts, DataTablePagination(), "")
+end
+function DataTable(data::T, opts::DataTableOptions) where {T}
+  DataTable{T}(data, opts)
+end
+
+function DataTable(data::T; kwargs...) where {T}
+  DataTable{T}(data; kwargs...)
+end
+function DataTable{T}(
+  data::T
+
+  ;
+  filter::AbstractString = "",
+
+  # DataTableOptions
+  addid::Bool = false,
+  idcolumn::String = "ID",
+  columns::Union{Vector{Column},Nothing} = nothing,
+  columnspecs::Dict = Dict(),
+
+  # DataTablePagination
+  sort_by::Symbol = :desc,
+  descending::Bool = false,
+  page::Int = 1,
+  rows_per_page::Int = DEFAULT_ROWS_PER_PAGE[],
+  rows_number::Union{Int,Nothing} = nothing,
+
+  # options
+  server_side::Bool = false
+) where {T}
+  if (isnothing(rows_number) && ! server_side) && size(data, 1) > DEFAULT_MAX_ROWS_CLIENT_SIDE[]
+    @warn """
+          The number of rows exceeds the maximum number of rows that can be displayed client side.
+          Loading too many rows can have a negative effects on performance, both in terms of loading time and responsiveness.
+          Automatically truncating your data to $(DEFAULT_MAX_ROWS_CLIENT_SIDE[]) rows.
+
+          If you want to display more rows client side,
+          call `StippleUI.Tables.set_max_rows_client_side(n)` with `n` the number of rows you want to display.
+          Current maximum number of client side rows is: $(DEFAULT_MAX_ROWS_CLIENT_SIDE[])
+          """
+    try
+      data = data[1:DEFAULT_MAX_ROWS_CLIENT_SIDE[], :]
+    catch ex
+      @error "Failed to truncate data to $(DEFAULT_MAX_ROWS_CLIENT_SIDE[]) rows. Warning, this can have negative effects on performance."
+      @error ex
+    end
+  end
+
+  try
+    isnothing(rows_number) && server_side && (rows_number = length(TablesInterface.rows(data)))
+  catch ex
+    @error ex
+    rows_number = nothing
+  end
+
+  DataTable{T}( data,
+                DataTableOptions(addid, idcolumn, columns, columnspecs),
+                DataTablePagination(sort_by, descending, page, rows_per_page, rows_number, filter),
+                filter
+            )
 end
 
 #===#
@@ -211,9 +287,17 @@ function rows(t::T)::Vector{OrderedDict{String,Any}} where {T<:DataTable}
 end
 
 function data(t::T; datakey = "data", columnskey = "columns")::Dict{String,Any} where {T<:DataTable}
+  total_rows = size(t.data)[1]
+  max_rows = total_rows > t.pagination.rows_per_page && t.pagination.rows_number !== nothing ?
+                t.pagination.rows_per_page :
+                total_rows + 1
+  data = total_rows >= max_rows ? t[1:max_rows, :] : t
+
   OrderedDict(
-    columnskey  => columns(t),
-    datakey     => rows(t)
+    columnskey    => columns(t),
+    datakey       => data |> rows,
+    "pagination"  => render(t.pagination),
+    "filter"      => t.filter
   )
 end
 
@@ -326,7 +410,7 @@ function cell_template(;
   columns isa Vector || columns === nothing || (columns = [columns])
   if edit isa Bool
     # `columns` decides on which columns should be editable
-    # 
+    #
     columns === nothing && (columns = [""])
     if edit
       edit_columns = columns
@@ -353,7 +437,7 @@ function cell_template(;
       )
     ])
     push!(cell_templates, t)
-  end 
+  end
 
   isempty(edit_columns) && return cell_templates
 
@@ -361,7 +445,7 @@ function cell_template(;
   if change_class == "text-red "
       change_class = change_style === nothing ? "text-red" : nothing
   end
-  
+
   # in contrast to `props.value` `props.row[props.col.name]` can be written to
   value = "props.row[props.col.name]"
   # ref_rows are calculated from ref_table, if not defined explicitly
@@ -386,11 +470,11 @@ function cell_template(;
   if inner_class !== nothing && isempty(inner_class)
     inner_class = nothing
   end
-  
+
   # add standard settings from stipplecore.css
   table_style = Dict("font-weight" => 400, "font-size" => "0.9rem", "padding-top" => 0, "padding-bottom" => 0)
   inner_style = inner_style === nothing ? table_style : [table_style, inner_style]
-  
+
   # add custom style for changed entries
   if ref_rows !== nothing && change_style !== nothing
     change_style_js = JSON3.write(render(change_style))
@@ -479,7 +563,7 @@ function table( fieldname::Symbol,
                 columnskey::String = "$fieldname.columns",
                 filter::Union{Symbol,String,Nothing} = nothing,
                 paginationsync::Union{Symbol,String,Nothing} = nothing,
-                
+
                 columns::Union{Nothing,Bool,Integer,AbstractString,Vector{<:AbstractString},Vector{<:Integer}} = nothing,
                 cell_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 cell_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
@@ -492,8 +576,17 @@ function table( fieldname::Symbol,
                 change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
-              
+
+                filter_placeholder::Union{Symbol,String,Nothing} = "Search",
+
+                server_side::Bool = false, # if true, the table data, pagination and filtering is rendered server side
+                server_side_event::Union{Symbol,String,Nothing} = nothing, # event name for server side handling
+
                 kwargs...) :: ParsedHTMLString
+
+  server_side && server_side_event === nothing && (server_side_event = "$(fieldname)_request")
+  paginationsync === nothing && (paginationsync = "$fieldname.pagination")
+  filter === nothing && (filter = Symbol("$fieldname.filter"))
 
   if !isa(edit, Bool) || edit || cell_class !== nothing || cell_style !== nothing
     cell_kwargs, kwargs = filter_kwargs(kwargs) do p
@@ -503,7 +596,7 @@ function table( fieldname::Symbol,
       startswith(String(p[1]), "inner_") ? p : nothing
     end
 
-    table_template = cell_template(; ref_table, ref_rows, rowkey, 
+    table_template = cell_template(; ref_table, ref_rows, rowkey,
       edit, columns, class = cell_class, style = cell_style, type = cell_type, inner_class, inner_style,
       change_class, change_style, change_inner_class, change_inner_style, cell_kwargs..., inner_kwargs...
     )
@@ -511,10 +604,10 @@ function table( fieldname::Symbol,
 
   end
 
-  if filter !== nothing && paginationsync !== nothing # by convention, assume paginationsync is used only for server side filtering
+  if filter !== nothing && paginationsync !== nothing
     filter_input = [ParsedHTMLString("""
     <template v-slot:top-right>
-      <q-input dense debounce="300" v-model="$filter" placeholder="Search">
+      <q-input dense debounce="300" v-model="$filter" placeholder="$filter_placeholder">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -532,6 +625,7 @@ function table( fieldname::Symbol,
       :fieldname => fieldname,
       (filter === nothing ? [] : [:filter => filter])...,
       (paginationsync === nothing ? [] : [:paginationsync => paginationsync])...,
+      (server_side_event === nothing ? [] : [Symbol("v-on:request") => "function(event){handle_event(event,'$server_side_event')}"])...,
       kwargs...
     ])...
   )
@@ -594,9 +688,18 @@ function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp.sort_by = get!(d, "sortBy", "desc") |> Symbol
   dtp.page = get!(d, "page", 1)
   dtp.descending = get!(d, "descending", false)
-  dtp.rows_per_page = get!(d, "rowsPerPage", 10)
+  dtp.rows_per_page = get!(d, "rowsPerPage", DEFAULT_ROWS_PER_PAGE[])
 
   dtp
+end
+
+function Base.parse(::Type{DataTable}, d::Dict{String,Any})
+  DataTable(
+    d["data"],
+    DataTableOptions(d["opts"]),
+    DataTablePagination(d["pagination"]),
+    d["filter"]
+  )
 end
 
 function DataTableOptions(d::AbstractDict)
@@ -621,6 +724,7 @@ function DataTableWithSelection(data::T) where {T}
   DataTableWithSelection(dt,  DataTablePagination(), DataTableSelection())
 end
 
+Base.getindex(dt::DataTable) = dt
 Base.getindex(dt::DataTable, args...) = DataTable(dt.data[args...], dt.opts)
 Base.getindex(dt::DataTable, row::Int, col) = DataTable(dt.data[[row], col], dt.opts)
 Base.getindex(dt::DataTable, row, col::Int) = DataTable(dt.data[row, col::Int], dt.opts)
@@ -736,11 +840,15 @@ export process_request
 
 function process_request(data, datatable::DataTable, pagination::DataTablePagination, filter::AbstractString = "")
   event = params(:payload, nothing)
+  # @show event
 
   if event !== nothing &&
     isa(get(event, "event", false), AbstractDict) &&
       isa(get(event["event"], "name", false), AbstractString) &&
-        event["event"]["name"] == "request"
+        isa(get(event["event"], "event", false), AbstractDict) &&
+          isa(get(event["event"]["event"], "pagination", false), AbstractDict) &&
+            isa(get(event["event"]["event"], "filter", false), AbstractString)
+    filter = get(event["event"]["event"], "filter", "")
     event = event["event"]["event"]["pagination"]
   else
     event = Dict()
@@ -783,10 +891,17 @@ function process_request(data, datatable::DataTable, pagination::DataTablePagina
   start_row = (event["page"] - 1) * event["rowsPerPage"] + 1
   end_row = event["page"] * event["rowsPerPage"]
 
-  datatable = typeof(datatable)(fd[(start_row <= pagination.rows_number ? start_row : pagination.rows_number) : (end_row <= pagination.rows_number ? end_row : pagination.rows_number), :], datatable.opts)
   pagination = typeof(pagination)(rows_per_page = event["rowsPerPage"], rows_number = pagination.rows_number, page = event["page"], sort_by = event["sortBy"], descending = event["descending"], _filter = pagination._filter)
 
-  return (data = fd, datatable = datatable, pagination = pagination)
+  datatable = typeof(datatable)(fd[(start_row <= pagination.rows_number ? start_row : pagination.rows_number) : (end_row <= pagination.rows_number ? end_row : pagination.rows_number), :], datatable.opts)
+  datatable.pagination = pagination
+  datatable.filter = filter
+
+  return (data = fd, datatable = datatable, pagination = pagination, filter = filter)
+end
+
+function DataTable!(datatable::DataTable; data = datatable.data, pagination = datatable.pagination, filter = "")::DataTable
+  process_request(data, datatable, pagination, filter).datatable
 end
 
 register_normal_element("q__td", context = @__MODULE__)
@@ -822,5 +937,12 @@ mutable struct Tr
 end
 
 Base.string(tr::Tr) = tr(tr.args...; tr.kwargs...)
+
+
+macro paginate(varname, data)
+  quote
+    $varname = DataTable!($varname[]; data = $data)
+  end |> esc
+end
 
 end
