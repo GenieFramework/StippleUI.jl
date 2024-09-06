@@ -4,40 +4,24 @@ using GenieFramework
 using DataFrames
 @genietools
 
+StippleUI.Tables.set_default_rows_per_page(20)
+StippleUI.Tables.set_max_rows_client_side(11_000)
+
+const big_data = sort!(DataFrame(rand(1_000_000, 2), ["x1", "x2"]))::DataFrame
+
 @app begin
-  NO_OF_ROWS = 1_000_000
-  DATA = sort!(DataFrame(rand(NO_OF_ROWS, 2), ["x1", "x2"]))::DataFrame # we only sort so that the changes are more visible when filtering and paginating
-  ROWS_PER_PAGE = 100
-
-  @out df = DATA
-  @out dt = DataTable(DataFrame([]), DataTableOptions(DATA))
-  @out pagination = DataTablePagination(rows_per_page = ROWS_PER_PAGE, rows_number = NO_OF_ROWS)
+  @out dt1 = DataTable(big_data; server_side = true)
   @out loading = false
-  @in filter = ""
-
-  @onchange isready begin
-    dt = DataTable(DATA[1:ROWS_PER_PAGE, :])
-    filter = ""
-  end
-
-  @event request begin
-    loading = true
-    state = process_request(DATA, dt, pagination, filter)
-    dt = state.datatable
-    pagination = state.pagination
-    loading = false
-  end
-
-  @onchange filter begin
-    loading = true
-    pagination.page = 1
-    state = process_request(DATA, dt, pagination, filter)
-    dt = state.datatable
-    pagination = state.pagination
-    loading = false
-  end
+  @out dt2 = DataTable(big_data)
 end
 
-@page("/", "ui.jl")
+@event dt1_request begin
+  loading = true
+  dt1 = @paginate(dt1, big_data)
+  @push dt1
+  loading = false
+end
+
+@page("/", "ui22.jl")
 
 end
