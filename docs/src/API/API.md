@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = API
+CurrentModule = StippleUI.API
 ```
 
 ```@docs
@@ -9,8 +9,5 @@ q__elem
 xelem
 quasar
 vue
-xelem_pure
-quasar_pure
-vue_pure
 csscolors
 ```
