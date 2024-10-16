@@ -1,0 +1,6 @@
+<q-uploader label="Upload files" hide-upload-btn="" auto-upload=""
+    v-on:failed="function(event) { handle_event(event, 'failed') }"
+    v-on:uploaded="function(event) { handle_event(event, 'uploaded') }" no-thumbnails=""
+    v-on:finish="function(event) { handle_event(event, 'finished') }" :url="'/____/upload/' + channel_"
+    v-on:rejected="function(event) { handle_event(event, 'rejected') }" max-files="10" multiple="" accept="*/*"
+    :max-file-size="10 * 1024 * 1024" id="i6xi"></q-uploader>

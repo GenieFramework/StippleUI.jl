@@ -1,9 +1,10 @@
 module Uploaders
 
 using Genie, Stipple, StippleUI, StippleUI.API
+using Dates
 import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
-export uploader
+export uploader, UploadedFile
 
 register_normal_element("q__uploader", context = @__MODULE__)
 
@@ -24,15 +25,18 @@ function __init__()
 
   route("/____/upload/:channel", method = POST) do
     for f in Genie.Requests.filespayload()
-      uf = UploadedFile(tempname(), f[2].name, params(:channel))
+      tmpdir = mktempdir(; cleanup = true)
+      tmpfile = mktemp(tmpdir; cleanup = true)
 
       try
-        write(uf.tmppath, f[2].data)
+        write(tmpfile[2], f[2].data)
+        close(tmpfile[2])
       catch e
         @error "Error saving uploaded file: $e"
         rethrow(e)
       end
 
+      uf = UploadedFile(tmpfile[1], f[2].name, params(:channel))
       push_uploaded_files(uf)
 
       for h in upload_handlers
@@ -62,7 +66,7 @@ function push_uploaded_files(uf::UploadedFile)
 
   Stipple._push!(:fileuploads => filedict, uf.channel)
 
-  # # this won't be broadcasted back to the server so we need to do it manually
+  # this won't be broadcasted back to the server so we need to do it manually
   Stipple.WEB_TRANSPORT[].broadcast(
     Genie.WebChannels.tagbase64encode(""">eval:Genie.WebChannels.sendMessageTo(
       window.CHANNEL,
@@ -151,6 +155,83 @@ function uploader(args...;
   end
 
   q__uploader(args...; kw([kws..., kwargs...])...)
+end
+
+
+# API utilities to work with uploaded files
+
+"""
+      UploadedFile(d::T) where T <: AbstractDict
+
+Create an UploadedFile object from a dictionary
+
+Arguments
+---------
+  * `d::T` - Dictionary with keys `path`, `name`, and `channel`
+"""
+function UploadedFile(d::T) where T <: AbstractDict
+  UploadedFile(d["path"], d["name"], d["channel"])
+end
+
+
+"""
+      cp(uf::UploadedFile, dest::String; filename::Union{String,Nothing} = nothing, create_dist::Bool = true, force::Bool = false)
+
+Copy an uploaded file to a destination folder
+
+Arguments
+---------
+  * `uf::UploadedFile` - Uploaded file object
+  * `dest::String` - Destination folder
+  * `filename::Union{String,Nothing}` - New filename (optional, defaults to the original filename)
+  * `create_dist::Bool` - Create destination folder if it doesn't exist
+  * `force::Bool` - Overwrite existing files
+"""
+function Base.cp(uf::UploadedFile, dest::String; filename::Union{String,Nothing} = nothing, create_dist::Bool = true, force::Bool = false)
+  create_dist && (isdir(dest) || mkpath(dest))
+  isnothing(filename) && (filename = uf.name)
+
+  isfile(uf.tmppath) || error("File not found: $(uf.tmppath)")
+
+  file_path_dest = joinpath(dest, filename)
+  Base.Filesystem.cp(uf.tmppath, file_path_dest; force = force)
+
+  return file_path_dest
+end
+
+
+"""
+      mv(uf::UploadedFile, dest::String; filename::Union{String,Nothing} = nothing, create_dist::Bool = true, force::Bool = false)
+
+Move an uploaded file to a destination folder
+
+Arguments
+---------
+  * `uf::UploadedFile` - Uploaded file object
+  * `dest::String` - Destination folder
+  * `filename::Union{String,Nothing}` - New filename (optional, defaults to the original filename)
+  * `create_dist::Bool` - Create destination folder if it doesn't exist
+  * `force::Bool` - Overwrite existing files
+"""
+function Base.mv(uf::UploadedFile, dest::String; filename::Union{String,Nothing} = nothing, create_dist::Bool = true, force::Bool = false)
+  result = cp(uf, dest; filename = filename, create_dist = create_dist, force = force)
+  rm(uf.tmppath)
+
+  return result
+end
+
+
+"""
+      rm(uf::UploadedFile)
+
+Remove the temporary file associated with an UploadedFile object
+
+Arguments
+---------
+  * `uf::UploadedFile` - Uploaded file object
+"""
+function Base.rm(uf::UploadedFile)
+  isfile(uf.tmppath) && rm(uf.tmppath)
 end
 
 end
