@@ -19,7 +19,7 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 StippleUIDataFramesExt = "DataFrames"
 
 [compat]
-Colors = "0.12"
+Colors = "0.12, 0.13"
 DataFrames = "1"
 Dates = "1.6"
 Genie = "5.25.0"
