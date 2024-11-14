@@ -149,15 +149,10 @@ function DataTable{T}() where {T}
 end
 
 #===#
-
-function label_clean(input)
-  uppercasefirst(replace(string(input), '_'=>' '))
-end
-
 function active_columns(t::T)::Vector{Column} where {T<:DataTable}
   t.opts.columns !== nothing ?
     t.opts.columns :
-      [Column(string(name), sortable = true, label = label_clean(name)) for name in TablesInterface.columnnames(t.data)]
+      [Column(string(name), sortable = true, label = string(name)) for name in TablesInterface.columnnames(t.data)]
 end
 
 """
@@ -633,7 +628,7 @@ end
 
 function DataTableOptions(data::T) where T
   dto = DataTableOptions()
-  dto.columns = [Column(string(name), sortable = true, label = label_clean(name)) for name in TablesInterface.columnnames(data)]
+  dto.columns = [Column(string(name), sortable = true, label = string(name)) for name in TablesInterface.columnnames(data)]
 
   dto
 end
