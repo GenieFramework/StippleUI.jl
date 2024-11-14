@@ -582,6 +582,9 @@ function Stipple.render(dtp::DataTablePagination)
   response
 end
 
+Stipple.render(tables::AbstractArray{<:DataTable}) = render.(tables)
+Stipple.render(tables::AbstractArray{DataTablePagination}) = render.(tables)
+
 # function to autogenerate entries for js_mounted to make Tables from Quasar1 compatible with tables from Quasar2
 # Background: the field 'data' has been renamed to 'rows' in Quasar 2
 # This function autogenerates entries that set the 'data' field of tables to the 'rows' field. As Vue3's mechanism
