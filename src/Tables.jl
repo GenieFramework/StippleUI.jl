@@ -418,7 +418,7 @@ function cell_template(;
 end
 
 function filter_kwargs(f::Function, kwargs)
-  kwargs = collect(kwargs)
+  kwargs = [kwargs...]
   new_kwargs = f.(kwargs)
   index = new_kwargs .!== nothing
   new_kwargs[index], kwargs[.! index]
