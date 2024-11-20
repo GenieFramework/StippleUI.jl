@@ -388,12 +388,12 @@ function cell_template(;
   
   # add custom style for changed entries
   if ref_rows !== nothing && change_style !== nothing
-    change_style_js = JSON3.write(render(change_style))
+    change_style_js = json(render(change_style))
     style = Stipple.Layout.append_class(style, JSONText("$changed ? $change_style_js : {}"))
   end
 
   if ref_rows !== nothing && change_inner_style !== nothing
-    change_inner_style_js = JSON3.write(render(change_inner_style))
+    change_inner_style_js = json(render(change_inner_style))
     inner_style = Stipple.Layout.append_class(style, JSONText("$changed ? $change_inner_style_js : {}"))
   end
 
