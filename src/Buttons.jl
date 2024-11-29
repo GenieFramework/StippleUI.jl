@@ -17,7 +17,7 @@ The button component also comes with a spinner or loading effect. You would use 
 
 When not disabled or spinning, `btn` emits a `@click` event, as soon as it is clicked or tapped.
 
-# Examples
+### Examples
 ```
 julia> btn("Move Left", color = "primary", icon = "mail", @click("press_btn = true"))
 
@@ -30,7 +30,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behavior
@@ -38,7 +38,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
       * `percentage::Union{Int, Float64}` - Percentage (0.0 < x < 100.0); To be used along 'loading' prop; Display a progress bar on the background ex. `23`
       * `darkpercentage::Bool` - Progress bar on the background should have dark color; To be used along with 'percentage' and 'loading' props
 2. Content
-      * `label::Union{String, Int}` - The text that will be shown on the button ex. `Button Label`
+      * `label::Union{String, Symbol, Nothing}` - The text that will be shown on the button ex. `Button Label`
       * `icon::String` - Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it) ex. `map` `ion-add` `img:https://cdn.quasar.dev/logo/svg/quasar-logo.svg` `img:path/to/some_image.png`
       * `iconright::String` - Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it) ex. `map` `ion-add` `img:https://cdn.quasar.dev/logo/svg/quasar-logo.svg` `img:path/to/some_image.png`
       * `nocaps::Bool` - Avoid turning label text into caps (which happens by default)
@@ -73,7 +73,7 @@ julia> btn("Connect to server!", color="green", textcolor="black", @click("btnCo
       * `round::Bool` - Makes a circle shaped button
 
 """
-function btn( label::Union{String,Symbol} = "",
+function btn( label::Union{String,Symbol,Nothing} = nothing,
               args...;
               content::Union{String,Vector,Function} = "",
               kwargs...)
@@ -84,14 +84,14 @@ function btn( label::Union{String,Symbol} = "",
 end
 
 function btn( content::Union{Function,Vector},
-              label::Union{String,Symbol} = "",
+              label::Union{String,Symbol,Nothing} = nothing,
               args...;
               kwargs...)
   btn(label, args...; content = content, kwargs...)
 end
 
 function btn( args...;
-              label::Union{String,Symbol} = "",
+              label::Union{String,Symbol,Nothing} = nothing,
               content::Union{String,Vector,Function} = "",
               kwargs...)
   btn(label, args...; content = content, kwargs...)
@@ -105,7 +105,7 @@ mutable struct Btn
   content
   kwargs
 
-  Btn(label::Union{String,Symbol} = "",
+  Btn(label::Union{String,Symbol,Nothing} = nothing,
       args...;
       content::Union{String,Vector,Function} = "",
       kwargs...) = new(fieldname, args, mask, kwargs)
@@ -117,7 +117,7 @@ Base.string(bt::Btn) = btn(bt.label, bt.args...; bt.content, bt.kwargs...)
 You can conveniently group `btn` and `btndropdown` using `btngroup`. Be sure to check those component’s respective pages to see their props and methods.
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content
@@ -140,7 +140,7 @@ end
 
 In case you are looking for a dropdown “input” instead of “button” use Select instead.
 
-# Examples
+### Examples
 
 ```
 julia> btndropdown(label = "Dropdown Button", color = "primary", [
@@ -153,7 +153,7 @@ julia> btndropdown(label = "Dropdown Button", color = "primary", [
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behavior
@@ -217,7 +217,7 @@ end
 
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -236,7 +236,7 @@ julia> btntoggle(:network, options = :networks, label="Social Networks", rounded
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

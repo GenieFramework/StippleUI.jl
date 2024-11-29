@@ -18,7 +18,7 @@ end
 A `spinner` is used to show the user a timely process is currently taking place. It is an important UX feature, which gives the user the feeling the system is continuing to work for longer term activities, like grabbing data from the server or some heavy calculations.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -40,7 +40,7 @@ julia> spinner(:hourglass, color="purple", size="4em")
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 * `size::String` - Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)  ex. `16px`  `2rem`  `xs` `md`

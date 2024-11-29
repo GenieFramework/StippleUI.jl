@@ -11,7 +11,7 @@ register_normal_element("q__splitter", context = @__MODULE__)
     splitter(fieldname::Symbol, args...; kwargs...)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -48,7 +48,7 @@ julia> splitter(:splitterM, style="height: 400px", [
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Content

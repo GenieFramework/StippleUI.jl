@@ -14,7 +14,7 @@ register_normal_element("q__tabs", context = @__MODULE__)
 `tabs` are a way of displaying more information using less window real estate.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -24,7 +24,7 @@ julia> tab(name="photos", icon="photos", label="Photos")
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content
@@ -51,7 +51,7 @@ end
 
 The `menu` component is a convenient way to show menus. Goes very well with `list` as dropdown content, but it's by no means limited to it.
 ----------
-# Examples
+### Examples
 ----------
 ### Model
 
@@ -72,7 +72,7 @@ julia> tabgroup(:tab_m, inlinelabel=true, class="bg-primary text-white shadow-2"
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

@@ -9,17 +9,17 @@ const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 function deps_routes() :: Nothing
   if ! Genie.Assets.external_assets(assets_config)
-    Genie.Router.route(Genie.Assets.asset_route(assets_config, :css, file="quasar.min")) do
+    Genie.Router.route(Genie.Assets.asset_route(assets_config, :css, file="quasar.prod")) do
       Genie.Renderer.WebRenderable(
-        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="css", file="quasar.min")),
+        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="css", file="quasar.prod")),
         :css) |> Genie.Renderer.respond
     end
   end
 
   if ! Genie.Assets.external_assets(assets_config)
-    Genie.Router.route(Genie.Assets.asset_route(assets_config, :js, file="quasar.umd.min")) do
+    Genie.Router.route(Genie.Assets.asset_route(assets_config, :js, file="quasar.umd.prod")) do
       Genie.Renderer.WebRenderable(
-        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.min")),
+        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.prod")),
         :javascript) |> Genie.Renderer.respond
     end
   end
@@ -31,7 +31,7 @@ end
 
 function theme() :: Vector{String}
   [
-    Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.min"))
+    Stipple.Elements.stylesheet(Genie.Assets.asset_path(assets_config, :css, file="quasar.prod"))
   ]
 end
 
@@ -39,10 +39,15 @@ end
 
 function deps() :: Vector{String}
   [
-    Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.min"))")
+    Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.prod"))")
   ]
 end
 
+function plugins() :: Vector{String}
+  [
+    "Quasar"
+  ]
+end
 #===#
 
 include("API.jl")
@@ -145,6 +150,7 @@ export quasar, quasar_pure, vue, vue_pure, xelem, xelem_pure, csscolors
 @reexport using .Steppers
 import .Steppers.step
 @reexport using .Tables
+import .Tables: tr, td
 @reexport using .TabPanels
 @reexport using .Tabs
 @reexport using .Timelines
@@ -169,12 +175,14 @@ end
 function __init__()
   deps_routes()
   push!(Stipple.Layout.THEMES[], theme)
+  Stipple.add_css(theme)
   Stipple.deps!(@__MODULE__, deps)
+  Stipple.add_plugins(StippleUI, plugins)
 
   @static if !isdefined(Base, :get_extension)
     @require DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0" begin
       # evaluate the code of the extension without the surrounding module
-      include(joinpath(@__DIR__, "..", "ext", "StippleUIDataFrames.jl"))
+      include(joinpath(@__DIR__, "..", "ext", "StippleUIDataFramesExt.jl"))
     end
   end
 end

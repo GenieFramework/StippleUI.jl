@@ -63,7 +63,7 @@ up()
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour
@@ -109,7 +109,7 @@ end
 
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -119,7 +119,7 @@ julia>
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour
@@ -134,7 +134,7 @@ end
 
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -144,7 +144,7 @@ julia>
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

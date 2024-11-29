@@ -45,7 +45,7 @@ Base.string(i::Item) = item(i.args...; i.kwargs...)
 The `list` and `item` are a group of components which can work together to present multiple line items vertically as a single continuous element. They are best suited for displaying similar data types as rows of information, such as a contact list, a playlist or menu. Each row is called an Item. `item` can also be used outside of a `list` too.
     
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -73,7 +73,7 @@ julia>  list(bordered=true, separator=true, [
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content
@@ -110,7 +110,7 @@ end
       item(args...; kwargs...)
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Content
@@ -139,7 +139,7 @@ end
       item_section(args...; kwargs...)
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 * `avatar::Bool` - Render an avatar item side (does not needs 'side' prop to be set)
@@ -157,7 +157,7 @@ const itemsection = item_section
       item_label(args...; kwargs...)
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour

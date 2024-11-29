@@ -13,7 +13,7 @@ register_normal_element("q__form", context = @__MODULE__)
 The `form` component renders a <form> DOM element and allows you to easily validate child form components (like `input`, `select` or your `field` wrapped components) that have the internal validation (NOT the external one) through rules associated with them.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -41,7 +41,7 @@ julia> StippleUI.form(action = "/sub", method = "POST", [
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 * `autofocus::Bool` - Focus first focusable element on initial component render

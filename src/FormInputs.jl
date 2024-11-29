@@ -12,7 +12,7 @@ register_normal_element("q__file", context = @__MODULE__)
     textfield(fieldname, args...; kwargs...)
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -31,7 +31,7 @@ julia> textfield("What's your name *", :name, name = "name", @if(:warin), :fille
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 1. General
        * `type::String` - Must be one of the following: `text (default)`, `textarea`, `email`, `tel`, `number`, `password` and `url`. This is important as it determines the keyboard type popping up on mobile devices.
@@ -89,7 +89,7 @@ julia> textfield("What's your name *", :name, name = "name", @if(:warin), :fille
        * `debounce::Union{String, Int}` - Debounce amount (in milliseconds) when updating model ex. `0` `500`
        * `maxlength::Union{String, Int}` - Specify a max length of model ex. `12`
 """
-function textfield( label::Union{String,Symbol} = "",
+function textfield( label::Union{String,Symbol,Nothing} = nothing,
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     content::Union{String,Vector,Function} = "",
@@ -109,7 +109,7 @@ textfield(content::Union{Vector,Function},
 """
     numberfield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function numberfield( label::Union{String,Symbol} = "",
+function numberfield( label::Union{String,Symbol,Nothing} = nothing,
                       fieldname::Union{Symbol,Nothing} = nothing,
                       args...;
                       content::Union{String,Vector,Function} = "",
@@ -123,9 +123,9 @@ function numberfield( label::Union{String,Symbol} = "",
 end
 
 """
-    textarea(label::Union{String,Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
+    textarea(label::Union{String,Symbol,Nothing} = nothing, fieldname::Union{Symbol,Nothing} = nothing, args...; content::Union{String,Vector,Function} = "", kwargs...)
 """
-function textarea(label::Union{String,Symbol} = "",
+function textarea(label::Union{String,Symbol,Nothing} = nothing,
                   fieldname::Union{Symbol,Nothing} = nothing,
                   args...;
                   content::Union{String,Vector,Function} = "",
@@ -134,9 +134,9 @@ function textarea(label::Union{String,Symbol} = "",
 end
 
 """
-filefield( label::Union{String, Symbol} = "", fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
+filefield( label::Union{String, Symbol, Nothing} = nothing, fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
 """
-function filefield( label::Union{String,Symbol} = "",
+function filefield( label::Union{String,Symbol,Nothing} = nothing,
                     fieldname::Union{Symbol,Nothing} = nothing,
                     args...;
                     kwargs...)
@@ -160,12 +160,12 @@ A number of common arguments are defined and are passed to the textfield, the ic
 In addition, keyword arguments can be passed to each of these components individually by using the `textfield_props`,
 `icon_props`, `popup_proxy_props` and `datepicker_props` keyword arguments.
 
-# Examples
+### Examples
 ```julia
 datefield("Start date", :start_date, datepicker_props = Dict(:todaybtn => true, :nounset => true), textfield_props = Dict(:bgcolor => "green-1"))
 ```
 """
-function datefield( label::Union{String,Symbol} = "",
+function datefield( label::Union{String,Symbol,Nothing} = nothing,
                     fieldname::Union{Symbol,Nothing} = nothing;
                     icon_name::Union{Symbol,String,Nothing} = "event",
                     icon_class::Union{Symbol,String,Nothing} = "cursor-pointer",
@@ -198,7 +198,7 @@ In addition, keyword arguments can be passed to each of these components individ
 `icon_props`, `popup_proxy_props` and `timepicker_props` keyword arguments.
 
 """
-function timefield( label::Union{String,Symbol} = "",
+function timefield( label::Union{String,Symbol,Nothing} = nothing,
                     fieldname::Union{Symbol,Nothing} = nothing;
                     icon_name::Union{Symbol,String,Nothing} = "alarm",
                     icon_class::Union{Symbol,String,Nothing} = "cursor-pointer",

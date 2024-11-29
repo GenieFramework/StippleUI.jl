@@ -13,7 +13,7 @@ register_normal_element("q__video", context = @__MODULE__)
 Using the `video` component makes embedding a video like Youtube easy. It also resizes to fit the container by default.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### Model
@@ -31,7 +31,7 @@ julia> video(ratio=:v_ratio, src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Accessibility

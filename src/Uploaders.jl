@@ -54,18 +54,28 @@ end
 
 
 function push_uploaded_files(uf::UploadedFile)
-  Stipple._push!(
-    Pair(:fileuploads,
-          Dict{AbstractString,AbstractString}("name" => uf.name,
-                                              "channel" => uf.channel,
-                                              "path" => uf.tmppath)
-    ),
-    uf.channel
+  filedict = Dict{String,String}(
+    "name" => uf.name,
+    "channel" => uf.channel,
+    "path" => uf.tmppath
   )
+
+  Stipple._push!(:fileuploads => filedict, uf.channel)
 
   # # this won't be broadcasted back to the server so we need to do it manually
   Stipple.WEB_TRANSPORT[].broadcast(
-    Genie.WebChannels.tagbase64encode(""">eval:Genie.WebChannels.sendMessageTo(window.CHANNEL, 'watchers', {'payload': {'field':'fileuploads', 'newval': {'name':'$(uf.name)', 'channel':'$(uf.channel)', 'path':'$(uf.tmppath)'}, 'oldval': {}, 'sesstoken': document.querySelector("meta[name='sesstoken']")?.getAttribute('content')}})"""),
+    Genie.WebChannels.tagbase64encode(""">eval:Genie.WebChannels.sendMessageTo(
+      window.CHANNEL,
+      'watchers',
+      {
+        'payload': {
+          'field':'fileuploads',
+          'newval': $(js_attr(filedict)),
+          'oldval': {},
+          'sesstoken': document.querySelector("meta[name='sesstoken']")?.getAttribute('content')
+        }
+      }
+    )"""),
     channels = uf.channel
   )
 
@@ -79,7 +89,7 @@ end
 Stipple supplies a way for you to upload files through the `uploader` component.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -89,7 +99,7 @@ julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="PO
 ```
 
 -----------
-# Arguments
+### Arguments
 -----------
 
 1. Behaviour
@@ -103,7 +113,7 @@ julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="PO
       * `autoupload::Bool` - Upload files immediately when added
       * `hideuploadbtn::Bool` - Don't show the upload button
 2. Content
-      * `label::Union{String,Symbol}` - Label for the uploader ex. `Upload photo here`
+      * `label::Union{String,Symbol,Nothing}` - Label for the uploader ex. `Upload photo here`
       * `nothumbnails::Bool` - Don't display thumbnails for image files
 3. State
       * `disable::Bool` - Put component in disabled mode

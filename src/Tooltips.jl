@@ -22,7 +22,7 @@ about a certain area in your App. When hovering the mouse over the target elemen
 (or quickly tapping on mobile platforms), the tooltip will appear.
 
 ----------
-# Examples
+### Examples
 ----------
 
 ### View
@@ -39,7 +39,7 @@ julia>
 ```
 
 ----------
-# Arguments
+### Arguments
 ----------
 
 1. Behaviour

@@ -11,8 +11,31 @@ using OrderedCollections
 using Genie.Logging
 using Genie.Renderer.Html.EzXML
 
-const AT_MASK = "__vue-on__"
 const NO_CHILD_ELEMENTS = String["q-input", "q-btn"]
+
+const AT_MASK = "__vue-on__"
+const DOLLAR_MASK = "_-dd-_"
+const SPECIALS =  [
+  '[' => "_-ob-_"
+  ']' => "_-cb-_"
+  '{' => "_-oc-_"
+  '}' => "_-cc-_"
+  '$' => "_-dd-_"
+  '`' => "_-bt-_"
+  '#' => "_-sh-_"
+  '@' => "__vue-on__"
+]
+const SPECIALS_REVERSED = [c[2] => c[1] for c in SPECIALS]
+
+@static if VERSION < v"1.7"
+  escape_specials(x::AbstractString) = foldl(replace, SPECIALS; init = x)
+  unescape_specials(x::AbstractString) = foldl(replace, SPECIALS_REVERSED; init = x)
+else
+  escape_specials(x::AbstractString) = replace(x, SPECIALS...)
+  unescape_specials(x::AbstractString) = replace(x, SPECIALS_REVERSED...)
+end
+
+# template(@slot("[`body-ce:;ll-\${col}`]", :props), @for(col in ["age", "mail"]), []) |> prettify
 
 # add a method that doesn't interpret ':' as separator for namespace
 # when a Symbol is passed as index (instead of an AbstractString)
@@ -36,7 +59,7 @@ function rawrepr(x)
   else
       "\""
   end
-  string(occursin('$', r) ? "raw" : "", quotes, r, quotes)
+  string(occursin(DOLLAR_MASK, r) ? "raw" : "", quotes, r, quotes)
 end
 
 function symrepr(x)
@@ -351,7 +374,7 @@ function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4
   elseif startswith(html, r"\s*<head(\s|>)"i)
     :head
   else
-    html_string = replace("<body>$html</body>", "@" => AT_MASK)
+    html_string = escape_specials("<body>$html</body>")
     root = :no_root
   end
 
@@ -361,7 +384,7 @@ function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4
     repeat(indent::String, level)
   end
 
-  html_string = replace(html, "@" => AT_MASK)
+  html_string = escape_specials(html)
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   root_node = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
@@ -375,7 +398,7 @@ function parse_vue_html(html; level::Integer = 0, indent::Union{String, Int} = 4
     children = nodes(root == :no_root ? root_node.firstelement : root_node)
     is_single = length(children) <= 1
     children_str = node_to_stipple.(children, is_single ? startlevel : startlevel + 1; indent, vec_sep, context, flexgrid_parsing)
-    replace(is_single ? children_str[1] : "$indent_str[\n$(join(filter(!isempty, children_str), vec_sep))$indent_str\n]", AT_MASK => "@")
+    unescape_specials(is_single ? children_str[1] : "$indent_str[\n$(join(filter(!isempty, children_str), vec_sep))$indent_str\n]")
   end |> ParsedHTMLString
 end
 
@@ -398,11 +421,11 @@ function prettify(html::AbstractString; level::Int = 0, indent::Union{String, In
   elseif startswith(html, r"\s*<head(\s|>)"i)
     :head
   else
-    html_string = replace("<body>$html</body>", "@" => AT_MASK)
+    html_string = escape_specials("<body>$html</body>")
     root = :no_root
   end
   
-  length(html_string) == 0 && (html_string = replace(html, "@" => AT_MASK))
+  length(html_string) == 0 && (html_string = escape_specials(html))
   empty!(EzXML.XML_GLOBAL_ERROR_STACK)
   root_node = Logging.with_logger(Logging.SimpleLogger(stdout, Logging.Error)) do
     EzXML.parsehtml(html_string).root
@@ -413,12 +436,12 @@ function prettify(html::AbstractString; level::Int = 0, indent::Union{String, In
   else
     # remove the html / body levels
     children = nodes(root == :no_root ? root_node.firstelement : root_node)
-    replace(join(node_to_html.(children, startlevel; indent), "\n"), AT_MASK => "@")
+    unescape_specials(join(node_to_html.(children, startlevel; indent), "\n"))
   end |> ParsedHTMLString
 end
 
 function prettify(el::EzXML.Node; level::Int = 0, indent::Union{String, Int} = 4)
-  replace(node_to_html(el, level; indent), AT_MASK => "@")
+  unescape_specials(node_to_html(el, level; indent))
 end
 
 prettify(doc::EzXML.Document; level::Int = 0, indent::Union{String, Int} = 4) = prettify(doc.root; level, indent)
