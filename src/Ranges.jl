@@ -18,6 +18,9 @@ Base.@kwdef mutable struct RangeData{T}
   range::UnitRange{T}
 end
 
+RangeData(min::Number, max::Number) = RangeData(UnitRange(min, max))
+RangeData(ar::AbstractRange) = RangeData(UnitRange(minimum(ar), maximum(ar)))
+
 const QRangeType = Union{Symbol, String, Real}
 struct QRange <: AbstractRange{QRangeType}
   min::QRangeType
@@ -209,8 +212,12 @@ function Stipple.render(rd::RangeData{T}) where {T}
   Dict(:min => rd.range.start, :max => rd.range.stop)
 end
 
-function Base.parse(::Type{RangeData{T}}, d::Dict{X,Y}) where {T,X,Y}
-  RangeData(d["min"]:d["max"])
+function Stipple.stipple_parse(::Type{RangeData{T}}, d::Dict) where T
+  RangeData(T(d["min"]), T(d["max"]))
+end
+
+function Stipple.stipple_parse(::Type{RangeData}, d::Dict)
+  RangeData(d["min"], d["max"])
 end
 
 end
