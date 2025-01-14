@@ -13,7 +13,7 @@ const ID = "__id"
 const DATAKEY = "rows"
 const DataTableSelection = Vector{Dict{String, Any}}
 
-struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
+struct2dict(s::T) where T = OrderedDict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s), fieldnames(T))))
 
 #===#
 
@@ -580,6 +580,12 @@ end
 Stipple.render(tables::AbstractArray{<:DataTable}) = render.(tables)
 Stipple.render(tables::AbstractArray{DataTablePagination}) = render.(tables)
 
+function Stipple.jsrender(t::T, args...) where {T<:DataTable}
+    rt = data(t)
+    rt["columns"] = [OrderedDict(k => Stipple.jsrender(v) for (k, v) in c) for c in rt["columns"]]
+    rt
+end
+
 # function to autogenerate entries for js_mounted to make Tables from Quasar1 compatible with tables from Quasar2
 # Background: the field 'data' has been renamed to 'rows' in Quasar 2
 # This function autogenerates entries that set the 'data' field of tables to the 'rows' field. As Vue3's mechanism
@@ -611,7 +617,7 @@ end
 
 #===#
 
-function Base.parse(::Type{DataTablePagination}, d::Dict{String,Any})
+function Stipple.stipple_parse(::Type{DataTablePagination}, d::Dict{String,Any})
   dtp = DataTablePagination()
 
   dtp.sort_by = get!(d, "sortBy", "desc") |> Symbol
