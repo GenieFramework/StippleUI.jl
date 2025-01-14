@@ -582,7 +582,9 @@ Stipple.render(tables::AbstractArray{DataTablePagination}) = render.(tables)
 
 function Stipple.jsrender(t::T, args...) where {T<:DataTable}
     rt = data(t)
-    rt["columns"] = [OrderedDict(k => Stipple.jsrender(v) for (k, v) in c) for c in rt["columns"]]
+    if rt["columns"] !== nothing && eltype(rt["columns"]) <: AbstractDict
+      rt["columns"] = [OrderedDict(k => Stipple.jsrender(v) for (k, v) in c) for c in rt["columns"]]
+    end
     rt
 end
 
