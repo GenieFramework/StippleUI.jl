@@ -25,7 +25,7 @@ Dates = "1.6"
 Genie = "5.32"
 OrderedCollections = "1"
 PrecompileTools = "1"
-Stipple = "0.31"
+Stipple = "0.31, 0.30"
 Tables = "1"
 julia = "1.6"
 
