@@ -60,22 +60,8 @@ function push_uploaded_files(uf::UploadedFile)
     "path" => uf.tmppath
   )
 
-  Stipple._push!(:fileuploads => filedict, uf.channel)
-
-  # # this won't be broadcasted back to the server so we need to do it manually
   Stipple.WEB_TRANSPORT[].broadcast(
-    Genie.WebChannels.tagbase64encode(""">eval:Genie.WebChannels.sendMessageTo(
-      window.CHANNEL,
-      'watchers',
-      {
-        'payload': {
-          'field':'fileuploads',
-          'newval': $(js_attr(filedict)),
-          'oldval': {},
-          'sesstoken': document.querySelector("meta[name='sesstoken']")?.getAttribute('content')
-        }
-      }
-    )"""),
+    Genie.WebChannels.tagbase64encode(""">eval:Genie.findApp('$(uf.channel)').fileuploads = $(js_attr(filedict))"""),
     channels = uf.channel
   )
 
