@@ -33,7 +33,7 @@ julia> @vars CardModel begin
 
 ```julia-repl
 julia> card(class="my-card", [
-          imageview(src=:url, basic=true, [
+          imageview(src=:url, no__transition=true, [
             Html.div("Title", class="absolute-bottom text-h6")
           ]),
           card_section("{{lorem}}")

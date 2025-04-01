@@ -43,7 +43,7 @@ julia> imageview(src = :url, style = "height: 140px; max-width: 150px", [
 2. Content
        * `ratio::Union{String, Int}` - Force the component to maintain an aspect ratio ex. `ratio!="4/3"` `(Number format) ratio!="16/9"` `(String format) ratio="1"`
        * `alt::String` - Specifies an alternate text for the image, if the image cannot be displayed ex. `Two cats`
-       * `basic::Bool` - Do not use transitions; faster render
+       * `no__transition::Bool` - Do not use transitions; faster render
        * `contain::Bool` - Make sure that the image getting displayed is fully contained, regardless if additional blank space besides the image is needed on horizontal or vertical
 3. Model
        * `src::String` - Path to image ex. `(public folder) src="img/something.png"` `(assets folder) src="~assets/my-img.gif"` `(URL) src="https://placeimg.com/500/300/nature"`
