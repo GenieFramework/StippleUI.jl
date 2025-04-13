@@ -6,6 +6,7 @@ import Genie.Renderer.Html: HTMLString, normal_element, table, template, registe
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 export cell_template, qtd, qtr
+export add_table_info
 
 register_normal_element("q__table", context = @__MODULE__)
 
@@ -853,5 +854,48 @@ mutable struct Tr
 end
 
 Base.string(tr::Tr) = tr(tr.args...; tr.kwargs...)
+
+"""
+    add_table_info()
+
+Adds information about the click event to the event object.
+
+### Example
+```julia
+@app begin
+    @in x = 1
+end
+
+@methods add_table_info
+
+@event :myclick begin
+    @info event
+    notify(__model__, "(row, column, value) clicked: (\$(event["row"]), \$(event["column"]), \$(event["value"]))")
+end
+
+ui() = table(:table, "Hello world!", @on(:row__clicked, :myclick, :addTableInfo))`
+```
+If you also need the coordinates of the click, you can add it via
+```julia
+@methods [add_table_info, add_click_info]
+
+ui() = table(:table, "Hello world!", @on(:row__clicked, :myclick, [:addTableInfo, :addClickInfo]))
+```
+"""
+function add_table_info()
+  :addTableInfo => js"""
+  function (event, row, id) {
+      const keys = Object.keys(row)
+      event.row = row.__id;
+      event.column = event.target.closest('td').cellIndex + 1;
+      // we have defined column index to start from 1 for indexing the underlying Julia DataFrame
+      // but it is also correct for indexing here, as the first column is the index column
+      // note, we need to do the indexing here, as we are parsing into Dicts that do not keep the order of the keys
+      event.value = row[keys[event.column]];
+      event.row_data = row;
+      event.column_keys = keys;
+      return event;
+  }"""
+end
 
 end
