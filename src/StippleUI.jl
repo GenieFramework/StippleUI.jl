@@ -9,19 +9,9 @@ const assets_config = Genie.Assets.AssetsConfig(package = "StippleUI.jl")
 
 function deps_routes() :: Nothing
   if ! Genie.Assets.external_assets(assets_config)
-    Genie.Router.route(Genie.Assets.asset_route(assets_config, :css, file="quasar.prod")) do
-      Genie.Renderer.WebRenderable(
-        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="css", file="quasar.prod")),
-        :css) |> Genie.Renderer.respond
-    end
-  end
-
-  if ! Genie.Assets.external_assets(assets_config)
-    Genie.Router.route(Genie.Assets.asset_route(assets_config, :js, file="quasar.umd.prod")) do
-      Genie.Renderer.WebRenderable(
-        Genie.Assets.embedded(Genie.Assets.asset_file(cwd=normpath(joinpath(@__DIR__, "..")), type="js", file="quasar.umd.prod")),
-        :javascript) |> Genie.Renderer.respond
-    end
+    Genie.Assets.add_fileroute(assets_config, "quasar.prod.css"; basedir = normpath(joinpath(@__DIR__, "..")))
+    Genie.Assets.add_fileroute(assets_config, "quasar.umd.prod.js"; basedir = normpath(joinpath(@__DIR__, "..")))
+    Genie.Assets.add_fileroute(assets_config, "mixins.js"; basedir = normpath(joinpath(@__DIR__, "..")))
   end
 
   nothing
@@ -39,7 +29,8 @@ end
 
 function deps() :: Vector{String}
   [
-    Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.prod"))")
+    Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="quasar.umd.prod"))"),
+    Genie.Renderer.Html.script(src="$(Genie.Assets.asset_path(assets_config, :js, file="mixins"))"),
   ]
 end
 
@@ -178,6 +169,7 @@ function __init__()
   Stipple.add_css(theme)
   Stipple.deps!(@__MODULE__, deps)
   Stipple.add_plugins(StippleUI, plugins)
+  Stipple.add_mixins("tableMixin")
 
   @static if !isdefined(Base, :get_extension)
     @require DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0" begin
