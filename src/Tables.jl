@@ -945,4 +945,46 @@ macro paginate(varname, data)
   end |> esc
 end
 
+# events
+"""
+    table_click_event()
+
+JS table click event handler to be loaded as Vue method.
+
+Example:
+```julia-repl
+# inside your @app block
+@methods [StippleUI.Tables.click_event]
+
+@event :cellclick begin
+    @info event
+end
+```
+
+In JS:
+```javascript
+<q-table v-on:row-click="tableClick(arguments, 'cellclick')" ...>
+```
+"""
+function click_event()
+	:tableClick => """
+	function (args, eventLabel) {
+		let evt = args[0];
+		let row = args[1];
+		let id = args[2];
+
+		event = {}
+		event.row_data = row;
+		event.row = id + 1;
+		event.column = evt.target.closest('td').cellIndex + 1;
+		event.cell_data = evt.target.closest('td').innerText;
+		event.table_id = evt.target.closest('[id]').id;
+
+		GENIEMODEL.handle_event(event, eventLabel);
+
+		return event;
+  }
+	"""
+end
+
 end
