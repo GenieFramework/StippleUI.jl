@@ -35,7 +35,12 @@ struct2dict(s::T) where T = Dict{Symbol, Any}(zip(fieldnames(T), getfield.(Ref(s
   align::Symbol = :left
   field::String = name
   sortable::Bool = true
+  style::String = ""
+  classes::String = ""
+  headerClasses::String = "" # todo: convert this to julia case header_classes
+  headerStyle::String = "" # todo: convert this to julia case header_style
 end
+
 
 """
     Column(name::String, args...)
