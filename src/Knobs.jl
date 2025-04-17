@@ -1,13 +1,13 @@
 module Knobs
 
 using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, void_element, template, register_void_element
+import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
 using Stipple
 
 export knob
 
-register_void_element("q__knob", context = @__MODULE__)
+register_normal_element("q__knob", context = @__MODULE__)
 
 """
       knob(range::AbstractRange{T} where T <: Real, fieldname::Union{Symbol,Nothing} = nothing, args...; kwargs...)
