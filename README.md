@@ -353,14 +353,14 @@ We have dedicated a Github Page to Stipple Demos with many downloadable examples
 (Not all of them are updated to the latest changes of the API yet. But most of them should be functional.)
 ### German Credits visualisation dashboard
 
-<img src="https://genieframework.com/githubimg/Screenshot_German_Credits.png" width="800">
+<img src="https://learn.genieframework.com/.netlify/images?url=%2Fassets%2Ftutorials%2Fgerman-credits%2Fui.gif" width = 800>
 
 The full application is available at:
 <https://github.com/GenieFramework/Stipple-Demo-GermanCredits>
 
 ### Iris Flowers dataset k-Means clustering dashboard
 
-<img src="https://genieframework.com/githubimg/Screenshot_Iris_Data.png" width="800">
+<img src="docs/content/img/IrisFLowerClassifier.png" width="800">
 
 The full application is available at:
 <https://github.com/GenieFramework/Stipple-Demo-IrisClustering>
