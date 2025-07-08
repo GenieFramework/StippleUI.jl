@@ -477,12 +477,12 @@ Finally, table supports eventhandling upon clicking on a cell. The eventhandlers
 end
 
 # for adding row, column, value, and row_data of the clicked row to the event
-ui() = table(:table, "Hello world!", @on(:row__clicked, :tableclick, :addTableInfo))`
+ui() = table(:table, "Hello world!", @on(:row__click, :tableclick, :addTableInfo))`
 ```
 If you also need the coordinates of the click, you can add it via
 
 ```julia
-ui() = table(:table, "Hello world!", @on(:row__clicked, :tableclick, [:addTableInfo, :addClickInfo]))
+ui() = table(:table, "Hello world!", @on(:row__click, :tableclick, [:addTableInfo, :addClickInfo]))
 ```
 """
 function table( fieldname::Symbol,
