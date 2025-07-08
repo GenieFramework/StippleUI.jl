@@ -6,7 +6,7 @@ import Genie.Renderer.Html: HTMLString, normal_element, table, template, registe
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 export cell_template, qtd, qtr
-export add_table_info
+export add_table_info, relabel!
 
 register_normal_element("q__table", context = @__MODULE__)
 
@@ -658,6 +658,46 @@ function DataTableOptions(data::T) where T
   dto.columns = [Column(string(name), sortable = true, label = string(name)) for name in TablesInterface.columnnames(data)]
 
   dto
+end
+
+"""
+    relabel!(dt::DataTable, replacements::Dict{String, String})
+
+Define custom labels for columns in a DataTable.
+
+### Example 1
+```
+mytable = DataTable(DataFrame(a = [1, missing, missing, 4], b = [2, 3, missing, 4]))
+relabel!(mytable, "a" => "My Column A")
+```
+### Example 2
+```
+df = DataFrame(a = [1, missing, missing, 4], b = [2, 3, missing, 4])
+mytable = copy(df) |> relabel!("a" => "My Column A")
+```
+"""
+function relabel!(dt::DataTable, replacements::Dict{String, String})
+    if dt.opts.columns === nothing
+        dt.opts.columns = Column[Column(name = n, label = get(replacements, n, n)) for n in names(dt.data)]
+    else
+        for col in dt.opts.columns
+            haskey(replacements, col.name) && (col.label = replacements[col.name])
+        end
+    end
+
+    dt
+end
+
+function relabel!(dt::DataTable, replacements::Pair{String, String}...)
+    relabel!(dt, Dict(replacements))
+end
+
+function relabel!(replacements::Dict{String, String})
+  Base.Fix2(relabel!, replacements)
+end
+
+function relabel!(replacements::Pair{String, String}...)
+  Base.Fix2(relabel!, Dict(replacements))
 end
 
 mutable struct DataTableWithSelection
