@@ -229,6 +229,7 @@ end
         change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+        format::Function = (x) -> "{{ \$x.value }}",
 
         rowkey::String = ID,
         kwargs...)
@@ -311,6 +312,7 @@ function cell_template(;
   change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+  format::Function = (x) -> "{{ $x.value }}",
   rowkey::String = ID,
   kwargs...)
 
@@ -344,7 +346,7 @@ function cell_template(;
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
     t = template("", "v-slot:$slotname=\"props\"", [
       td(props = :props,
-        htmldiv("{{ props.value }}"; class = inner_class, style = inner_style, inner_kwargs...);
+        htmldiv(format("props"); class = inner_class, style = inner_style, inner_kwargs...);
         class, style, kwargs...
       )
     ])
