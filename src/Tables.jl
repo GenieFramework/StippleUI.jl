@@ -229,7 +229,7 @@ end
         change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
         change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
-        format::Function = (x) -> "{{ \$x.value }}",
+        format::Union{Function, AbstractString} = "{{ props.value }}", # or (x) -> "{{ \$x.value }}"
 
         rowkey::String = ID,
         kwargs...)
@@ -312,7 +312,7 @@ function cell_template(;
   change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
   change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
-  format::Function = (x) -> "{{ $x.value }}",
+  format::Union{Function, AbstractString} = "{{ props.value }}",
   rowkey::String = ID,
   kwargs...)
 
@@ -346,7 +346,7 @@ function cell_template(;
     slotname = isempty(column) ? "body-cell" : "body-cell-$column"
     t = template("", "v-slot:$slotname=\"props\"", [
       td(props = :props,
-        htmldiv(format("props"); class = inner_class, style = inner_style, inner_kwargs...);
+        htmldiv(format isa Function ? format("props") : format; class = inner_class, style = inner_style, inner_kwargs...);
         class, style, kwargs...
       )
     ])
@@ -508,10 +508,12 @@ function table( fieldname::Symbol,
                 change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                format::Union{Nothing,Function,AbstractString} = nothing,
               
                 kwargs...) :: ParsedHTMLString
 
-  if !isa(edit, Bool) || edit || cell_class !== nothing || cell_style !== nothing
+  if !isa(edit, Bool) || edit || cell_class !== nothing || cell_style !== nothing || format !== nothing
+    format === nothing && (format = "{{ props.value }}")
     cell_kwargs, kwargs = filter_kwargs(kwargs) do p
       startswith(String(p[1]), "cell_") ? Symbol(String(p[1])[6:end]) => p[2] : nothing
     end
@@ -521,7 +523,7 @@ function table( fieldname::Symbol,
 
     table_template = cell_template(; ref_table, ref_rows, rowkey, 
       edit, columns, class = cell_class, style = cell_style, type = cell_type, inner_class, inner_style,
-      change_class, change_style, change_inner_class, change_inner_style, cell_kwargs..., inner_kwargs...
+      change_class, change_style, change_inner_class, change_inner_style, cell_kwargs..., inner_kwargs..., format
     )
     args = [args..., table_template]
 
@@ -575,11 +577,12 @@ function table( fieldname::Symbol,
                 change_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_class::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
                 change_inner_style::Union{Nothing,AbstractString,AbstractDict,Vector} = nothing,
+                format::Union{Nothing,Function,AbstractString} = nothing,
 
                 kwargs...) :: ParsedHTMLString
 
   table(fieldname, args...; edit, ref_table, rowkey, datakey, columnskey, filter, paginationsync, columns,
-    cell_class, cell_style, cell_type, change_class, change_style, change_inner_class, change_inner_style, kwargs...
+    cell_class, cell_style, cell_type, change_class, change_style, change_inner_class, change_inner_style, format, kwargs...
   )
 end
 
