@@ -676,7 +676,7 @@ relabel!(mytable, "a" => "My Column A")
 ### Example 2
 ```
 df = DataFrame(a = [1, missing, missing, 4], b = [2, 3, missing, 4])
-mytable = copy(df) |> relabel!("a" => "My Column A")
+mytable = DataTable(copy(df)) |> relabel!("a" => "My Column A")
 ```
 """
 function relabel!(dt::DataTable, replacements::Dict{String, String})
