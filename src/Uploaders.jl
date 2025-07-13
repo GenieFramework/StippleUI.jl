@@ -129,7 +129,7 @@ function uploader(args...;
 
   # use default upload url if none is provided and method is POST
   if url === nothing && method == "POST"
-    url = "'$(Genie.config.base_path)/____/upload/' + channel_"
+    url = Symbol("'$(Genie.config.base_path)/____/upload/' + channel_")
   end
 
   if url !== nothing
