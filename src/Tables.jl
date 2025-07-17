@@ -151,9 +151,10 @@ end
 
 #===#
 function active_columns(t::T)::Vector{Column} where {T<:DataTable}
+  col_names = TablesInterface.columnnames(t.data)
   t.opts.columns !== nothing ?
-    t.opts.columns :
-      [Column(string(name), sortable = true, label = string(name)) for name in TablesInterface.columnnames(t.data)]
+    filter(c -> Symbol(c.name) in col_names, t.opts.columns) :
+      [Column(string(name), sortable = true, label = string(name)) for name in col_names]
 end
 
 """
@@ -188,6 +189,7 @@ end
 function rows(t::T)::Vector{OrderedDict{String,Any}} where {T<:DataTable}
   rows = OrderedDict{String,Any}[]
 
+  col_names = active_columns(t)
   for (count, row) in enumerate(TablesInterface.rows(t.data))
     r = OrderedDict{String, Any}()
 
@@ -196,7 +198,7 @@ function rows(t::T)::Vector{OrderedDict{String,Any}} where {T<:DataTable}
     end
 
     r[ID] = count
-    for column in active_columns(t)
+    for column in col_names
       r[column.name] = row[Symbol(column.name)]
     end
 
