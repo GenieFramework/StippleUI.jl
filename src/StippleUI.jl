@@ -153,7 +153,7 @@ import .Tables: tr, td
 @reexport using .Uploaders
 @reexport using .Videos
 
-export page_container # from Layouts
+export page_container, page_sticky # from Layouts
 
 #===#
 
