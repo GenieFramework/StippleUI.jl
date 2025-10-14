@@ -212,11 +212,11 @@ function Stipple.render(rd::RangeData{T}) where {T}
   Dict(:min => rd.range.start, :max => rd.range.stop)
 end
 
-function Stipple.stipple_parse(::Type{RangeData{T}}, d::Dict) where T
+function Stipple.stipple_parse(::Type{RangeData{T}}, d::AbstractDict{String,Any}) where T
   RangeData(T(d["min"]), T(d["max"]))
 end
 
-function Stipple.stipple_parse(::Type{RangeData}, d::Dict)
+function Stipple.stipple_parse(::Type{RangeData}, d::AbstractDict{String,Any})
   RangeData(d["min"], d["max"])
 end
 

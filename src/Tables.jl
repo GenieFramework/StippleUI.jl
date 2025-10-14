@@ -643,7 +643,7 @@ end
 
 #===#
 
-function Stipple.stipple_parse(::Type{DataTablePagination}, d::Dict{String,Any})
+function Stipple.stipple_parse(::Type{DataTablePagination}, d::AbstractDict{String,Any})
   dtp = DataTablePagination()
 
   dtp.sort_by = get!(d, "sortBy", "desc") |> Symbol

@@ -136,7 +136,7 @@ function Stipple.render(vdr::Vector{DateRange})
   [ Dict(:from => dr.start, :to => dr.stop) for dr in vdr ]
 end
 
-function Stipple.stipple_parse(::Type{DateRange}, d::Dict{String,Any})
+function Stipple.stipple_parse(::Type{DateRange}, d::AbstractDict{String,Any})
   DateRange(Date(d["from"]), Date(d["to"]))
 end
 
