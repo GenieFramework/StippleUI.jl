@@ -17,7 +17,7 @@ All other arguments to `$q-notify` are supported via keyword arguments
 function Base.notify(model::ReactiveModel, message::AbstractString, type::Union{Symbol, String, Nothing} = nothing; kwargs...)
   d = Stipple.opts(;type, message, kwargs...)
   js_dict = strip(json(d), '"')
-  run(model, "this.\$q.notify($js_dict)")
+  run(model, "window?.GENIEMODEL?.\$q.notify($js_dict)")
 end
 
 end
