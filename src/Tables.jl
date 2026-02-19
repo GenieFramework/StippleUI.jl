@@ -5,7 +5,7 @@ using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
-export cell_template, qtd, qtr
+export cell_template, qtd, qtr, qth
 export add_table_info, relabel!
 
 register_normal_element("q__table", context = @__MODULE__)
@@ -744,7 +744,7 @@ function rowselection(dt::DataTable, rows, cols = Colon(), idcolumn = dt.opts.ad
   if isnothing(cols)
       [Dict{String, Any}(union([idcolumn, "__id"]) .=> row) for row in (rows == Colon() ? (1:nrow(dt.data)) : rows)]
   else
-      dd = Stipple.render(dt[rows, cols])["data"]
+      dd = Stipple.render(dt[rows, cols])[DATAKEY]
       setindex!.(dd, rows, "__id")
       dt.opts.addid && setindex!.(dd, rows, dt.opts.idcolumn)
       dd |> Vector{Dict{String, Any}}
@@ -886,6 +886,7 @@ end
 
 register_normal_element("q__td", context = @__MODULE__)
 register_normal_element("q__tr", context = @__MODULE__)
+register_normal_element("q__th", context = @__MODULE__)
 
 function td(args...; kwargs...)
   q__td(args...; kw(kwargs)...)
@@ -917,5 +918,20 @@ mutable struct Tr
 end
 
 Base.string(tr::Tr) = tr(tr.args...; tr.kwargs...)
+
+function th(args...; kwargs...)
+  q__th(args...; kw(kwargs)...)
+end
+
+const qth = th
+
+mutable struct Th
+  args
+  kwargs
+
+  Th(args...; kwargs...) = new(args, kwargs)
+end
+
+Base.string(th::Th) = th(th.args...; th.kwargs...)
 
 end
