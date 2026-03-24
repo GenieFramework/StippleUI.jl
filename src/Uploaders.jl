@@ -16,40 +16,47 @@ end
 # handlers receive an UploadedFile and return an UploadedFile
 const upload_handlers = Function[]
 
-function __init__()
-  Genie.config.cors_headers["Access-Control-Allow-Origin"] = "*"
-  Genie.config.cors_headers["Access-Control-Allow-Headers"] = "Content-Type"
-  Genie.config.cors_headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
-  Genie.config.cors_allowed_origins = ["*"]
+upload_route::Genie.Router.Route = route("/____/upload/:channel", method = POST) do
+  for f in Genie.Requests.filespayload()
+    uf = UploadedFile(tempname(), f[2].name, params(:channel))
 
-  route("/____/upload/:channel", method = POST) do
-    for f in Genie.Requests.filespayload()
-      uf = UploadedFile(tempname(), f[2].name, params(:channel))
-
-      try
-        write(uf.tmppath, f[2].data)
-      catch e
-        @error "Error saving uploaded file: $e"
-        rethrow(e)
-      end
-
-      push_uploaded_files(uf)
-
-      for h in upload_handlers
-        try
-          uf::UploadedFile = uf |> h
-        catch e
-          @error "Error in upload handler: $e"
-          if Genie.Configuration.isdev()
-            rethrow(e)
-          end
-        end
-      end
-
+    try
+      write(uf.tmppath, f[2].data)
+    catch e
+      @error "Error saving uploaded file: $e"
+      rethrow(e)
     end
 
-    "OK"
+    push_uploaded_files(uf)
+
+    for h in upload_handlers
+      try
+        uf::UploadedFile = uf |> h
+      catch e
+        @error "Error in upload handler: $e"
+        if Genie.Configuration.isdev()
+          rethrow(e)
+        end
+      end
+    end
+
   end
+
+  # the response needs to be a HTTP response with a json body, which is what Genie.Renderer.Json.json does
+  # otherwise the uploader will throw an error at the console
+  Genie.Renderer.Json.json("OK")
+end
+
+function disable_uploads()
+  Genie.Router.delete!(:post______upload_by_channel)
+end
+
+function enable_uploads()
+  route(upload_route)
+end
+
+function __init__()
+  enable_uploads()
 end
 
 
@@ -129,7 +136,7 @@ function uploader(args...;
 
   # use default upload url if none is provided and method is POST
   if url === nothing && method == "POST"
-    url = Symbol("'$(Genie.config.base_path)/____/upload/' + channel_")
+    url = Symbol("() => { return '$(Genie.config.base_path)/____/upload/' + this.channel_ }")
   end
 
   if url !== nothing
