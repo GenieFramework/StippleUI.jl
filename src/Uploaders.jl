@@ -127,6 +127,24 @@ julia> uploader(label="Upload Image", autoupload=true, multiple=true, method="PO
       * `with-credentials::Union{Bool, String}` - Sets withCredentials to true on the XHR that manages the upload; Takes boolean or factory function for Boolean; Function is called right before upload; If using a function then for best performance, reference it from your scope and do not define it inline ex. `with-credentials` `with!="files => ...."`
       * `sendraw::Union{Bool, String}` - Send raw files without wrapping into a Form(); Takes boolean or factory function for Boolean; Function is called right before upload; If using a function then for best performance, reference it from your scope and do not define it inline ex. `sendraw` `sendraw!="files => ...."`
       * `batch::Union{Bool, String}` - Upload files in batch (in one XHR request); Takes boolean or factory function for Boolean; Function is called right before upload; If using a function then for best performance, reference it from your scope and do not define it inline ex. `"files => files.length > 10"`
+6. Events
+      * Quasar uploader events can be handled with `@on(event_name, handler, preprocessor)`.
+      * To include uploaded file names in the `@event :uploaded` payload, use a preprocessing handler as the third argument of `@on`:
+
+```julia-repl
+julia> uploader(accept=".csv", @on("uploaded", :uploaded, :addFileInfo))
+```
+
+      * The `:addFileInfo` helper is defined in `StippleUI/assets/js/mixins.js` which adds the original filename to the event data for each uploaded file. This is necessary because in some cases, e.g. in case of the click event not all fields are automatically converted by JSON.stringify.
+      * To add the event handler to the model, use
+```julia
+  @event :uploaded begin
+      @info "File uploaded"
+      @info event
+      @info __model__
+  end
+```
+      where `__model__` refers to the model of the uploader component that triggered the event and event contains the payload of the event
 """
 function uploader(args...;
                   url::Union{AbstractString,Nothing} = nothing,

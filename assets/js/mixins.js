@@ -14,3 +14,29 @@ const tableMixin = {
     }
   }
 }
+const uploaderMixin = {
+  methods: {
+    addFileInfo: function (event) {
+        if (!event || !event.files) {
+          return event
+        }
+
+        for (const f in event.files) {
+          const name = event.files[f].name
+
+          try {
+            Object.defineProperty(event.files[f], 'name', {
+              value: name,
+              enumerable: true,
+              configurable: true,
+              writable: true
+            })
+          } catch (error) {
+            event.files[f].fname = name
+          }
+        }
+
+        return event
+    }
+  }
+}

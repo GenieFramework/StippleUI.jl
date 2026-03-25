@@ -170,6 +170,7 @@ function __init__()
   Stipple.deps!(@__MODULE__, deps)
   Stipple.add_plugins(StippleUI, plugins)
   Stipple.add_mixins("tableMixin")
+  Stipple.add_mixins("uploaderMixin")
 
   @static if !isdefined(Base, :get_extension)
     @require DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0" begin
