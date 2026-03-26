@@ -16,7 +16,7 @@ end
 # handlers receive an UploadedFile and return an UploadedFile
 const upload_handlers = Function[]
 
-upload_route::Genie.Router.Route = route("/____/upload/:channel", method = POST) do
+const upload_route = route("/____/upload/:channel", method = POST) do
   for f in Genie.Requests.filespayload()
     uf = UploadedFile(tempname(), f[2].name, params(:channel))
 
