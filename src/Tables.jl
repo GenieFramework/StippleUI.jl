@@ -617,7 +617,7 @@ end
 # This function autogenerates entries that set the 'data' field of tables to the 'rows' field. As Vue3's mechanism
 # for watchers relies on getter and setter functions any get or set operation on 'data' will be reflected in rows
 # and the respective watchers will be triggered.
-function Stipple.js_created_auto(::M) where M<:ReactiveModel
+function Stipple.js_created_auto(::Type{M}) where M<:ReactiveModel
   io = IOBuffer()
   for (fieldname, fieldtype) in zip(fieldnames(M), fieldtypes(M))
     if fieldtype <: DataTable || fieldtype <: Reactive{<:DataTable}
@@ -626,13 +626,16 @@ function Stipple.js_created_auto(::M) where M<:ReactiveModel
   end
   String(take!(io))
 end
+Stipple.js_created_auto(::M) where M<:ReactiveModel = Stipple.js_created_auto(M)
 
-function Stipple.js_watch_auto(::M) where M<:ReactiveModel
+function Stipple.js_watch_auto(::Type{M}) where M<:ReactiveModel
   [fieldname => "function() {this.$fieldname.data = this.$fieldname.rows}"
     for (fieldname, fieldtype) in zip(fieldnames(M), fieldtypes(M))
     if fieldtype <: DataTable || fieldtype <: Reactive{<:DataTable}
   ]
 end
+Stipple.js_watch_auto(::M) where M<:ReactiveModel = Stipple.js_watch_auto(M)
+
 #===#
 
 function Stipple.watch(vue_app_name::String, fieldtype::R{T}, fieldname::Symbol, channel::String, model::M)::String where {M<:ReactiveModel,T<:DataTable}
