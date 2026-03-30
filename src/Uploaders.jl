@@ -3,7 +3,7 @@ module Uploaders
 using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
-export uploader
+export uploader, enable_uploads, disable_uploads
 
 register_normal_element("q__uploader", context = @__MODULE__)
 
@@ -56,7 +56,8 @@ function enable_uploads()
 end
 
 function __init__()
-  enable_uploads()
+  uploads = haskey(ENV, "GENIE_DEFAULT_UPLOADS") ? parse(Bool, ENV["GENIE_DEFAULT_UPLOADS"]) : !Genie.isprod()
+  uploads && enable_uploads()
 end
 
 
