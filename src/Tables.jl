@@ -937,4 +937,9 @@ end
 
 Base.string(th::Th) = th(th.args...; th.kwargs...)
 
+function Base.empty!(dt::DataTable)
+    empty!(dt.data)
+    return dt
+end
+
 end
