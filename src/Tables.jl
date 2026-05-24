@@ -5,7 +5,7 @@ using Genie, Stipple, StippleUI, StippleUI.API
 import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
-export cell_template, qtd, qtr, qth
+export cell_template, qtd, qtr, qth, diagonal_headers, js_diagonal_headers
 export add_table_info, relabel!
 
 register_normal_element("q__table", context = @__MODULE__)
@@ -423,11 +423,268 @@ function cell_template(;
 end
 
 function filter_kwargs(f::Function, kwargs)
-  kwargs = [kwargs...]
+  kwargs = collect(kwargs)
   new_kwargs = f.(kwargs)
   index = new_kwargs .!== nothing
   new_kwargs[index], kwargs[.! index]
 end
+
+"""
+    diagonal_headers(table::Symbol, degree; height_offset::Number = 0, y_offset::Number = 0, x_offset::Number = 0)
+
+Creates a custom header template for Quasar tables with diagonally rotated column labels.
+
+This function generates a Vue template that rotates table column headers at a specified angle,
+which is particularly useful for tables with many columns or long column labels where horizontal
+space is limited. The header height is calculated dynamically based on the longest column label.
+
+----------
+### Arguments
+----------
+
+- `table::Symbol`: The reactive table field name (e.g., `:table`, `:mytable`). This is used to
+  access the table's column information for dynamic height calculation.
+- `degree`: Rotation angle in degrees (positive = counterclockwise). Common values:
+  - `45` for 45° diagonal headers
+  - `20-30` for slight diagonal (more readable)
+  - `90` for vertical headers
+- `height_offset::Number=0`: Additional height padding for the header row (in pixels).
+  Use this to add extra space above the rotated labels.
+- `y_offset::Number=0`: Vertical offset for label positioning (in pixels).
+  Negative values move labels up, positive values move them down.
+- `x_offset::Number=0`: Horizontal offset for label positioning (in pixels).
+  Adjusts the left-right position of the rotated labels.
+
+----------
+### Prerequisites
+----------
+
+This function requires a corresponding JavaScript method to calculate header height dynamically
+based on the column labels. You must add the following to your Stipple app model:
+
+```julia
+@app MyApp begin
+    @in table = DataTable(df)
+end
+
+# Add the JavaScript method for dynamic height calculation
+@methods MyApp js_diagonal_headers()
+```
+
+The `js_diagonal_headers()` function provides a default implementation that calculates the
+required height based on:
+- Maximum label length among all columns
+- Rotation angle (passed as parameter)
+- Character width estimate (default: 6 pixels per character)
+- Character height (default: 20 pixels)
+
+You can customize the height calculation by defining your own `headerHeight` method:
+
+```julia
+@methods MyApp js\"\"\"
+    headerHeight(table, deg, charWidth = 8, charHeight = 24) {
+        if (table.columns && table.columns.length > 0) {
+            const maxLength = 2 + Math.max(...table.columns.map(col => (col.label || '').length));
+            return Math.ceil(maxLength * charWidth * Math.sin(deg * Math.PI / 180) +
+                           charHeight * Math.cos(deg * Math.PI / 180));
+        }
+        return 60;
+    }
+\"\"\"
+```
+
+----------
+### Examples
+----------
+
+### Basic usage with 45° rotation:
+```julia
+@app TableApp begin
+    @in table = DataTable(DataFrame(team1 = ["A", "B"], score = [85, 90]))
+end
+
+@methods TableApp js_diagonal_headers()
+
+ui() = table(:table, dense = true,
+    diagonal_headers(:table, 45)
+)
+```
+
+### Fine-tuned positioning with offsets:
+```julia
+ui() = table(:table, dense = true,
+    diagonal_headers(:table, 45; height_offset = 20, x_offset = 10, y_offset = -5)
+)
+```
+
+### Multiple tables with different styles:
+```julia
+ui() = htmldiv([
+    h3("Sales Data"),
+    table(:sales_table, dense = true,
+        diagonal_headers(:sales_table, 30)
+    ),
+
+    h3("Metrics"),
+    table(:metrics_table, dense = true,
+        diagonal_headers(:metrics_table, 60; height_offset = 10)
+    )
+])
+```
+
+----------
+### Returns
+----------
+
+A template array containing a single Vue template element for use in Stipple table components.
+The template uses the `header-cell` slot to customize each column header's appearance.
+
+----------
+### See Also
+----------
+
+- [`js_diagonal_headers`](@ref): Default JavaScript implementation for height calculation
+- [`Column`](@ref): For defining column properties including labels
+- [`table`](@ref): Main table component function
+"""
+function diagonal_headers(table::Symbol, degree;
+  char_width = 6, char_height = 20,
+  height_offset::Number = 0, y_offset::Number = 0, x_offset::Number = 0
+)
+    [template(var"v-slot:header-cell" = "props",
+        th(style! = "{height: (headerHeight(this.$table, $degree, $char_width, $char_height) + $height_offset) + 'px', position: 'relative', padding: 0}",
+            htmldiv(style! = """{
+              position: 'absolute',
+              bottom: '5px',
+              transform: 'translate($(25 + x_offset)px, $(y_offset)px) rotate(-' + $(degree) + 'deg)',
+              transformOrigin: 'left bottom',
+              whiteSpace: 'nowrap'
+            }""",
+              "{{ props.col.label }}"
+            )
+        )
+    )]
+end
+
+"""
+    js_diagonal_headers()
+
+Returns a JavaScript function definition for calculating diagonal header heights dynamically.
+
+This function provides the default implementation of the `headerHeight(table, deg, charWidth, charHeight)`
+JavaScript method required by [`diagonal_headers`](@ref). It calculates the minimum height needed for
+the table header row based on the longest column label and the rotation angle.
+
+----------
+### Calculation Formula
+----------
+
+The height is calculated using trigonometric projection:
+```
+height = maxLength × charWidth × sin(deg) + charHeight × cos(deg)
+```
+
+Where:
+- `maxLength`: Number of characters in the longest column label plus 2 (for padding)
+- `charWidth`: Width of a single character in pixels (default: 6)
+- `charHeight`: Height of the text line in pixels (default: 20)
+- `deg`: Rotation angle in degrees
+- The sine component accounts for the horizontal text projection when rotated
+- The cosine component accounts for the text height projection when rotated
+
+----------
+### Function Signature
+----------
+
+```javascript
+headerHeight(table, deg, charWidth = 6, charHeight = 20)
+```
+
+**Parameters:**
+- `table`: The reactive table object containing column definitions
+- `deg`: Rotation angle in degrees
+- `charWidth`: (Optional) Character width in pixels. Adjust for different font sizes.
+- `charHeight`: (Optional) Text line height in pixels. Adjust for different fonts or padding.
+
+----------
+### Usage
+----------
+
+Add this JavaScript method to your Stipple app:
+
+```julia
+@app MyApp begin
+    @in table = DataTable(df)
+end
+
+@methods MyApp js_diagonal_headers()
+
+ui() = table(:table, dense = true,
+    diagonal_headers(:table, 45)
+)
+```
+
+----------
+### Customization
+----------
+
+If the default calculation doesn't suit your needs (e.g., larger font, different padding),
+you can define your own `headerHeight` method with custom parameters:
+
+```julia
+# For larger fonts, increase charWidth and charHeight
+@methods MyApp js\"\"\"
+    headerHeight(table, deg, charWidth = 8, charHeight = 24) {
+        if (table.columns && table.columns.length > 0) {
+            const maxLength = 2 + Math.max(...table.columns.map(col => (col.label || '').length));
+            return Math.ceil(maxLength * charWidth * Math.sin(deg * Math.PI / 180) +
+                           charHeight * Math.cos(deg * Math.PI / 180));
+        }
+        return 60;
+    }
+\"\"\"
+```
+
+Or completely override the calculation logic:
+
+```julia
+@methods MyApp js\"\"\"
+    headerHeight(table, deg) {
+        // Custom logic for specific use case
+        const basePadding = 30;
+        if (table.columns && table.columns.length > 0) {
+            const maxLength = Math.max(...table.columns.map(col => (col.label || '').length));
+            return maxLength * 5 + basePadding;
+        }
+        return 60;
+    }
+\"\"\"
+```
+
+----------
+### Returns
+----------
+
+A JavaScript string containing the `headerHeight(table, deg, charWidth, charHeight)` function definition,
+ready to be included in a Stipple app via the `@methods` macro.
+
+----------
+### See Also
+----------
+
+- [`diagonal_headers`](@ref): Julia function that uses this JavaScript method
+- [`@methods`](@ref): Stipple macro for adding JavaScript methods to reactive models
+"""
+js_diagonal_headers() = js"""
+    headerHeight(table, deg, charWidth = 6, charHeight = 20) {
+        if (table.columns && table.columns.length > 0) {
+            const maxLength = 2 + Math.max(...table.columns.map(col => (col.label || '').length));
+            return Math.ceil(maxLength * charWidth * Math.sin(deg * Math.PI / 180) + charHeight * Math.cos(deg * Math.PI / 180));
+        } else {
+            return 20
+        }
+    }
+"""
 
 """
     table(fieldname::Symbol, args...; kwargs...)
