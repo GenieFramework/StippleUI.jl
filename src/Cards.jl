@@ -1,7 +1,7 @@
 module Cards
 
-using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
+using Stipple, StippleUI, StippleUI.API
+import ..Genie.Renderer.Html: HTMLString, normal_element, register_normal_element
 
 export card, card_section, card_actions
 export cardsection, cardactions

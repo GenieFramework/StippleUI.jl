@@ -1,7 +1,7 @@
 module StippleUI
 
-import Genie
 import Stipple
+import Stipple.Genie as Genie
 
 using Stipple.Reexport
 

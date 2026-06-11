@@ -1,7 +1,7 @@
 module API
 
 using Stipple, StippleUI, Colors
-import Genie.Renderer.Html: HTMLString, normal_element
+import ..Genie.Renderer.Html: HTMLString, normal_element
 
 export quasar, vue, quasar_pure, vue_pure, xelem, xelem_pure, csscolors, kw, @kw
 

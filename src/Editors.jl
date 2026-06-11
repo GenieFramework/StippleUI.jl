@@ -1,7 +1,7 @@
 module Editors
 
-using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element, select, template, register_normal_element
+using Stipple, StippleUI, StippleUI.API
+import ..Genie.Renderer.Html: HTMLString, normal_element, select, template, register_normal_element
 
 export editor
 

@@ -1,12 +1,11 @@
 name = "StippleUI"
 uuid = "a3c5d34a-b254-4859-a8fa-b86abb7e84a3"
 authors = ["Adrian Salceanu <e@essenciary.com>"]
-version = "0.24.21"
+version = "0.24.22"
 
 [deps]
 Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-Genie = "c43c736e-a2d1-11e8-161f-af95117fbd1e"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
 Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
@@ -22,10 +21,9 @@ StippleUIDataFramesExt = "DataFrames"
 Colors = "0.12, 0.13"
 DataFrames = "1"
 Dates = "1.6"
-Genie = "5.25"
 OrderedCollections = "1"
 PrecompileTools = "1"
-Stipple = "0.31.21"
+Stipple = "0.28 - 0.31, 1"
 Tables = "1"
 julia = "1.6"
 

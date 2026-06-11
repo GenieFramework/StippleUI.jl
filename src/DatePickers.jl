@@ -1,11 +1,11 @@
 module DatePickers
 
-using Genie, Stipple, StippleUI, StippleUI.API
+using Stipple, StippleUI, StippleUI.API
 using Stipple, Stipple.Reexport
 
 @reexport using Dates
 
-import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
+import ..Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
 export datepicker, DateRange, DatePicker
 

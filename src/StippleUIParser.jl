@@ -8,8 +8,8 @@ using Stipple
 using StippleUI
 using OrderedCollections
 
-using Genie.Logging
-using Genie.Renderer.Html.EzXML
+using ..Genie.Logging
+using ..Genie.Renderer.Html.EzXML
 
 const NO_CHILD_ELEMENTS = String["q-input", "q-btn"]
 

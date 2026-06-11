@@ -1,8 +1,8 @@
 module Tables
 
 import Tables as TablesInterface
-using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
+using Stipple, StippleUI, StippleUI.API
+import ..Genie.Renderer.Html: HTMLString, normal_element, table, template, register_normal_element
 
 export Column, DataTablePagination, DataTableOptions, DataTable, DataTableSelection, DataTableWithSelection, rowselection, selectrows!
 export cell_template, qtd, qtr, qth, diagonal_headers, js_diagonal_headers

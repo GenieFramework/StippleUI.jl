@@ -1,9 +1,9 @@
 module TimePickers
 
-using Genie, Stipple, StippleUI, StippleUI.API
+using Stipple, StippleUI, StippleUI.API
 using Dates
 
-import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
+import ..Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
 export timepicker
 

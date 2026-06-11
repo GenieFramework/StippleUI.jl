@@ -1,6 +1,6 @@
 module Headings
 
-import Genie, Stipple
+import ..Genie, Stipple
 
 export heading
 

@@ -1,7 +1,7 @@
 module Ranges
 
-using Genie, Stipple, StippleUI, StippleUI.API
-import Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
+using Stipple, StippleUI, StippleUI.API
+import ..Genie.Renderer.Html: HTMLString, normal_element, template, register_normal_element
 
 using Stipple
 
